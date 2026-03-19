@@ -164,6 +164,39 @@ html,body{height:100%;font-family:'Montserrat',sans-serif;background:var(--bg);c
 .activity-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
 .activity-time{font-size:10px;color:rgba(255,255,255,0.2);margin-top:1px}
 
+/* Review status */
+.status-review{background:rgba(167,139,255,0.13);color:var(--purple)}
+
+/* Relationship chips */
+.rel-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);cursor:pointer;transition:all 0.15s;margin:2px}
+.rel-chip:hover{background:rgba(61,116,244,0.1);border-color:rgba(61,116,244,0.3)}
+.rel-type{font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:0.3px}
+
+/* History timeline */
+.history-entry{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);font-size:12px}
+.history-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.history-time{font-size:10px;color:rgba(255,255,255,0.2)}
+.history-field{font-weight:600;color:var(--blue)}
+
+/* Export toast */
+.toast{position:fixed;bottom:60px;right:20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;font-size:13px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,0.4);z-index:300;animation:toastIn 0.3s ease-out;display:flex;align-items:center;gap:10px}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.toast.hide{animation:toastOut 0.3s ease-in forwards}
+@keyframes toastOut{to{opacity:0;transform:translateY(20px)}}
+
+/* Enrichment suggestion */
+.enrich-card{background:rgba(167,139,255,0.06);border:1px solid rgba(167,139,255,0.2);border-radius:var(--radius);padding:12px;margin:6px 0}
+.enrich-field{font-size:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.enrich-field:last-child{border-bottom:none}
+.enrich-value{color:var(--purple);font-weight:600;font-style:italic}
+
+/* Compare grid */
+.compare-grid{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:10px 0}
+.compare-cell{background:var(--surface2);padding:8px 12px;font-size:12px}
+.compare-header{font-weight:700;font-size:11px;text-transform:uppercase;color:var(--muted);letter-spacing:0.3px}
+.compare-product{font-weight:700;color:var(--blue)}
+.compare-diff{color:var(--yellow)}
+
 /* Scrollbar */
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -262,6 +295,8 @@ const DB = {
   ],
   products: [],
   audit: [],
+  history: {},
+  relationships: [],
   pendingChanges: null,
   selectedProducts: []
 };
@@ -295,15 +330,40 @@ const seedProducts = [
 ];
 
 seedProducts.forEach((p, i) => {
+  const id = 'prod_' + (i + 1).toString().padStart(3, '0');
+  const created = new Date(Date.now() - Math.random() * 30 * 86400000).toISOString();
   DB.products.push({
-    id: 'prod_' + (i + 1).toString().padStart(3, '0'),
-    sku: p.sku, name: p.name, category: p.category, price: p.price,
+    id, sku: p.sku, name: p.name, category: p.category, price: p.price,
     status: p.status, brand: p.brand || '', description: p.description || '',
     labels: p.labels || [], weight: p.weight || '', material: p.material || '',
-    ean: p.ean || '', created: new Date(Date.now() - Math.random() * 30 * 86400000).toISOString(),
+    ean: p.ean || '', channels: p.channels || [], created,
     updated: new Date(Date.now() - Math.random() * 7 * 86400000).toISOString()
   });
+  // Seed some history
+  DB.history[id] = [
+    { time: created, user: 'System', action: 'created', detail: 'Product created' },
+    { time: new Date(Date.now() - Math.random() * 14 * 86400000).toISOString(), user: 'Admin', action: 'update', detail: 'Updated price and description' }
+  ];
 });
+
+// Seed relationships (cross-sell, up-sell, related, accessory)
+DB.relationships = [
+  { from: 'prod_001', to: 'prod_002', type: 'related' },
+  { from: 'prod_001', to: 'prod_004', type: 'accessory' },
+  { from: 'prod_002', to: 'prod_001', type: 'related' },
+  { from: 'prod_003', to: 'prod_004', type: 'related' },
+  { from: 'prod_005', to: 'prod_006', type: 'related' },
+  { from: 'prod_005', to: 'prod_001', type: 'cross-sell' },
+  { from: 'prod_009', to: 'prod_010', type: 'related' },
+  { from: 'prod_009', to: 'prod_011', type: 'related' },
+  { from: 'prod_009', to: 'prod_012', type: 'cross-sell' },
+  { from: 'prod_013', to: 'prod_014', type: 'related' },
+  { from: 'prod_013', to: 'prod_020', type: 'cross-sell' },
+  { from: 'prod_017', to: 'prod_019', type: 'cross-sell' },
+  { from: 'prod_018', to: 'prod_019', type: 'related' },
+  { from: 'prod_022', to: 'prod_007', type: 'accessory' },
+  { from: 'prod_020', to: 'prod_021', type: 'related' }
+];
 
 // ============ UTILITIES ============
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
@@ -330,6 +390,60 @@ function catDescendants(catId) {
 function productsInCat(catId) { const ids = catDescendants(catId); return DB.products.filter(p => ids.includes(p.category)); }
 function labelObj(id) { return DB.labels.find(l => l.id === id); }
 function labelByName(name) { return DB.labels.find(l => l.name.toLowerCase() === name.toLowerCase()); }
+
+function getRelationships(productId) {
+  return DB.relationships.filter(r => r.from === productId).map(r => ({
+    ...r, product: DB.products.find(p => p.id === r.to)
+  })).filter(r => r.product);
+}
+
+function addHistory(productId, action, detail) {
+  if (!DB.history[productId]) DB.history[productId] = [];
+  DB.history[productId].push({ time: new Date().toISOString(), user: 'You', action, detail });
+}
+
+function showToast(msg, duration=3000) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.classList.add('hide'); setTimeout(() => t.remove(), 300); }, duration);
+}
+
+// AI enrichment suggestions (simulated)
+function generateEnrichment(product) {
+  const suggestions = {};
+  if (!product.description) {
+    const descs = {
+      'cat-phones': `Premium smartphone from ${product.brand} featuring cutting-edge technology, stunning display, and all-day battery life. Designed for performance and style.`,
+      'cat-audio': `High-fidelity audio device from ${product.brand} delivering immersive sound quality with premium build and comfortable design for extended listening.`,
+      'cat-laptops': `Powerful laptop from ${product.brand} built for productivity and creativity. Features fast processing, brilliant display, and all-day battery life.`,
+      'cat-shoes': `${product.brand} footwear combining style and comfort with durable construction and modern design. Perfect for everyday wear.`,
+      'cat-jackets': `${product.brand} jacket offering superior warmth and protection with a modern silhouette and sustainable materials.`,
+      'cat-furniture': `Thoughtfully designed ${product.brand} piece combining Scandinavian aesthetics with everyday functionality.`,
+      'cat-fitness': `Advanced fitness device from ${product.brand} with precise tracking, smart features, and durable build for active lifestyles.`,
+      'cat-camping': `${product.brand} outdoor gear engineered for reliability in any conditions. Lightweight yet durable for serious adventurers.`,
+    };
+    suggestions.description = descs[product.category] || `Quality product from ${product.brand} designed to meet the highest standards of performance and durability.`;
+  }
+  if (!product.weight) suggestions.weight = pick(['180g','250g','350g','450g','1.2kg','2.1kg']);
+  if (!product.material) {
+    const mats = { 'cat-shoes':'Mesh/Synthetic','cat-jackets':'Recycled Polyester','cat-shirts':'Cotton','cat-furniture':'Oak/Steel','cat-audio':'Aluminium/Leather' };
+    suggestions.material = mats[product.category] || 'Mixed materials';
+  }
+  if (!product.ean) suggestions.ean = Array.from({length:13}, ()=>Math.floor(Math.random()*10)).join('');
+  return suggestions;
+}
+
+// Duplicate detection
+function findDuplicates(product) {
+  return DB.products.filter(p => {
+    if (p.id === product.id) return false;
+    const nameSim = p.name.toLowerCase().split(' ').filter(w => product.name.toLowerCase().includes(w)).length;
+    const nameWords = Math.max(p.name.split(' ').length, product.name.split(' ').length);
+    return (nameSim / nameWords > 0.5) || (p.brand === product.brand && p.category === product.category && Math.abs(p.price - product.price) < product.price * 0.15);
+  });
+}
 
 function labelHtml(labelId, removable, productId) {
   const l = labelObj(labelId); if (!l) return '';
@@ -438,6 +552,8 @@ function openDetail(productId) {
   const q = completeness(p);
   const panel = document.getElementById('detail-panel');
   const lbls = p.labels.map(l => labelHtml(l, true, p.id)).join('') || '<span style="color:var(--muted);font-size:12px">No labels</span>';
+  const rels = getRelationships(productId);
+  const histEntries = DB.history[productId] || [];
 
   panel.innerHTML = `
     <button class="detail-close" onclick="closeDetail()">&times;</button>
@@ -466,8 +582,19 @@ function openDetail(productId) {
       <div class="detail-section-title">Description</div>
       <div class="detail-desc">${p.description ? esc(p.description) : '<span style="color:var(--muted)">No description yet</span>'}</div>
     </div>
-    <div style="margin-top:16px;display:flex;gap:8px">
-      <button class="btn btn-confirm" onclick="closeDetail();document.getElementById('prompt-input').value='Edit ${p.sku}';handleSend()">Edit product</button>
+    <div class="detail-section">
+      <div class="detail-section-title">Relationships</div>
+      <div>${rels.length ? rels.map(r => `<div class="rel-chip" onclick="closeDetail();openDetail('${r.product.id}')"><span class="rel-type">${r.type}</span> ${esc(r.product.name)}</div>`).join('') : '<span style="font-size:12px;color:var(--muted)">No relationships</span>'}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">History</div>
+      ${histEntries.slice(-5).reverse().map(h => `<div class="history-entry"><div class="history-dot" style="background:${h.action==='created'?'var(--green)':h.action==='update'?'var(--blue)':'var(--orange)'}"></div><div><div>${esc(h.detail)}</div><div class="history-time">${esc(h.user)} · ${fmtTime(h.time)}</div></div></div>`).join('')}
+    </div>
+    <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
+      <button class="btn btn-confirm" onclick="closeDetail();document.getElementById('prompt-input').value='Edit ${p.sku}';handleSend()">Edit</button>
+      <button class="btn btn-cancel" onclick="closeDetail();document.getElementById('prompt-input').value='Enrich ${p.sku}';handleSend()">AI Enrich</button>
+      <button class="btn btn-cancel" onclick="closeDetail();document.getElementById('prompt-input').value='History for ${p.sku}';handleSend()">Full History</button>
+      <button class="btn btn-cancel" onclick="closeDetail();document.getElementById('prompt-input').value='Clone ${p.sku}';handleSend()">Clone</button>
       <button class="btn btn-cancel" onclick="closeDetail()">Close</button>
     </div>
   `;
@@ -528,6 +655,16 @@ function parseCommand(input) {
   // Show / list all products
   if (/^(show|list|display|get|find)\s*(all\s*)?(products?|items?|catalog)/i.test(n)) return { type:'show_all', raw };
 
+  // Duplicates (must come before search to catch "find duplicates")
+  if (/^(find\s*)?duplicates?$|^duplicate\s*(check|scan|detection)/i.test(n)) return { type:'duplicates', raw };
+
+  // Export (before search)
+  if (/^export\s*(all|csv|catalog|products?)?$/i.test(n)) return { type:'export', raw };
+
+  // Compare (before search)
+  let cpm2 = n.match(/^compare\s+(.+?)\s+(and|vs|with|,)\s+(.+)/i);
+  if (cpm2) return { type:'compare', a: cpm2[1].trim(), b: cpm2[3].trim(), raw };
+
   // Search
   if (/^(search|find|look\s*for)\s+/i.test(n)) {
     const q = n.replace(/^(search|find|look\s*for)\s+/i, '').replace(/^(for\s+)?/i, '');
@@ -577,6 +714,41 @@ function parseCommand(input) {
 
   // Create product
   if (/^(create|add|new)\s+(a\s+)?(product|item)/i.test(n)) return { type:'create_product', raw };
+
+  // Export target
+  let exm = n.match(/^export\s+(.*)/i);
+  if (exm) return { type:'export_target', target: exm[1], raw };
+
+  // Enrich
+  let enm = n.match(/^(enrich|suggest|improve|ai\s*enrich)\s+(.*)/i);
+  if (enm) return { type:'enrich', target: enm[2].trim(), raw };
+  if (/^enrich\s*all/i.test(n)) return { type:'enrich_all', raw };
+
+  // Publish / unpublish
+  let pubm = n.match(/^(publish|activate|go\s*live)\s+(.*)/i);
+  if (pubm) return { type:'publish', target: pubm[2].trim(), raw };
+  let unpubm = n.match(/^(unpublish|deactivate|archive)\s+(.*)/i);
+  if (unpubm) return { type:'unpublish', target: unpubm[2].trim(), raw };
+
+  // History
+  let hm = n.match(/^(history|changelog|changes|log)\s*(for|of)?\s*(.*)/i);
+  if (hm && hm[3]) return { type:'history', target: hm[3].trim(), raw };
+
+  // Relationships
+  let relm = n.match(/^(related|relationships?|cross.?sell|upsell|accessories)\s*(for|of|to)?\s*(.*)/i);
+  if (relm && relm[3]) return { type:'relationships', target: relm[3].trim(), raw };
+
+  // Add relationship
+  let arm = n.match(/^(add|create)\s+(related|cross.?sell|upsell|accessory)\s+(.+?)\s+to\s+(.+)/i);
+  if (arm) return { type:'add_relationship', relType: arm[2].replace(/\s/g,'-'), from: arm[4].trim(), to: arm[3].trim(), raw };
+
+  // Move to category
+  let movm = n.match(/^move\s+(.+?)\s+to\s+(category\s+)?(.+)/i);
+  if (movm) return { type:'move_category', target: movm[1].trim(), category: movm[3].trim(), raw };
+
+  // Clone / duplicate
+  let clnm = n.match(/^(clone|copy|duplicate)\s+(product\s+)?(.+)/i);
+  if (clnm) return { type:'clone', target: clnm[3].trim(), raw };
 
   // Fallback search
   return { type:'search', query: n, raw };
@@ -646,6 +818,19 @@ async function executeCommand(input) {
     case 'bulk_select': execBulkSelect(cmd.query); break;
     case 'delete': execDelete(cmd.query); break;
     case 'create_product': execCreateProduct(); break;
+    case 'export': execExport(); break;
+    case 'export_target': execExportTarget(cmd.target); break;
+    case 'compare': execCompare(cmd.a, cmd.b); break;
+    case 'duplicates': execDuplicates(); break;
+    case 'enrich': execEnrich(cmd.target); break;
+    case 'enrich_all': execEnrichAll(); break;
+    case 'publish': execPublish(cmd.target); break;
+    case 'unpublish': execUnpublish(cmd.target); break;
+    case 'history': execHistory(cmd.target); break;
+    case 'relationships': execRelationships(cmd.target); break;
+    case 'add_relationship': execAddRelationship(cmd.relType, cmd.from, cmd.to); break;
+    case 'move_category': execMoveCategory(cmd.target, cmd.category); break;
+    case 'clone': execClone(cmd.target); break;
     default: execSearch(cmd.query || cmd.raw);
   }
 }
@@ -680,7 +865,7 @@ function execGreeting() {
       </div>
     </div>
     <p style="color:var(--muted);font-size:13px">What would you like to do? Here are some suggestions:</p>`,
-    ['Show all products', 'Data quality report', 'Show draft products', 'Show products labeled "Bestseller"', 'Create a new product']
+    ['Show all products', 'Data quality report', 'Find duplicates', 'Enrich all', 'Export', 'Help']
   );
 }
 
@@ -715,14 +900,34 @@ function execHelp() {
         <li>"Create label 'Black Friday'" — new label</li>
         <li>"Remove label 'Clearance' from SHOE-005" — remove label</li>
       </ul>
-      <p style="margin:8px 0"><strong style="color:var(--orange)">Reports</strong></p>
+      <p style="margin:8px 0"><strong style="color:var(--orange)">Workflow & Publishing</strong></p>
+      <ul style="margin-left:16px;color:var(--muted)">
+        <li>"Publish ELEC-001" — set product to active</li>
+        <li>"Unpublish ELEC-001" — archive a product</li>
+        <li>"Clone SHOE-001" — duplicate a product</li>
+        <li>"Move ELEC-001 to Audio" — change category</li>
+      </ul>
+      <p style="margin:8px 0"><strong style="color:var(--yellow)">AI & Intelligence</strong></p>
+      <ul style="margin-left:16px;color:var(--muted)">
+        <li>"Enrich ELEC-008" — AI suggestions for missing fields</li>
+        <li>"Find duplicates" — detect similar products</li>
+        <li>"Compare ELEC-001 and ELEC-002" — side-by-side comparison</li>
+      </ul>
+      <p style="margin:8px 0"><strong style="color:var(--blue)">Relationships & History</strong></p>
+      <ul style="margin-left:16px;color:var(--muted)">
+        <li>"Related products for ELEC-001" — view relationships</li>
+        <li>"History for SHOE-001" — view change log</li>
+        <li>"Add related ELEC-003 to ELEC-004" — create relationship</li>
+      </ul>
+      <p style="margin:8px 0"><strong style="color:var(--green)">Reports & Export</strong></p>
       <ul style="margin-left:16px;color:var(--muted)">
         <li>"Data quality report" — completeness analysis</li>
         <li>"Overview" — catalog summary</li>
+        <li>"Export" — download catalog as CSV</li>
       </ul>
     </div>
     <p style="font-size:13px;color:var(--muted)">You can also click products in tables to see full details, or use the sidebar to browse by category and label.</p>`,
-    ['Show all products', 'Data quality report', 'Show draft products']
+    ['Show all products', 'Data quality report', 'Find duplicates', 'Export']
   );
 }
 
@@ -1090,6 +1295,7 @@ window.confirmEdit = function(previewId, productId, newValsJson) {
   const newVals = JSON.parse(newValsJson);
   Object.assign(p, newVals);
   p.updated = new Date().toISOString();
+  addHistory(productId, 'update', `Updated: ${Object.keys(newVals).join(', ')}`);
   const el = document.getElementById(previewId);
   if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
     <p style="color:var(--green);font-weight:700">✓ ${esc(p.name)} updated successfully.</p></div>`;
@@ -1211,6 +1417,374 @@ window.saveNewProduct = function() {
   );
 };
 
+// ============ NEW PIM FEATURES ============
+
+function execExport() {
+  const headers = ['SKU','Name','Brand','Price','Status','Category','Description','Weight','Material','EAN','Labels'];
+  const rows = DB.products.map(p => [
+    p.sku, p.name, p.brand, p.price, p.status, catName(p.category),
+    `"${(p.description||'').replace(/"/g,'""')}"`, p.weight, p.material, p.ean,
+    p.labels.map(l => labelObj(l)?.name).filter(Boolean).join(';')
+  ]);
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `pim-export-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  addAudit('export', `Exported ${DB.products.length} products as CSV`);
+  addSystem(
+    `<p style="color:var(--green);font-weight:700">✓ Exported ${DB.products.length} products to CSV</p>
+    <p style="font-size:13px;color:var(--muted);margin-top:4px">File: pim-export-${new Date().toISOString().slice(0,10)}.csv</p>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:8px;font-size:12px">
+      <div style="font-weight:700;margin-bottom:4px">Export summary:</div>
+      <div style="color:var(--muted)">• ${DB.products.length} products</div>
+      <div style="color:var(--muted)">• ${headers.length} fields per product</div>
+      <div style="color:var(--muted)">• ${DB.products.filter(p=>p.status==='active').length} active, ${DB.products.filter(p=>p.status==='draft').length} draft</div>
+    </div>`,
+    ['Show all products', 'Data quality report']
+  );
+}
+
+function execExportTarget(target) {
+  const products = findByTarget(target);
+  if (!products.length) { addSystem(`<p>No products found matching "${esc(target)}" to export.</p>`, ['Export all']); return; }
+  const headers = ['SKU','Name','Brand','Price','Status','Category','Description'];
+  const rows = products.map(p => [p.sku,p.name,p.brand,p.price,p.status,catName(p.category),`"${(p.description||'').replace(/"/g,'""')}"`]);
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = `pim-export-filtered.csv`; a.click(); URL.revokeObjectURL(url);
+  addAudit('export', `Exported ${products.length} products (filtered)`);
+  addSystem(`<p style="color:var(--green);font-weight:700">✓ Exported ${products.length} products to CSV</p>`, ['Show all products']);
+}
+
+function execCompare(a, b) {
+  const pa = DB.products.find(p => p.sku.toLowerCase() === a.toLowerCase() || p.name.toLowerCase().includes(a.toLowerCase()));
+  const pb = DB.products.find(p => p.sku.toLowerCase() === b.toLowerCase() || p.name.toLowerCase().includes(b.toLowerCase()));
+  if (!pa || !pb) { addSystem(`<p>Could not find both products to compare. Make sure both exist.</p>`, ['Show all products']); return; }
+
+  const fields = [
+    ['Name', pa.name, pb.name],
+    ['SKU', pa.sku, pb.sku],
+    ['Brand', pa.brand, pb.brand],
+    ['Price', fmtPrice(pa.price), fmtPrice(pb.price)],
+    ['Status', pa.status, pb.status],
+    ['Category', catName(pa.category), catName(pb.category)],
+    ['Weight', pa.weight||'—', pb.weight||'—'],
+    ['Material', pa.material||'—', pb.material||'—'],
+    ['EAN', pa.ean||'—', pb.ean||'—'],
+    ['Quality', completeness(pa)+'%', completeness(pb)+'%'],
+    ['Description', pa.description ? 'Yes' : 'Missing', pb.description ? 'Yes' : 'Missing']
+  ];
+
+  const cols = `repeat(3,1fr)`;
+  let html = `<p><strong>Product Comparison</strong></p>
+  <div class="compare-grid" style="grid-template-columns:120px 1fr 1fr">
+    <div class="compare-cell compare-header">Field</div>
+    <div class="compare-cell compare-product">${esc(pa.name)}</div>
+    <div class="compare-cell compare-product">${esc(pb.name)}</div>`;
+  fields.forEach(([label, va, vb]) => {
+    const diff = va !== vb;
+    html += `<div class="compare-cell" style="font-weight:600;color:var(--muted)">${label}</div>
+    <div class="compare-cell ${diff?'compare-diff':''}">${esc(String(va))}</div>
+    <div class="compare-cell ${diff?'compare-diff':''}">${esc(String(vb))}</div>`;
+  });
+  html += '</div>';
+  addSystem(html, [`Edit ${pa.sku}`, `Edit ${pb.sku}`, `Show all products`]);
+}
+
+function execDuplicates() {
+  const found = [];
+  const checked = new Set();
+  DB.products.forEach(p => {
+    if (checked.has(p.id)) return;
+    const dupes = findDuplicates(p);
+    if (dupes.length) {
+      found.push({ product: p, duplicates: dupes });
+      checked.add(p.id);
+      dupes.forEach(d => checked.add(d.id));
+    }
+  });
+  if (!found.length) {
+    addSystem('<p style="color:var(--green);font-weight:700">✓ No potential duplicates found. Your catalog is clean!</p>', ['Show all products', 'Data quality report']);
+    return;
+  }
+  let html = `<p><strong>Potential Duplicates Found</strong></p><p style="font-size:13px;color:var(--muted);margin:6px 0">Found ${found.length} group${found.length!==1?'s':''} of similar products:</p>`;
+  found.forEach((g, i) => {
+    html += `<div style="background:rgba(251,231,77,0.05);border:1px solid rgba(251,231,77,0.15);border-radius:8px;padding:10px;margin:8px 0">
+      <div style="font-weight:700;font-size:13px;color:var(--yellow);margin-bottom:6px">Group ${i+1}</div>
+      <div style="font-size:12px"><strong>${esc(g.product.name)}</strong> (${esc(g.product.sku)}) — ${esc(g.product.brand)} — ${fmtPrice(g.product.price)}</div>
+      ${g.duplicates.map(d => `<div style="font-size:12px;color:var(--muted);padding-left:12px;border-left:2px solid rgba(251,231,77,0.3);margin-top:4px">≈ <strong>${esc(d.name)}</strong> (${esc(d.sku)}) — ${esc(d.brand)} — ${fmtPrice(d.price)}</div>`).join('')}
+    </div>`;
+  });
+  addSystem(html, ['Show all products', `Compare ${found[0]?.product.sku} and ${found[0]?.duplicates[0]?.sku}`]);
+}
+
+function execEnrich(target) {
+  const t = target.replace(/^(product|item)\s+/i, '');
+  const product = DB.products.find(p => p.sku.toLowerCase() === t.toLowerCase() || p.name.toLowerCase().includes(t.toLowerCase()));
+  if (!product) { addSystem(`<p>Product "${esc(target)}" not found.</p>`, ['Show all products']); return; }
+
+  const suggestions = generateEnrichment(product);
+  if (!Object.keys(suggestions).length) {
+    addSystem(`<p style="color:var(--green);font-weight:700">✓ ${esc(product.name)} is already fully enriched! Quality: ${completeness(product)}%</p>`, [`Show ${product.sku}`]);
+    return;
+  }
+
+  const previewId = 'chg_' + Date.now();
+  let html = `<div class="change-preview" id="${previewId}">
+    <div class="change-preview-hdr">✨ AI Enrichment Suggestions for ${esc(product.name)}</div>
+    <div class="change-preview-body">
+      <div class="enrich-card">
+        ${Object.entries(suggestions).map(([field, value]) =>
+          `<div class="enrich-field"><span style="font-weight:600;text-transform:capitalize">${field}:</span> <span class="enrich-value">${esc(String(value).slice(0,120))}${String(value).length>120?'...':''}</span></div>`
+        ).join('')}
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px">These are AI-generated suggestions. Review before applying.</p>
+    </div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Dismiss</button>
+      <button class="btn btn-confirm" onclick="confirmEnrich('${previewId}','${product.id}',${JSON.stringify(JSON.stringify(suggestions))})">Apply Suggestions</button>
+    </div>
+  </div>`;
+  addSystem(html, []);
+}
+
+window.confirmEnrich = function(previewId, productId, suggestionsJson) {
+  const p = DB.products.find(x => x.id === productId);
+  const suggestions = JSON.parse(suggestionsJson);
+  Object.assign(p, suggestions);
+  p.updated = new Date().toISOString();
+  addHistory(productId, 'enrich', `AI enriched: ${Object.keys(suggestions).join(', ')}`);
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ ${esc(p.name)} enriched — quality now ${completeness(p)}%</p></div>`;
+  addAudit('update', `AI enriched ${p.sku}: ${Object.keys(suggestions).join(', ')}`);
+};
+
+function execEnrichAll() {
+  const incomplete = DB.products.filter(p => completeness(p) < 100);
+  if (!incomplete.length) {
+    addSystem('<p style="color:var(--green);font-weight:700">✓ All products are fully enriched!</p>', ['Show all products']);
+    return;
+  }
+  const previewId = 'chg_' + Date.now();
+  addSystem(`<div class="change-preview" id="${previewId}">
+    <div class="change-preview-hdr">✨ Bulk AI Enrichment — ${incomplete.length} products</div>
+    <div class="change-preview-body">
+      <p style="font-size:13px">AI will generate suggestions for missing fields on <strong>${incomplete.length}</strong> products:</p>
+      <ul style="margin:8px 0 0 16px;font-size:12px;color:var(--muted)">
+        ${incomplete.slice(0,6).map(p => `<li>${esc(p.name)} (${esc(p.sku)}) — ${completeness(p)}% complete</li>`).join('')}
+        ${incomplete.length>6?`<li>...and ${incomplete.length-6} more</li>`:''}
+      </ul>
+    </div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Cancel</button>
+      <button class="btn btn-confirm" onclick="confirmEnrichAll('${previewId}')">Enrich All</button>
+    </div>
+  </div>`, []);
+}
+
+window.confirmEnrichAll = function(previewId) {
+  let count = 0;
+  DB.products.forEach(p => {
+    const suggestions = generateEnrichment(p);
+    if (Object.keys(suggestions).length) {
+      Object.assign(p, suggestions);
+      p.updated = new Date().toISOString();
+      addHistory(p.id, 'enrich', `AI enriched: ${Object.keys(suggestions).join(', ')}`);
+      count++;
+    }
+  });
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ ${count} products enriched. Average quality now ${Math.round(DB.products.reduce((s,p)=>s+completeness(p),0)/DB.products.length)}%</p></div>`;
+  addAudit('bulk', `AI enriched ${count} products`);
+};
+
+function execPublish(target) {
+  const products = findByTarget(target);
+  if (!products.length) { addSystem(`<p>No products found matching "${esc(target)}".</p>`, ['Show all products']); return; }
+  const toPublish = products.filter(p => p.status !== 'active');
+  if (!toPublish.length) { addSystem(`<p>All matched products are already active.</p>`, ['Show all products']); return; }
+
+  const previewId = 'chg_' + Date.now();
+  addSystem(`<div class="change-preview" id="${previewId}">
+    <div class="change-preview-hdr">🚀 Publish ${toPublish.length} product${toPublish.length!==1?'s':''}</div>
+    <div class="change-preview-body">
+      <p style="font-size:13px">The following products will be set to <span class="status-badge status-active">active</span>:</p>
+      <ul style="margin:6px 0 0 16px;font-size:12px;color:var(--muted)">${toPublish.map(p => `<li>${esc(p.name)} (${esc(p.sku)}) — currently <span class="status-badge status-${p.status}">${p.status}</span></li>`).join('')}</ul>
+      ${toPublish.some(p => completeness(p) < 75) ? '<p style="font-size:12px;color:var(--yellow);margin-top:8px">⚠ Some products have low completeness scores. Consider enriching them first.</p>' : ''}
+    </div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Cancel</button>
+      <button class="btn btn-confirm" onclick="confirmPublish('${previewId}','${target}')">Publish</button>
+    </div>
+  </div>`, []);
+}
+
+window.confirmPublish = function(previewId, target) {
+  const products = findByTarget(target).filter(p => p.status !== 'active');
+  products.forEach(p => { p.status = 'active'; p.updated = new Date().toISOString(); addHistory(p.id, 'publish', 'Published (set to active)'); });
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ ${products.length} product${products.length!==1?'s':''} published.</p></div>`;
+  addAudit('update', `Published ${products.length} products`);
+};
+
+function execUnpublish(target) {
+  const products = findByTarget(target);
+  if (!products.length) { addSystem(`<p>No products found matching "${esc(target)}".</p>`, ['Show all products']); return; }
+  const toArchive = products.filter(p => p.status !== 'archived');
+  if (!toArchive.length) { addSystem(`<p>All matched products are already archived.</p>`, ['Show all products']); return; }
+
+  const previewId = 'chg_' + Date.now();
+  addSystem(`<div class="change-preview destructive" id="${previewId}">
+    <div class="change-preview-hdr">📦 Archive ${toArchive.length} product${toArchive.length!==1?'s':''}</div>
+    <div class="change-preview-body">
+      <p style="font-size:13px">The following products will be set to <span class="status-badge status-archived">archived</span>:</p>
+      <ul style="margin:6px 0 0 16px;font-size:12px;color:var(--muted)">${toArchive.map(p => `<li>${esc(p.name)} (${esc(p.sku)})</li>`).join('')}</ul>
+    </div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmUnpublish('${previewId}','${target}')">Archive</button>
+    </div>
+  </div>`, []);
+}
+
+window.confirmUnpublish = function(previewId, target) {
+  const products = findByTarget(target).filter(p => p.status !== 'archived');
+  products.forEach(p => { p.status = 'archived'; p.updated = new Date().toISOString(); addHistory(p.id, 'archive', 'Archived (unpublished)'); });
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ ${products.length} product${products.length!==1?'s':''} archived.</p></div>`;
+  addAudit('update', `Archived ${products.length} products`);
+};
+
+function execHistory(target) {
+  const t = target.replace(/^(product|item)\s+/i, '');
+  const product = DB.products.find(p => p.sku.toLowerCase() === t.toLowerCase() || p.name.toLowerCase().includes(t.toLowerCase()));
+  if (!product) { addSystem(`<p>Product "${esc(target)}" not found.</p>`, ['Show all products']); return; }
+
+  const history = (DB.history[product.id] || []).slice().reverse();
+  if (!history.length) {
+    addSystem(`<p>No history found for <strong>${esc(product.name)}</strong>.</p>`, [`Show ${product.sku}`]);
+    return;
+  }
+
+  let html = `<p><strong>Change History: ${esc(product.name)}</strong> <span class="sku">${esc(product.sku)}</span></p>
+  <div style="margin:10px 0">`;
+  history.forEach(h => {
+    const colors = { created:'var(--green)', update:'var(--blue)', publish:'var(--green)', archive:'var(--orange)', enrich:'var(--purple)', label:'var(--yellow)' };
+    html += `<div class="history-entry">
+      <div class="history-dot" style="background:${colors[h.action]||'var(--muted)'}"></div>
+      <div style="flex:1"><div>${esc(h.detail)}</div><div class="history-time">${esc(h.user)} · ${new Date(h.time).toLocaleString()}</div></div>
+    </div>`;
+  });
+  html += '</div>';
+  addSystem(html, [`Edit ${product.sku}`, `Enrich ${product.sku}`, 'Show all products']);
+}
+
+function execRelationships(target) {
+  const t = target.replace(/^(product|item)\s+/i, '');
+  const product = DB.products.find(p => p.sku.toLowerCase() === t.toLowerCase() || p.name.toLowerCase().includes(t.toLowerCase()));
+  if (!product) { addSystem(`<p>Product "${esc(target)}" not found.</p>`, ['Show all products']); return; }
+
+  const rels = getRelationships(product.id);
+  if (!rels.length) {
+    addSystem(`<p><strong>${esc(product.name)}</strong> has no relationships defined.</p><p style="font-size:13px;color:var(--muted);margin-top:4px">You can add one: "Add related ELEC-003 to ${product.sku}"</p>`,
+    [`Add related product to ${product.sku}`]);
+    return;
+  }
+
+  const byType = {};
+  rels.forEach(r => { if (!byType[r.type]) byType[r.type] = []; byType[r.type].push(r.product); });
+
+  let html = `<p><strong>Relationships for ${esc(product.name)}</strong> <span class="sku">${esc(product.sku)}</span></p>`;
+  for (const [type, products] of Object.entries(byType)) {
+    html += `<div style="margin:10px 0"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px">${type}</div>`;
+    html += products.map(p => `<div class="rel-chip" onclick="openDetail('${p.id}')">${esc(p.name)} <span class="sku">${esc(p.sku)}</span></div>`).join('');
+    html += '</div>';
+  }
+  addSystem(html, [`Add related product to ${product.sku}`, `Compare ${product.sku} and ${rels[0]?.product.sku}`]);
+}
+
+function execAddRelationship(relType, fromTarget, toTarget) {
+  const fromP = DB.products.find(p => p.sku.toLowerCase() === fromTarget.toLowerCase() || p.name.toLowerCase().includes(fromTarget.toLowerCase()));
+  const toP = DB.products.find(p => p.sku.toLowerCase() === toTarget.toLowerCase() || p.name.toLowerCase().includes(toTarget.toLowerCase()));
+  if (!fromP || !toP) { addSystem('<p>Could not find both products. Check the SKUs or names.</p>', ['Show all products']); return; }
+  if (fromP.id === toP.id) { addSystem('<p>Cannot create a relationship between a product and itself.</p>', []); return; }
+
+  const exists = DB.relationships.find(r => r.from === fromP.id && r.to === toP.id && r.type === relType);
+  if (exists) { addSystem(`<p>This ${relType} relationship already exists.</p>`, [`Related products for ${fromP.sku}`]); return; }
+
+  DB.relationships.push({ from: fromP.id, to: toP.id, type: relType });
+  addHistory(fromP.id, 'update', `Added ${relType}: ${toP.name}`);
+  addAudit('update', `Added ${relType} relationship: ${fromP.sku} → ${toP.sku}`);
+  addSystem(
+    `<p style="color:var(--green);font-weight:700">✓ Added ${relType} relationship</p>
+    <p style="font-size:13px;margin-top:4px">${esc(fromP.name)} → ${esc(toP.name)}</p>`,
+    [`Related products for ${fromP.sku}`, 'Show all products']
+  );
+}
+
+function execMoveCategory(target, categoryName) {
+  const product = DB.products.find(p => p.sku.toLowerCase() === target.toLowerCase() || p.name.toLowerCase().includes(target.toLowerCase()));
+  if (!product) { addSystem(`<p>Product "${esc(target)}" not found.</p>`, ['Show all products']); return; }
+  const cat = DB.categories.find(c => c.name.toLowerCase().includes(categoryName.toLowerCase()));
+  if (!cat) { addSystem(`<p>Category "${esc(categoryName)}" not found.</p>`, []); return; }
+
+  const oldCat = catName(product.category);
+  const previewId = 'chg_' + Date.now();
+  addSystem(`<div class="change-preview" id="${previewId}">
+    <div class="change-preview-hdr">📁 Move product to new category</div>
+    <div class="change-preview-body">
+      <div class="diff-row"><span class="diff-label">Product</span><span style="font-weight:600">${esc(product.name)} (${esc(product.sku)})</span></div>
+      <div class="diff-row"><span class="diff-label">Category</span><span class="diff-before">${esc(oldCat)}</span><span class="diff-arrow">→</span><span class="diff-after">${esc(cat.name)}</span></div>
+    </div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Cancel</button>
+      <button class="btn btn-confirm" onclick="confirmMove('${previewId}','${product.id}','${cat.id}')">Move</button>
+    </div>
+  </div>`, []);
+}
+
+window.confirmMove = function(previewId, productId, catId) {
+  const p = DB.products.find(x => x.id === productId);
+  const oldCat = catName(p.category);
+  p.category = catId;
+  p.updated = new Date().toISOString();
+  addHistory(productId, 'update', `Moved from ${oldCat} to ${catName(catId)}`);
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ ${esc(p.name)} moved to ${esc(catName(catId))}</p></div>`;
+  addAudit('update', `Moved ${p.sku} to ${catName(catId)}`);
+};
+
+function execClone(target) {
+  const t = target.replace(/^(product|item)\s+/i, '');
+  const product = DB.products.find(p => p.sku.toLowerCase() === t.toLowerCase() || p.name.toLowerCase().includes(t.toLowerCase()));
+  if (!product) { addSystem(`<p>Product "${esc(target)}" not found.</p>`, ['Show all products']); return; }
+
+  const newSku = product.sku + '-COPY';
+  const newId = genId('prod');
+  const clone = {
+    ...JSON.parse(JSON.stringify(product)),
+    id: newId, sku: newSku, name: product.name + ' (Copy)',
+    status: 'draft', created: new Date().toISOString(), updated: new Date().toISOString()
+  };
+  DB.products.push(clone);
+  DB.history[newId] = [{ time: new Date().toISOString(), user: 'You', action: 'created', detail: `Cloned from ${product.sku}` }];
+  addAudit('create', `Cloned ${product.sku} → ${newSku}`);
+  addSystem(
+    `<p style="color:var(--green);font-weight:700">✓ Product cloned successfully</p>
+    <p style="font-size:13px;margin-top:4px"><strong>${esc(product.name)}</strong> → <strong>${esc(clone.name)}</strong> (${esc(newSku)})</p>
+    <p style="font-size:12px;color:var(--muted);margin-top:4px">The clone is saved as <span class="status-badge status-draft">draft</span>. Edit it to customize.</p>`,
+    [`Edit ${newSku}`, `Show ${newSku}`, 'Show all products']
+  );
+}
+
 window.dismissChange = function(previewId) {
   const el = document.getElementById(previewId);
   if (el) el.outerHTML = `<div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin:8px 0;font-size:13px;color:var(--muted)">Change cancelled.</div>`;
@@ -1250,7 +1824,7 @@ setTimeout(() => {
     <p style="margin-top:6px;color:var(--muted)">I'm your AI-powered product information assistant. I can help you browse, edit, organize, and analyze your product catalog — all through natural conversation.</p>
     <p style="margin-top:8px;color:var(--muted)">Your catalog has been loaded with <strong style="color:var(--white)">${DB.products.length} products</strong> across <strong style="color:var(--white)">${DB.categories.filter(c=>!c.parent).length} categories</strong>.</p>
     <p style="margin-top:8px;font-size:13px;color:var(--muted)">Try one of these to get started:</p>`,
-    ['Hey', 'Show all products', 'Data quality report', 'Help']
+    ['Hey', 'Show all products', 'Data quality report', 'Find duplicates', 'Export', 'Help']
   );
 }, 300);
 </script>
