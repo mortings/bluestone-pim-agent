@@ -1,1191 +1,1258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bluestone PIM — The Agentic PIM</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --electric-blue: #0F05CC;
-      --sky-blue: #3D74F4;
-      --data-navy: #0C2E4E;
-      --code-orange: #EC672B;
-      --citrine: #FBE74D;
-      --byte-berry: #EB485E;
-      --white: #ffffff;
-      --glass: rgba(255,255,255,0.05);
-      --glass-border: rgba(255,255,255,0.1);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: #050D1F;
-      color: var(--white);
-      overflow-x: hidden;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 60px;
-      background: rgba(5,13,31,0.75);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
-      transition: background 0.3s;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-
-    .nav-logo-text {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: -0.3px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: rgba(255,255,255,0.65);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--white); }
-
-    .nav-actions { display: flex; gap: 12px; align-items: center; }
-
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid var(--glass-border);
-      color: var(--white);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-ghost:hover { border-color: var(--sky-blue); color: var(--sky-blue); }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--sky-blue), var(--electric-blue));
-      border: none;
-      color: var(--white);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      padding: 10px 22px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.25s;
-      box-shadow: 0 0 20px rgba(61,116,244,0.35);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 32px rgba(61,116,244,0.55);
-    }
-
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 140px 40px 80px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(61,116,244,0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(61,116,244,0.07) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridDrift 20s linear infinite;
-    }
-
-    @keyframes gridDrift {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(60px); }
-    }
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-    }
-
-    .orb-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(15,5,204,0.5), transparent 70%);
-      top: -200px; left: -150px;
-    }
-
-    .orb-2 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(235,72,94,0.25), transparent 70%);
-      bottom: -100px; right: -100px;
-    }
-
-    .orb-3 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(61,116,244,0.2), transparent 70%);
-      top: 50%; left: 55%;
-      transform: translate(-50%,-50%);
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(61,116,244,0.12);
-      border: 1px solid rgba(61,116,244,0.3);
-      border-radius: 100px;
-      padding: 6px 16px 6px 8px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: #8BAAFF;
-      margin-bottom: 28px;
-      position: relative;
-    }
-
-    .badge-dot {
-      width: 20px; height: 20px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--sky-blue), var(--electric-blue));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px;
-    }
-
-    .hero h1 {
-      font-size: clamp(48px, 7vw, 88px);
-      font-weight: 900;
-      line-height: 1.0;
-      letter-spacing: -2px;
-      margin-bottom: 28px;
-      position: relative;
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #5E9BFF 0%, #A78BFF 50%, var(--byte-berry) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: clamp(16px, 2vw, 20px);
-      font-weight: 400;
-      line-height: 1.65;
-      color: rgba(255,255,255,0.6);
-      max-width: 620px;
-      margin: 0 auto 44px;
-      position: relative;
-    }
-
-    .hero-ctas {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 80px;
-      position: relative;
-    }
-
-    .btn-hero {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      padding: 16px 36px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.25s;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-hero-primary {
-      background: linear-gradient(135deg, var(--sky-blue), var(--electric-blue));
-      color: var(--white);
-      border: none;
-      box-shadow: 0 0 40px rgba(61,116,244,0.4);
-    }
-
-    .btn-hero-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 60px rgba(61,116,244,0.6);
-    }
-
-    .btn-hero-secondary {
-      background: var(--glass);
-      color: var(--white);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(10px);
-    }
-
-    .btn-hero-secondary:hover {
-      background: rgba(255,255,255,0.09);
-    }
-
-    .hero-stats {
-      display: flex;
-      gap: 1px;
-      position: relative;
-      background: var(--glass-border);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .stat-item {
-      flex: 1;
-      padding: 28px 40px;
-      background: rgba(255,255,255,0.025);
-      text-align: center;
-    }
-
-    .stat-item + .stat-item { border-left: 1px solid var(--glass-border); }
-
-    .stat-num {
-      font-size: 36px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, var(--sky-blue), #A78BFF);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.4);
-      margin-top: 4px;
-    }
-
-    /* SECTIONS */
-    .section { padding: 100px 60px; max-width: 1280px; margin: 0 auto; }
-
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--sky-blue);
-      margin-bottom: 16px;
-    }
-
-    .section-label::before {
-      content: '';
-      width: 20px; height: 2px;
-      background: var(--sky-blue);
-      border-radius: 2px;
-    }
-
-    .section-title {
-      font-size: clamp(32px, 4vw, 52px);
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-
-    .section-sub {
-      font-size: 17px;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.7;
-      max-width: 540px;
-    }
-
-    /* AGENTS */
-    .agents-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 56px;
-      gap: 40px;
-    }
-
-    .agents-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .agent-card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 32px;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .agent-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(61,116,244,0.4);
-    }
-
-    .agent-card.featured {
-      grid-column: span 2;
-      background: linear-gradient(135deg, rgba(15,5,204,0.16), rgba(61,116,244,0.1));
-      border-color: rgba(61,116,244,0.28);
-    }
-
-    .agent-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-      margin-bottom: 20px;
-    }
-
-    .ai-blue  { background: rgba(61,116,244,0.18); }
-    .ai-purple{ background: rgba(167,139,255,0.18); }
-    .ai-orange{ background: rgba(236,103,43,0.18); }
-    .ai-green { background: rgba(52,211,153,0.18); }
-    .ai-pink  { background: rgba(235,72,94,0.18); }
-
-    .agent-tag {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 100px;
-      background: rgba(61,116,244,0.14);
-      color: #8BAAFF;
-      border: 1px solid rgba(61,116,244,0.24);
-      margin-bottom: 14px;
-    }
-
-    .agent-name {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      letter-spacing: -0.3px;
-    }
-
-    .agent-card.featured .agent-name { font-size: 24px; }
-
-    .agent-desc {
-      font-size: 14px;
-      color: rgba(255,255,255,0.52);
-      line-height: 1.65;
-    }
-
-    .agent-card.featured .agent-desc { font-size: 15px; }
-
-    .agent-status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #34D399;
-      margin-top: 20px;
-    }
-
-    .status-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #34D399;
-      animation: blink 2s infinite;
-    }
-
-    @keyframes blink {
-      0%,100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    .agent-terminal {
-      margin-top: 22px;
-      background: rgba(0,0,0,0.38);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 12px;
-      padding: 16px 20px;
-      font-size: 12px;
-      font-family: 'Courier New', monospace;
-      line-height: 1.9;
-    }
-
-    .t-prompt { color: var(--sky-blue); }
-    .t-cmd    { color: rgba(255,255,255,0.78); }
-    .t-ok     { color: #34D399; }
-    .t-dim    { color: rgba(255,255,255,0.28); font-style: italic; }
-
-    /* HOW IT WORKS */
-    .how-section {
-      padding: 100px 60px;
-      background: linear-gradient(180deg, transparent, rgba(15,5,204,0.07), transparent);
-    }
-
-    .how-inner { max-width: 1280px; margin: 0 auto; }
-
-    .how-header { text-align: center; margin-bottom: 72px; }
-
-    .how-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      position: relative;
-    }
-
-    .how-steps::before {
-      content: '';
-      position: absolute;
-      top: 32px; left: 12.5%; right: 12.5%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--sky-blue), var(--electric-blue), var(--byte-berry), transparent);
-    }
-
-    .how-step { text-align: center; padding: 0 24px; }
-
-    .step-num {
-      width: 64px; height: 64px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--electric-blue), var(--sky-blue));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-      font-weight: 800;
-      margin: 0 auto 24px;
-      box-shadow: 0 0 28px rgba(61,116,244,0.4);
-      position: relative;
-      z-index: 1;
-    }
-
-    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
-    .step-desc  { font-size: 13px; color: rgba(255,255,255,0.48); line-height: 1.65; }
-
-    /* FEATURES */
-    .features-section { padding: 80px 60px; max-width: 1280px; margin: 0 auto; }
-
-    .feature-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      padding: 60px 0;
-      border-bottom: 1px solid var(--glass-border);
-    }
-
-    .feature-row:last-child { border-bottom: none; }
-    .feature-row.rev .feature-visual { order: -1; }
-
-    .feature-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--code-orange);
-      margin-bottom: 14px;
-    }
-
-    .feature-title {
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      line-height: 1.15;
-      margin-bottom: 18px;
-    }
-
-    .feature-body {
-      font-size: 15px;
-      color: rgba(255,255,255,0.52);
-      line-height: 1.75;
-      margin-bottom: 28px;
-    }
-
-    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
-
-    .pill {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 100px;
-      border: 1px solid var(--glass-border);
-      color: rgba(255,255,255,0.6);
-      background: var(--glass);
-    }
-
-    /* Mockup cards */
-    .mockup-card {
-      background: rgba(255,255,255,0.035);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 28px;
-    }
-
-    .mockup-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 22px;
-    }
-
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .dr { background: var(--byte-berry); }
-    .dy { background: var(--citrine); }
-    .dg { background: #34D399; }
-
-    .m-title { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.4); margin-left: 8px; }
-
-    .p-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-    .p-lbl  { font-size: 12px; color: rgba(255,255,255,0.45); width: 130px; flex-shrink: 0; }
-    .p-bar  { flex: 1; height: 6px; background: rgba(255,255,255,0.07); border-radius: 100px; overflow: hidden; }
-    .p-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--sky-blue), #A78BFF); }
-    .p-val  { font-size: 12px; font-weight: 700; width: 36px; text-align: right; }
-
-    .score-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 10px; }
-
-    .score-box {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 14px 10px;
-      text-align: center;
-    }
-
-    .s-val {
-      font-size: 24px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--sky-blue), #A78BFF);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .s-lbl { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 3px; }
-
-    .ch-list { display: flex; flex-direction: column; gap: 10px; }
-
-    .ch-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      background: rgba(255,255,255,0.025);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 10px;
-    }
-
-    .ch-left { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 500; }
-
-    .ch-ico {
-      width: 30px; height: 30px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
-    }
-
-    .badge {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 100px;
-    }
-
-    .b-live    { background: rgba(52,211,153,0.13); color: #34D399; }
-    .b-syncing { background: rgba(61,116,244,0.13); color: #8BAAFF; }
-    .b-pending { background: rgba(251,231,77,0.13); color: var(--citrine); }
-
-    /* PROOF */
-    .proof-section {
-      padding: 80px 60px;
-      background: rgba(255,255,255,0.012);
-      border-top: 1px solid var(--glass-border);
-      border-bottom: 1px solid var(--glass-border);
-    }
-
-    .proof-inner { max-width: 1280px; margin: 0 auto; }
-
-    .proof-label {
-      text-align: center;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      color: rgba(255,255,255,0.28);
-      text-transform: uppercase;
-      margin-bottom: 40px;
-    }
-
-    .logo-strip {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 48px;
-      flex-wrap: wrap;
-      margin-bottom: 72px;
-    }
-
-    .brand-logo {
-      font-size: 18px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.18);
-      letter-spacing: -0.5px;
-      transition: color 0.2s;
-    }
-
-    .brand-logo:hover { color: rgba(255,255,255,0.45); }
-
-    .testimonials { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-
-    .t-card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 30px;
-      transition: transform 0.3s;
-    }
-
-    .t-card:hover { transform: translateY(-3px); }
-
-    .t-stars { color: var(--citrine); font-size: 14px; letter-spacing: 2px; margin-bottom: 16px; }
-
-    .t-quote {
-      font-size: 15px;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.72);
-      margin-bottom: 24px;
-    }
-
-    .t-author { display: flex; align-items: center; gap: 12px; }
-
-    .t-av {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 700;
-    }
-
-    .t-name { font-size: 14px; font-weight: 700; }
-    .t-role { font-size: 12px; color: rgba(255,255,255,0.38); }
-
-    /* CTA */
-    .cta-section {
-      padding: 120px 60px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-section::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      width: 700px; height: 500px;
-      background: radial-gradient(ellipse, rgba(15,5,204,0.32), transparent 70%);
-      pointer-events: none;
-    }
-
-    .cta-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(236,103,43,0.1);
-      border: 1px solid rgba(236,103,43,0.28);
-      color: var(--code-orange);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 6px 16px;
-      border-radius: 100px;
-      margin-bottom: 28px;
-      position: relative;
-    }
-
-    .cta-title {
-      font-size: clamp(38px, 5vw, 64px);
-      font-weight: 900;
-      letter-spacing: -2px;
-      line-height: 1.05;
-      margin-bottom: 22px;
-      position: relative;
-    }
-
-    .cta-sub {
-      font-size: 18px;
-      color: rgba(255,255,255,0.48);
-      max-width: 520px;
-      margin: 0 auto 48px;
-      line-height: 1.65;
-      position: relative;
-    }
-
-    .cta-actions {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-      position: relative;
-    }
-
-    .btn-orange {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      padding: 18px 40px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--code-orange), #FF8555);
-      color: var(--white);
-      border: none;
-      cursor: pointer;
-      transition: all 0.25s;
-      box-shadow: 0 0 40px rgba(236,103,43,0.32);
-    }
-
-    .btn-orange:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 60px rgba(236,103,43,0.52);
-    }
-
-    .btn-outline {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      padding: 18px 40px;
-      border-radius: 12px;
-      background: var(--glass);
-      color: var(--white);
-      border: 1px solid var(--glass-border);
-      cursor: pointer;
-      transition: all 0.25s;
-    }
-
-    .btn-outline:hover { background: rgba(255,255,255,0.08); }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--glass-border);
-      padding: 56px 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 16px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.55);
-    }
-
-    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.22); }
-
-    .mach-tags { display: flex; gap: 6px; }
-
-    .mach-tag {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      padding: 5px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--glass-border);
-      color: rgba(255,255,255,0.35);
-    }
-
-    /* SCROLL ANIM */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .fade-up.visible { opacity: 1; transform: none; }
-
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: #050D1F; }
-    ::-webkit-scrollbar-thumb { background: rgba(61,116,244,0.35); border-radius: 3px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bluestone PIM Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050D1F;--surface:#0C1829;--surface2:#111F35;--border:rgba(255,255,255,0.08);
+  --blue:#3D74F4;--electric:#0F05CC;--orange:#EC672B;--green:#34D399;--red:#EB485E;
+  --yellow:#FBE74D;--purple:#A78BFF;--white:#fff;--muted:rgba(255,255,255,0.45);
+  --text:rgba(255,255,255,0.85);--radius:10px;
+}
+html,body{height:100%;font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+
+/* LAYOUT */
+#app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:52px 1fr;height:100vh;overflow:hidden}
+#header{grid-column:1/-1;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:14px}
+#sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+#main{display:flex;flex-direction:column;overflow:hidden;position:relative}
+
+/* HEADER */
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;color:var(--white)}
+.logo svg{width:24px;height:24px}
+.env-badge{font-size:10px;background:rgba(236,103,43,0.15);color:var(--orange);padding:2px 10px;border-radius:100px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase}
+.header-stats{margin-left:auto;display:flex;gap:16px;font-size:12px;color:var(--muted)}
+.header-stats .val{font-weight:700;color:var(--white)}
+
+/* SIDEBAR */
+.sidebar-section{padding:12px}
+.sidebar-title{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.sidebar-scroll{flex:1;overflow-y:auto;padding:4px 0}
+.cat-item{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text);transition:all 0.15s}
+.cat-item:hover{background:rgba(255,255,255,0.05)}
+.cat-item.active{background:rgba(61,116,244,0.15);color:var(--blue)}
+.cat-item .cnt{margin-left:auto;font-size:11px;color:var(--muted);font-weight:600}
+.cat-item .indent{width:16px;flex-shrink:0}
+
+.label-item{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.15s}
+.label-item:hover{background:rgba(255,255,255,0.05)}
+.label-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.label-item .cnt{margin-left:auto;font-size:11px;color:var(--muted);font-weight:600}
+
+.sidebar-divider{height:1px;background:var(--border);margin:4px 12px}
+
+/* CHAT */
+#chat-area{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+
+.msg{max-width:88%;animation:msgIn 0.25s ease-out}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{align-self:flex-end}
+.msg.user .bubble{background:linear-gradient(135deg,var(--blue),var(--electric));color:var(--white);border-radius:14px 14px 4px 14px;padding:10px 16px;font-size:14px}
+.msg.system{align-self:flex-start;max-width:95%}
+.msg.system .bubble{background:var(--surface2);border:1px solid var(--border);border-radius:4px 14px 14px 14px;padding:14px 18px;font-size:14px}
+.msg .time{font-size:10px;color:rgba(255,255,255,0.2);margin-top:3px;padding:0 4px}
+.msg.user .time{text-align:right}
+
+/* Typing */
+.typing{display:flex;gap:4px;padding:14px 18px;align-self:flex-start}
+.typing span{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:bounce 1.4s infinite}
+.typing span:nth-child(2){animation-delay:0.2s}
+.typing span:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+/* Suggestion chips */
+.suggestions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:rgba(61,116,244,0.1);border:1px solid rgba(61,116,244,0.25);color:#8BAAFF;font-size:12px;font-weight:600;padding:6px 14px;border-radius:100px;cursor:pointer;transition:all 0.15s;font-family:'Montserrat',sans-serif}
+.chip:hover{background:rgba(61,116,244,0.2);border-color:rgba(61,116,244,0.45)}
+
+/* Tables in chat */
+.msg-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}
+.msg-table th{text-align:left;padding:6px 10px;border-bottom:1px solid var(--border);font-weight:700;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.msg-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.03)}
+.msg-table tbody tr{cursor:pointer;transition:background 0.1s}
+.msg-table tbody tr:hover{background:rgba(61,116,244,0.08)}
+.sku{font-family:'Courier New',monospace;font-size:11px;color:var(--muted)}
+.status-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase}
+.status-active{background:rgba(52,211,153,0.13);color:var(--green)}
+.status-draft{background:rgba(251,231,77,0.13);color:var(--yellow)}
+.status-archived{background:rgba(255,255,255,0.06);color:var(--muted)}
+
+/* Label tags */
+.label-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;margin:1px 2px}
+.label-tag .remove-label{cursor:pointer;opacity:0.6;font-size:12px;margin-left:2px}
+.label-tag .remove-label:hover{opacity:1}
+
+/* Change preview */
+.change-preview{border:2px solid var(--blue);border-radius:var(--radius);overflow:hidden;margin:10px 0}
+.change-preview.destructive{border-color:var(--red)}
+.change-preview-hdr{padding:10px 14px;font-weight:700;font-size:12px;display:flex;align-items:center;gap:8px}
+.change-preview:not(.destructive) .change-preview-hdr{background:rgba(61,116,244,0.1);color:var(--blue)}
+.change-preview.destructive .change-preview-hdr{background:rgba(235,72,94,0.1);color:var(--red)}
+.change-preview-body{padding:12px 14px}
+.diff-row{display:flex;gap:10px;padding:5px 0;font-size:13px;align-items:baseline}
+.diff-row+.diff-row{border-top:1px solid rgba(255,255,255,0.04)}
+.diff-label{width:90px;font-weight:700;color:var(--muted);font-size:11px;flex-shrink:0}
+.diff-before{color:var(--red);text-decoration:line-through;flex:1}
+.diff-arrow{color:var(--muted);flex-shrink:0}
+.diff-after{color:var(--green);font-weight:600;flex:1}
+.change-actions{padding:10px 14px;border-top:1px solid rgba(255,255,255,0.04);display:flex;gap:8px;justify-content:flex-end}
+
+/* Buttons */
+.btn{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;padding:7px 16px;border-radius:8px;cursor:pointer;border:none;transition:all 0.15s}
+.btn-confirm{background:linear-gradient(135deg,var(--blue),var(--electric));color:var(--white)}
+.btn-confirm:hover{box-shadow:0 0 20px rgba(61,116,244,0.4)}
+.btn-cancel{background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border)}
+.btn-cancel:hover{background:rgba(255,255,255,0.1)}
+.btn-danger{background:rgba(235,72,94,0.15);color:var(--red);border:1px solid rgba(235,72,94,0.3)}
+.btn-danger:hover{background:rgba(235,72,94,0.25)}
+
+/* Product card */
+.product-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin:8px 0}
+.product-card-name{font-weight:700;font-size:15px;margin-bottom:2px}
+.product-card-sku{font-family:'Courier New',monospace;font-size:11px;color:var(--muted)}
+.product-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:13px}
+.field-label{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:0.3px}
+
+/* Quality bar */
+.quality-bar{height:6px;background:rgba(255,255,255,0.06);border-radius:100px;overflow:hidden;margin:4px 0}
+.quality-fill{height:100%;border-radius:100px;transition:width 0.5s ease}
+.q-high{background:var(--green)}.q-med{background:var(--yellow)}.q-low{background:var(--red)}
+
+/* INPUT */
+#input-area{padding:12px 20px;background:var(--surface);border-top:1px solid var(--border)}
+#input-wrap{display:flex;gap:8px;align-items:center}
+#prompt-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s}
+#prompt-input:focus{border-color:var(--blue)}
+#prompt-input::placeholder{color:rgba(255,255,255,0.25)}
+#send-btn{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--electric));border:none;color:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+#send-btn:hover{box-shadow:0 0 24px rgba(61,116,244,0.5)}
+#send-btn svg{width:18px;height:18px}
+
+/* SLIDE-OUT DETAIL PANEL */
+#detail-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity 0.3s;z-index:50}
+#detail-overlay.open{opacity:1;pointer-events:auto}
+#detail-panel{position:absolute;top:0;right:0;bottom:0;width:380px;background:var(--surface);border-left:1px solid var(--border);transform:translateX(100%);transition:transform 0.3s ease;z-index:51;overflow-y:auto;padding:20px}
+#detail-panel.open{transform:translateX(0)}
+.detail-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:none;color:var(--muted);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.detail-close:hover{background:rgba(255,255,255,0.1);color:var(--white)}
+.detail-title{font-size:18px;font-weight:800;margin-bottom:4px;padding-right:40px}
+.detail-sku{font-family:'Courier New',monospace;font-size:12px;color:var(--muted);margin-bottom:16px}
+.detail-section{margin-bottom:16px}
+.detail-section-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.detail-field{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03);font-size:13px}
+.detail-field .lbl{color:var(--muted);font-weight:500}
+.detail-field .val{font-weight:600}
+.detail-labels{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.detail-desc{font-size:13px;color:var(--text);line-height:1.6;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:4px}
+
+/* MODAL */
+#modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:200}
+#modal-overlay.open{display:flex}
+#modal-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+
+/* Status bar */
+#statusbar{grid-column:1/-1;background:var(--surface);border-top:1px solid var(--border);padding:0 20px;display:flex;align-items:center;font-size:11px;color:var(--muted);height:28px}
+#statusbar .dot{width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* Activity log */
+.activity-entry{display:flex;gap:8px;align-items:start;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03);font-size:12px}
+.activity-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.activity-time{font-size:10px;color:rgba(255,255,255,0.2);margin-top:1px}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(61,116,244,0.25);border-radius:2px}
+</style>
 </head>
 <body>
-
-<!-- NAV -->
-<nav id="navbar">
-  <a class="nav-logo" href="#">
-    <svg width="32" height="32" viewBox="0 0 34 34" fill="none">
-      <polygon points="17,3 31,29 3,29" fill="url(#lg1)"/>
-      <defs>
-        <linearGradient id="lg1" x1="3" y1="3" x2="31" y2="29">
-          <stop offset="0%" stop-color="#3D74F4"/>
-          <stop offset="100%" stop-color="#0F05CC"/>
-        </linearGradient>
-      </defs>
-    </svg>
-    <span class="nav-logo-text">Bluestone PIM</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#product">Product</a></li>
-    <li><a href="#ai-agents">AI Agents</a></li>
-    <li><a href="#product">Solutions</a></li>
-    <li><a href="#customers">Customers</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-  </ul>
-  <div class="nav-actions">
-    <button class="btn-ghost">Log in</button>
-    <button class="btn-primary">Book a Demo →</button>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero" id="hero">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-
-  <div class="hero-badge">
-    <span class="badge-dot">✦</span>
-    Introducing the Agentic PIM Era
-  </div>
-
-  <h1>
-    Product Intelligence<br/>
-    <span class="gradient-text">Powered by AI Agents</span>
-  </h1>
-
-  <p class="hero-sub">
-    Bluestone PIM doesn't just store your product data — it thinks, enriches,
-    translates, and distributes it autonomously. The world's first truly Agentic PIM.
-  </p>
-
-  <div class="hero-ctas">
-    <a href="#" class="btn-hero btn-hero-primary">Start for free →</a>
-    <a href="#" class="btn-hero btn-hero-secondary">▶&nbsp; Watch 2-min demo</a>
-  </div>
-
-  <div class="hero-stats">
-    <div class="stat-item">
-      <div class="stat-num">+45%</div>
-      <div class="stat-label">Faster time-to-market</div>
+<div id="app" style="grid-template-rows:52px 1fr 28px">
+  <!-- HEADER -->
+  <div id="header">
+    <div class="logo">
+      <svg viewBox="0 0 34 34" fill="none"><polygon points="17,3 31,29 3,29" fill="url(#lg)"/><defs><linearGradient id="lg" x1="3" y1="3" x2="31" y2="29"><stop offset="0%" stop-color="#3D74F4"/><stop offset="100%" stop-color="#0F05CC"/></linearGradient></defs></svg>
+      Bluestone PIM Agent
     </div>
-    <div class="stat-item">
-      <div class="stat-num">+75%</div>
-      <div class="stat-label">Product data quality</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">+61%</div>
-      <div class="stat-label">Customer experience</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">500+</div>
-      <div class="stat-label">Enterprise customers</div>
+    <span class="env-badge">Prototype</span>
+    <div class="header-stats">
+      <span>Products: <span class="val" id="stat-products">0</span></span>
+      <span>Categories: <span class="val" id="stat-categories">0</span></span>
+      <span>Labels: <span class="val" id="stat-labels">0</span></span>
+      <span>Quality: <span class="val" id="stat-quality">0%</span></span>
     </div>
   </div>
-</section>
 
-<!-- AI AGENTS -->
-<section class="section fade-up" id="ai-agents">
-  <div class="agents-header">
-    <div>
-      <span class="section-label">AI Agents Suite</span>
-      <h2 class="section-title">Five agents.<br/>One intelligent PIM.</h2>
-    </div>
-    <p class="section-sub">
-      Each agent is purpose-built to automate a critical part of your product content
-      lifecycle — running 24/7 without human intervention.
-    </p>
-  </div>
-
-  <div class="agents-grid">
-
-    <div class="agent-card featured">
-      <div class="agent-icon ai-blue">🤖</div>
-      <span class="agent-tag">Core Agent</span>
-      <div class="agent-name">AI Agent — Your Autonomous PIM Brain</div>
-      <p class="agent-desc">
-        Orchestrates all AI tasks across your catalog. Detects gaps, triggers enrichment,
-        routes to specialist agents, and keeps governance rules intact — zero clicks required.
-      </p>
-      <div class="agent-terminal">
-        <div><span class="t-prompt">agent&gt; </span><span class="t-cmd">scan_catalog --scope=all --mode=agentic</span></div>
-        <div><span class="t-ok">✓ 12,847 SKUs analyzed · 843 gaps detected</span></div>
-        <div><span class="t-dim">→ Routing to AI Enrich (621) · AI Linguist (222)…</span></div>
-        <div><span class="t-ok">✓ All tasks queued · ETA 4 min 12 sec</span></div>
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div class="sidebar-scroll">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Categories</div>
+        <div id="cat-tree"></div>
       </div>
-      <div class="agent-status"><span class="status-dot"></span>Running autonomously</div>
-    </div>
-
-    <div class="agent-card">
-      <div class="agent-icon ai-purple">✨</div>
-      <span class="agent-tag">Enrichment</span>
-      <div class="agent-name">AI Enrich</div>
-      <p class="agent-desc">Auto-generates and scores product descriptions, attributes, and metadata at scale.</p>
-      <div class="agent-status"><span class="status-dot"></span>Active · 621 tasks</div>
-    </div>
-
-    <div class="agent-card">
-      <div class="agent-icon ai-orange">🌐</div>
-      <span class="agent-tag">Translation</span>
-      <div class="agent-name">AI Linguist</div>
-      <p class="agent-desc">Localizes product content into 40+ languages with brand voice and compliance baked in.</p>
-      <div class="agent-status"><span class="status-dot"></span>Active · 222 tasks</div>
-    </div>
-
-    <div class="agent-card">
-      <div class="agent-icon ai-green">📊</div>
-      <span class="agent-tag">Analytics</span>
-      <div class="agent-name">AI Analyst</div>
-      <p class="agent-desc">Surfaces data quality insights and predicts the revenue impact of content improvements.</p>
-      <div class="agent-status"><span class="status-dot"></span>Active · Monitoring</div>
-    </div>
-
-    <div class="agent-card">
-      <div class="agent-icon ai-pink">🎨</div>
-      <span class="agent-tag">Templates</span>
-      <div class="agent-name">AI Templates</div>
-      <p class="agent-desc">Generates channel-ready templates optimized for each marketplace and storefront.</p>
-      <div class="agent-status"><span class="status-dot"></span>Active · 89 templates</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<div class="how-section">
-  <div class="how-inner">
-    <div class="how-header fade-up">
-      <span class="section-label" style="justify-content:center;display:flex">How It Works</span>
-      <h2 class="section-title" style="text-align:center">From raw data to<br/>revenue in 4 steps</h2>
-    </div>
-    <div class="how-steps fade-up">
-      <div class="how-step">
-        <div class="step-num">1</div>
-        <div class="step-title">Ingest</div>
-        <p class="step-desc">Connect any source — ERP, supplier feeds, spreadsheets — via API or built-in connectors.</p>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Labels</div>
+        <div id="label-list"></div>
       </div>
-      <div class="how-step">
-        <div class="step-num">2</div>
-        <div class="step-title">Govern</div>
-        <p class="step-desc">AI Agents detect gaps, enforce rules, and score every attribute automatically.</p>
-      </div>
-      <div class="how-step">
-        <div class="step-num">3</div>
-        <div class="step-title">Enrich</div>
-        <p class="step-desc">Generate descriptions, translations, and rich media — zero manual effort required.</p>
-      </div>
-      <div class="how-step">
-        <div class="step-num">4</div>
-        <div class="step-title">Distribute</div>
-        <p class="step-desc">Push to every channel simultaneously — web, print, marketplace, D2C — always in sync.</p>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Recent Activity</div>
+        <div id="activity-log"></div>
       </div>
     </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div id="chat-area"></div>
+    <div id="detail-overlay" onclick="closeDetail()"></div>
+    <div id="detail-panel"></div>
+    <div id="input-area">
+      <div id="input-wrap">
+        <input id="prompt-input" type="text" placeholder="Ask me anything about your products..." autocomplete="off">
+        <button id="send-btn" onclick="handleSend()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUSBAR -->
+  <div id="statusbar">
+    <span class="dot"></span>
+    <span id="status-text">PIM Agent ready — all systems operational</span>
   </div>
 </div>
 
-<!-- FEATURE ROWS -->
-<div class="features-section" id="product">
-
-  <div class="feature-row fade-up">
-    <div class="feature-copy">
-      <div class="feature-label">AI-Powered Quality</div>
-      <h3 class="feature-title">Complete data quality, automatically maintained</h3>
-      <p class="feature-body">AI Analyst scores every product attribute in real time. No manual audits, no spreadsheets. Just consistently high-quality data — at any scale.</p>
-      <div class="pills">
-        <span class="pill">Completeness scoring</span>
-        <span class="pill">Attribute validation</span>
-        <span class="pill">Anomaly detection</span>
-        <span class="pill">Governance rules</span>
-      </div>
-    </div>
-    <div class="feature-visual">
-      <div class="mockup-card">
-        <div class="mockup-header">
-          <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
-          <span class="m-title">Data Quality Dashboard</span>
-        </div>
-        <div class="p-row"><span class="p-lbl">Title completeness</span><div class="p-bar"><div class="p-fill" style="width:98%"></div></div><span class="p-val">98%</span></div>
-        <div class="p-row"><span class="p-lbl">Descriptions</span><div class="p-bar"><div class="p-fill" style="width:91%"></div></div><span class="p-val">91%</span></div>
-        <div class="p-row"><span class="p-lbl">Images</span><div class="p-bar"><div class="p-fill" style="width:87%"></div></div><span class="p-val">87%</span></div>
-        <div class="p-row"><span class="p-lbl">Translations (DE)</span><div class="p-bar"><div class="p-fill" style="width:100%"></div></div><span class="p-val">100%</span></div>
-        <div class="score-grid">
-          <div class="score-box"><div class="s-val">94</div><div class="s-lbl">Overall Score</div></div>
-          <div class="score-box"><div class="s-val">12K</div><div class="s-lbl">SKUs Active</div></div>
-          <div class="score-box"><div class="s-val">↑6</div><div class="s-lbl">vs last week</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="feature-row rev fade-up">
-    <div class="feature-copy">
-      <div class="feature-label">Omnichannel Syndication</div>
-      <h3 class="feature-title">One source of truth. Every channel, always live.</h3>
-      <p class="feature-body">Push perfectly formatted product data to any channel — automatically adapted to each platform's requirements. Update once, everywhere updates in seconds.</p>
-      <div class="pills">
-        <span class="pill">50+ channel connectors</span>
-        <span class="pill">Real-time sync</span>
-        <span class="pill">Format transformation</span>
-        <span class="pill">Digital Product Passport</span>
-      </div>
-    </div>
-    <div class="feature-visual">
-      <div class="mockup-card">
-        <div class="mockup-header">
-          <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
-          <span class="m-title">Channel Syndication</span>
-        </div>
-        <div class="ch-list">
-          <div class="ch-item">
-            <div class="ch-left"><div class="ch-ico" style="background:rgba(255,155,0,0.14)">🛒</div>Amazon Marketplace</div>
-            <span class="badge b-live">Live</span>
-          </div>
-          <div class="ch-item">
-            <div class="ch-left"><div class="ch-ico" style="background:rgba(61,116,244,0.14)">🌐</div>Main Webshop</div>
-            <span class="badge b-live">Live</span>
-          </div>
-          <div class="ch-item">
-            <div class="ch-left"><div class="ch-ico" style="background:rgba(52,211,153,0.14)">📱</div>Google Shopping</div>
-            <span class="badge b-syncing">Syncing…</span>
-          </div>
-          <div class="ch-item">
-            <div class="ch-left"><div class="ch-ico" style="background:rgba(235,72,94,0.14)">🏬</div>Retail Partners (14)</div>
-            <span class="badge b-live">Live</span>
-          </div>
-          <div class="ch-item">
-            <div class="ch-left"><div class="ch-ico" style="background:rgba(251,231,77,0.14)">📄</div>Print Catalog 2026</div>
-            <span class="badge b-pending">Queued</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+<!-- MODAL -->
+<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div id="modal-box"></div>
 </div>
-
-<!-- PROOF -->
-<div class="proof-section fade-up" id="customers">
-  <div class="proof-inner">
-    <p class="proof-label">Trusted by leading enterprises worldwide</p>
-    <div class="logo-strip">
-      <span class="brand-logo">Elkjøp</span>
-      <span class="brand-logo">Thule</span>
-      <span class="brand-logo">Power</span>
-      <span class="brand-logo">Schibsted</span>
-      <span class="brand-logo">Clas Ohlson</span>
-      <span class="brand-logo">Lindab</span>
-    </div>
-    <div class="testimonials">
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The AI Agents cut our time-to-market in half. What used to take three weeks now happens overnight — automatically."</p>
-        <div class="t-author">
-          <div class="t-av" style="background:linear-gradient(135deg,#3D74F4,#0F05CC)">AS</div>
-          <div><div class="t-name">Anna Svensson</div><div class="t-role">Head of E-commerce · Thule Group</div></div>
-        </div>
-      </div>
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"Bluestone PIM is the only PIM that actually understands agentic workflows. We run 40 markets from one platform — zero manual translation."</p>
-        <div class="t-author">
-          <div class="t-av" style="background:linear-gradient(135deg,#EB485E,#EC672B)">MK</div>
-          <div><div class="t-name">Marcus Karlsen</div><div class="t-role">CTO · Elkjøp Nordic</div></div>
-        </div>
-      </div>
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"Product data quality went from 62% to 97% in 6 weeks. ROI was visible within the first month. This is the future of PIM."</p>
-        <div class="t-author">
-          <div class="t-av" style="background:linear-gradient(135deg,#A78BFF,#3D74F4)">LB</div>
-          <div><div class="t-name">Lena Berg</div><div class="t-role">VP Product · Clas Ohlson</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CTA -->
-<section class="cta-section fade-up" id="pricing">
-  <div class="cta-badge">🚀 Now Generally Available</div>
-  <h2 class="cta-title">
-    Ready to make your PIM<br/>
-    <span class="gradient-text">think for itself?</span>
-  </h2>
-  <p class="cta-sub">
-    Join 500+ enterprises who've moved from manual PIM to Agentic PIM.
-    Get live in 14 days.
-  </p>
-  <div class="cta-actions">
-    <button class="btn-orange">Book a Demo →</button>
-    <button class="btn-outline">Explore pricing</button>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-brand">
-    <svg width="22" height="22" viewBox="0 0 34 34" fill="none">
-      <polygon points="17,3 31,29 3,29" fill="url(#lg2)"/>
-      <defs>
-        <linearGradient id="lg2" x1="3" y1="3" x2="31" y2="29">
-          <stop offset="0%" stop-color="#3D74F4" stop-opacity="0.55"/>
-          <stop offset="100%" stop-color="#0F05CC" stop-opacity="0.55"/>
-        </linearGradient>
-      </defs>
-    </svg>
-    Bluestone PIM
-  </div>
-  <div class="footer-copy">© 2026 Bluestone PIM AS · Oslo, Norway</div>
-  <div class="mach-tags">
-    <span class="mach-tag">MACH</span>
-    <span class="mach-tag">API-first</span>
-    <span class="mach-tag">Cloud-native</span>
-  </div>
-</footer>
 
 <script>
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+// ============ DATA STORE ============
+const DB = {
+  categories: [
+    { id: 'cat-elec', name: 'Electronics', parent: null },
+    { id: 'cat-phones', name: 'Smartphones', parent: 'cat-elec' },
+    { id: 'cat-audio', name: 'Audio', parent: 'cat-elec' },
+    { id: 'cat-laptops', name: 'Laptops', parent: 'cat-elec' },
+    { id: 'cat-wear', name: 'Wearables', parent: 'cat-elec' },
+    { id: 'cat-cloth', name: 'Clothing', parent: null },
+    { id: 'cat-shoes', name: 'Shoes', parent: 'cat-cloth' },
+    { id: 'cat-jackets', name: 'Jackets', parent: 'cat-cloth' },
+    { id: 'cat-shirts', name: 'Shirts', parent: 'cat-cloth' },
+    { id: 'cat-home', name: 'Home & Garden', parent: null },
+    { id: 'cat-furniture', name: 'Furniture', parent: 'cat-home' },
+    { id: 'cat-lighting', name: 'Lighting', parent: 'cat-home' },
+    { id: 'cat-sports', name: 'Sports & Outdoor', parent: null },
+    { id: 'cat-camping', name: 'Camping', parent: 'cat-sports' },
+    { id: 'cat-fitness', name: 'Fitness', parent: 'cat-sports' }
+  ],
+  labels: [
+    { id: 'lbl-summer', name: 'Summer Sale', color: '#EC672B' },
+    { id: 'lbl-new', name: 'New Arrival', color: '#3D74F4' },
+    { id: 'lbl-best', name: 'Bestseller', color: '#34D399' },
+    { id: 'lbl-clearance', name: 'Clearance', color: '#EB485E' },
+    { id: 'lbl-premium', name: 'Premium', color: '#A78BFF' },
+    { id: 'lbl-eco', name: 'Eco-Friendly', color: '#34D399' }
+  ],
+  products: [],
+  audit: [],
+  pendingChanges: null,
+  selectedProducts: []
+};
 
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').style.background =
-      scrollY > 40 ? 'rgba(5,13,31,0.94)' : 'rgba(5,13,31,0.75)';
+// Seed products
+const seedProducts = [
+  { sku:'ELEC-001', name:'iPhone 15 Pro Max', category:'cat-phones', price:1199, status:'active', brand:'Apple', description:'Latest flagship smartphone with A17 Pro chip, titanium design, and 48MP camera system.', labels:['lbl-best','lbl-premium'], weight:'221g', material:'Titanium', ean:'5901234123457' },
+  { sku:'ELEC-002', name:'Samsung Galaxy S24 Ultra', category:'cat-phones', price:1299, status:'active', brand:'Samsung', description:'Premium Android smartphone with built-in S Pen, 200MP camera, and Galaxy AI features.', labels:['lbl-new'], weight:'232g', material:'Titanium', ean:'4901234567890' },
+  { sku:'ELEC-003', name:'Sony WH-1000XM5', category:'cat-audio', price:349, status:'active', brand:'Sony', description:'Industry-leading noise cancelling wireless headphones with exceptional sound quality.', labels:['lbl-best'], weight:'250g', material:'Plastic/Leather', ean:'4548736132153' },
+  { sku:'ELEC-004', name:'AirPods Pro 2', category:'cat-audio', price:249, status:'active', brand:'Apple', description:'Active noise cancelling earbuds with adaptive audio and USB-C charging.', labels:['lbl-best'], weight:'50.8g', material:'Plastic', ean:'' },
+  { sku:'ELEC-005', name:'MacBook Air M3', category:'cat-laptops', price:1099, status:'active', brand:'Apple', description:'Supercharged by M3 chip. Up to 18 hours battery life. Fanless design.', labels:['lbl-new','lbl-premium'], weight:'1.24kg', material:'Aluminium', ean:'5901234567891' },
+  { sku:'ELEC-006', name:'ThinkPad X1 Carbon Gen 11', category:'cat-laptops', price:1449, status:'active', brand:'Lenovo', description:'Ultralight 14" business laptop with Intel 13th gen processor.', labels:['lbl-premium'], weight:'1.12kg', material:'Carbon Fiber', ean:'1234567890123' },
+  { sku:'ELEC-007', name:'Apple Watch Ultra 2', category:'cat-wear', price:799, status:'active', brand:'Apple', description:'The most rugged and capable Apple Watch with precision GPS and 36-hour battery.', labels:['lbl-premium'], weight:'61.4g', material:'Titanium', ean:'' },
+  { sku:'ELEC-008', name:'Galaxy Buds3 Pro', category:'cat-audio', price:229, status:'draft', brand:'Samsung', description:'', labels:['lbl-new'], weight:'', material:'', ean:'' },
+  { sku:'SHOE-001', name:'Nike Air Max 90', category:'cat-shoes', price:129, status:'active', brand:'Nike', description:'Iconic sneaker with visible Air cushioning and retro design.', labels:['lbl-best','lbl-summer'], weight:'350g', material:'Mesh/Leather', ean:'1928374650123' },
+  { sku:'SHOE-002', name:'Adidas Ultraboost Light', category:'cat-shoes', price:189, status:'active', brand:'Adidas', description:'Lightweight performance running shoe with BOOST midsole technology.', labels:['lbl-new'], weight:'280g', material:'Primeknit', ean:'4001234567890' },
+  { sku:'SHOE-003', name:'New Balance 574', category:'cat-shoes', price:89, status:'active', brand:'New Balance', description:'Classic heritage sneaker with ENCAP midsole cushioning.', labels:[], weight:'340g', material:'Suede/Mesh', ean:'7391234567890' },
+  { sku:'SHOE-004', name:'Salomon Speedcross 6', category:'cat-shoes', price:139, status:'active', brand:'Salomon', description:'Aggressive trail running shoe with Contagrip outsole.', labels:['lbl-eco'], weight:'310g', material:'Synthetic', ean:'' },
+  { sku:'JACK-001', name:'North Face Thermoball Eco', category:'cat-jackets', price:199, status:'active', brand:'The North Face', description:'Lightweight insulated jacket made from recycled materials.', labels:['lbl-eco','lbl-summer'], weight:'420g', material:'Recycled Polyester', ean:'8801234567890' },
+  { sku:'JACK-002', name:'Patagonia Down Sweater', category:'cat-jackets', price:279, status:'active', brand:'Patagonia', description:'800-fill-power down jacket with Fair Trade Certified sewing.', labels:['lbl-premium','lbl-eco'], weight:'371g', material:'Recycled Nylon/Down', ean:'2201234567890' },
+  { sku:'SHRT-001', name:'Uniqlo Supima Cotton Tee', category:'cat-shirts', price:19.90, status:'active', brand:'Uniqlo', description:'Premium cotton crew neck t-shirt with smooth texture.', labels:[], weight:'180g', material:'Supima Cotton', ean:'4901234567001' },
+  { sku:'SHRT-002', name:'Ralph Lauren Oxford Shirt', category:'cat-shirts', price:119, status:'active', brand:'Ralph Lauren', description:'', labels:['lbl-premium'], weight:'', material:'Cotton', ean:'' },
+  { sku:'FURN-001', name:'IKEA KALLAX Shelf', category:'cat-furniture', price:69.99, status:'active', brand:'IKEA', description:'Versatile shelving unit, can be placed on the floor or mounted on a wall.', labels:[], weight:'18.5kg', material:'Particleboard', ean:'7021234567890' },
+  { sku:'FURN-002', name:'HAY About A Chair', category:'cat-furniture', price:349, status:'draft', brand:'HAY', description:'Minimalist Scandinavian design chair with shell seat.', labels:['lbl-premium'], weight:'3.8kg', material:'Polypropylene/Oak', ean:'' },
+  { sku:'LITE-001', name:'Muuto E27 Pendant', category:'cat-lighting', price:89, status:'active', brand:'Muuto', description:'Iconic pendant lamp celebrating the beauty of the bare bulb.', labels:[], weight:'0.5kg', material:'Silicone Rubber', ean:'5701234567890' },
+  { sku:'CAMP-001', name:'Thule Capstone 50L', category:'cat-camping', price:219, status:'active', brand:'Thule', description:'Comfortable hiking backpack with VersaClick accessories system.', labels:['lbl-eco'], weight:'1.75kg', material:'Recycled Nylon', ean:'' },
+  { sku:'CAMP-002', name:'Fjallraven Keb Tent 2', category:'cat-camping', price:899, status:'active', brand:'Fjallraven', description:'Lightweight 3-season tunnel tent for two persons.', labels:['lbl-premium'], weight:'2.4kg', material:'G-1000 HeavyDuty', ean:'7323450123456' },
+  { sku:'FIT-001', name:'Garmin Forerunner 265', category:'cat-fitness', price:449, status:'active', brand:'Garmin', description:'GPS running smartwatch with AMOLED display and training readiness.', labels:['lbl-new','lbl-best'], weight:'47g', material:'Fiber-reinforced polymer', ean:'7531234567890' },
+  { sku:'FIT-002', name:'Theragun Elite', category:'cat-fitness', price:399, status:'active', brand:'Therabody', description:'', labels:[], weight:'1.0kg', material:'', ean:'' },
+  { sku:'SHOE-005', name:'Dr. Martens 1460 Boot', category:'cat-shoes', price:169, status:'draft', brand:'Dr. Martens', description:'Classic 8-eye boot with air-cushioned sole.', labels:['lbl-clearance'], weight:'', material:'Leather', ean:'' }
+];
+
+seedProducts.forEach((p, i) => {
+  DB.products.push({
+    id: 'prod_' + (i + 1).toString().padStart(3, '0'),
+    sku: p.sku, name: p.name, category: p.category, price: p.price,
+    status: p.status, brand: p.brand || '', description: p.description || '',
+    labels: p.labels || [], weight: p.weight || '', material: p.material || '',
+    ean: p.ean || '', created: new Date(Date.now() - Math.random() * 30 * 86400000).toISOString(),
+    updated: new Date(Date.now() - Math.random() * 7 * 86400000).toISOString()
   });
+});
+
+// ============ UTILITIES ============
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function genId(pre) { return pre + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
+function fmtPrice(v) { return v != null ? '$' + Number(v).toFixed(2) : '—'; }
+function fmtTime(iso) { return new Date(iso).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' }); }
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function completeness(p) {
+  const fields = ['name','description','price','brand','category','weight','material','ean'];
+  return Math.round(fields.filter(f => p[f] && String(p[f]).trim()).length / fields.length * 100);
+}
+
+function qClass(s) { return s >= 75 ? 'q-high' : s >= 50 ? 'q-med' : 'q-low'; }
+
+function catName(catId) { const c = DB.categories.find(c => c.id === catId); return c ? c.name : 'Uncategorized'; }
+function catChildren(parentId) { return DB.categories.filter(c => c.parent === parentId); }
+function catDescendants(catId) {
+  let ids = [catId];
+  catChildren(catId).forEach(c => ids.push(...catDescendants(c.id)));
+  return ids;
+}
+function productsInCat(catId) { const ids = catDescendants(catId); return DB.products.filter(p => ids.includes(p.category)); }
+function labelObj(id) { return DB.labels.find(l => l.id === id); }
+function labelByName(name) { return DB.labels.find(l => l.name.toLowerCase() === name.toLowerCase()); }
+
+function labelHtml(labelId, removable, productId) {
+  const l = labelObj(labelId); if (!l) return '';
+  const bg = l.color + '20', c = l.color;
+  let h = `<span class="label-tag" style="background:${bg};color:${c}">${esc(l.name)}`;
+  if (removable) h += `<span class="remove-label" onclick="event.stopPropagation();removeLabelPrompt('${productId}','${labelId}')">&times;</span>`;
+  return h + '</span>';
+}
+
+// ============ RENDERING ============
+function render() { renderSidebar(); updateStats(); }
+
+function updateStats() {
+  document.getElementById('stat-products').textContent = DB.products.length;
+  document.getElementById('stat-categories').textContent = DB.categories.length;
+  document.getElementById('stat-labels').textContent = DB.labels.length;
+  const avg = DB.products.length ? Math.round(DB.products.reduce((s,p) => s + completeness(p), 0) / DB.products.length) : 0;
+  document.getElementById('stat-quality').textContent = avg + '%';
+}
+
+function renderSidebar() {
+  // Categories
+  let catHtml = '';
+  function renderCat(parentId, depth) {
+    const cats = catChildren(parentId);
+    cats.forEach(c => {
+      const count = productsInCat(c.id).length;
+      const indent = depth > 0 ? `<span class="indent"></span>`.repeat(depth) : '';
+      catHtml += `<div class="cat-item" onclick="handleCatClick('${c.id}')">${indent}${esc(c.name)}<span class="cnt">${count}</span></div>`;
+      renderCat(c.id, depth + 1);
+    });
+  }
+  renderCat(null, 0);
+  document.getElementById('cat-tree').innerHTML = catHtml;
+
+  // Labels
+  let lblHtml = '';
+  DB.labels.forEach(l => {
+    const count = DB.products.filter(p => p.labels.includes(l.id)).length;
+    lblHtml += `<div class="label-item" onclick="handleLabelClick('${l.id}')"><span class="label-dot" style="background:${l.color}"></span>${esc(l.name)}<span class="cnt">${count}</span></div>`;
+  });
+  document.getElementById('label-list').innerHTML = lblHtml;
+
+  // Activity
+  let actHtml = '';
+  DB.audit.slice(-8).reverse().forEach(a => {
+    const icons = { create:'✨', update:'📝', delete:'🗑️', label:'🏷️', bulk:'⚡', import:'📦' };
+    const colors = { create:'rgba(52,211,153,0.15)', update:'rgba(61,116,244,0.15)', delete:'rgba(235,72,94,0.15)', label:'rgba(167,139,255,0.15)', bulk:'rgba(236,103,43,0.15)', import:'rgba(61,116,244,0.15)' };
+    actHtml += `<div class="activity-entry"><div class="activity-icon" style="background:${colors[a.type]||'rgba(255,255,255,0.05)'}">${icons[a.type]||'📋'}</div><div><div style="font-weight:600">${esc(a.text)}</div><div class="activity-time">${fmtTime(a.time)}</div></div></div>`;
+  });
+  document.getElementById('activity-log').innerHTML = actHtml || '<div style="font-size:12px;color:var(--muted);padding:8px">No activity yet</div>';
+}
+
+// ============ CHAT ============
+const chatArea = document.getElementById('chat-area');
+
+function addUser(text) {
+  chatArea.innerHTML += `<div class="msg user"><div class="bubble">${esc(text)}</div><div class="time">${fmtTime(new Date().toISOString())}</div></div>`;
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function addSystem(html, suggestions) {
+  let s = '';
+  if (suggestions && suggestions.length) {
+    s = '<div class="suggestions">' + suggestions.map(c => `<div class="chip" onclick="sendChip(this)">${esc(c)}</div>`).join('') + '</div>';
+  }
+  chatArea.innerHTML += `<div class="msg system"><div class="bubble">${html}${s}</div><div class="time">${fmtTime(new Date().toISOString())}</div></div>`;
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function showTyping() {
+  chatArea.innerHTML += '<div class="typing" id="typing-ind"><span></span><span></span><span></span></div>';
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+function hideTyping() { const t = document.getElementById('typing-ind'); if (t) t.remove(); }
+
+function sendChip(el) { document.getElementById('prompt-input').value = el.textContent; handleSend(); }
+
+// ============ PRODUCT TABLE HTML ============
+function productTableHtml(products, title) {
+  if (!products.length) return `<p>No products found.</p>`;
+  let h = title ? `<p style="font-weight:700;margin-bottom:6px">${esc(title)} <span style="color:var(--muted);font-weight:500">(${products.length})</span></p>` : '';
+  h += '<table class="msg-table"><thead><tr><th>SKU</th><th>Product</th><th>Brand</th><th>Price</th><th>Status</th><th>Quality</th><th>Labels</th></tr></thead><tbody>';
+  products.forEach(p => {
+    const q = completeness(p);
+    const lbls = p.labels.map(l => labelHtml(l, false)).join('');
+    h += `<tr onclick="openDetail('${p.id}')">
+      <td class="sku">${esc(p.sku)}</td>
+      <td style="font-weight:600">${esc(p.name)}</td>
+      <td>${esc(p.brand)}</td>
+      <td>${fmtPrice(p.price)}</td>
+      <td><span class="status-badge status-${p.status}">${p.status}</span></td>
+      <td><div class="quality-bar" style="width:60px"><div class="quality-fill ${qClass(q)}" style="width:${q}%"></div></div><span style="font-size:11px;color:var(--muted)">${q}%</span></td>
+      <td>${lbls}</td>
+    </tr>`;
+  });
+  h += '</tbody></table>';
+  h += `<p style="font-size:11px;color:var(--muted);margin-top:4px">Click any row to see full details</p>`;
+  return h;
+}
+
+// ============ DETAIL PANEL ============
+function openDetail(productId) {
+  const p = DB.products.find(x => x.id === productId);
+  if (!p) return;
+  const q = completeness(p);
+  const panel = document.getElementById('detail-panel');
+  const lbls = p.labels.map(l => labelHtml(l, true, p.id)).join('') || '<span style="color:var(--muted);font-size:12px">No labels</span>';
+
+  panel.innerHTML = `
+    <button class="detail-close" onclick="closeDetail()">&times;</button>
+    <div class="detail-title">${esc(p.name)}</div>
+    <div class="detail-sku">${esc(p.sku)}</div>
+    <div class="detail-section">
+      <div class="detail-section-title">Status & Quality</div>
+      <div class="detail-field"><span class="lbl">Status</span><span class="status-badge status-${p.status}">${p.status}</span></div>
+      <div class="detail-field"><span class="lbl">Completeness</span><span class="val">${q}%</span></div>
+      <div class="quality-bar"><div class="quality-fill ${qClass(q)}" style="width:${q}%"></div></div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Core Attributes</div>
+      <div class="detail-field"><span class="lbl">Brand</span><span class="val">${esc(p.brand) || '—'}</span></div>
+      <div class="detail-field"><span class="lbl">Price</span><span class="val">${fmtPrice(p.price)}</span></div>
+      <div class="detail-field"><span class="lbl">Category</span><span class="val">${esc(catName(p.category))}</span></div>
+      <div class="detail-field"><span class="lbl">Weight</span><span class="val">${esc(p.weight) || '—'}</span></div>
+      <div class="detail-field"><span class="lbl">Material</span><span class="val">${esc(p.material) || '—'}</span></div>
+      <div class="detail-field"><span class="lbl">EAN</span><span class="val">${esc(p.ean) || '—'}</span></div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Labels</div>
+      <div class="detail-labels">${lbls}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Description</div>
+      <div class="detail-desc">${p.description ? esc(p.description) : '<span style="color:var(--muted)">No description yet</span>'}</div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button class="btn btn-confirm" onclick="closeDetail();document.getElementById('prompt-input').value='Edit ${p.sku}';handleSend()">Edit product</button>
+      <button class="btn btn-cancel" onclick="closeDetail()">Close</button>
+    </div>
+  `;
+  panel.classList.add('open');
+  document.getElementById('detail-overlay').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('detail-overlay').classList.remove('open');
+}
+
+function removeLabelPrompt(productId, labelId) {
+  const p = DB.products.find(x => x.id === productId);
+  const l = labelObj(labelId);
+  if (!p || !l) return;
+  p.labels = p.labels.filter(x => x !== labelId);
+  p.updated = new Date().toISOString();
+  addAudit('label', `Removed "${l.name}" from ${p.sku}`);
+  render();
+  openDetail(productId);
+}
+
+// ============ MODAL ============
+function openModal(html) { document.getElementById('modal-box').innerHTML = html; document.getElementById('modal-overlay').classList.add('open'); }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+// ============ AUDIT ============
+function addAudit(type, text) {
+  DB.audit.push({ type, text, time: new Date().toISOString() });
+  render();
+}
+
+// ============ COMMAND PARSER ============
+function parseCommand(input) {
+  const n = input.trim().toLowerCase();
+  const raw = input.trim();
+
+  // Greetings
+  if (/^(hey|hi|hello|hei|yo|sup|good\s*(morning|afternoon|evening)|what'?s?\s*up)/i.test(n)) return { type:'greeting', raw };
+  if (/^(thanks?|thank\s*you|thx|cheers)/i.test(n)) return { type:'thanks', raw };
+  if (/^(help|what can you do|\?)/i.test(n)) return { type:'help', raw };
+
+  // Show by category (must come before show_all to avoid false match)
+  let cm = n.match(/^(show|list|find|get)\s*(all\s*)?(products?\s*)?(in|from|under)\s+(.+)/i);
+  if (cm) return { type:'show_category', category: cm[5].trim(), raw };
+
+  // Show by label
+  let lm = n.match(/^(show|list|find|get)\s*(all\s*)?(products?\s*)?(with|labeled?|tagged?)\s+['"]?(.+?)['"]?\s*$/i);
+  if (lm) return { type:'show_label', label: lm[5].trim(), raw };
+
+  // Filter by status
+  if (/^(show|list|find)\s*(all\s*)?(draft|active|archived)\s*(products?)?/i.test(n)) {
+    const st = n.match(/(draft|active|archived)/i)[1];
+    return { type:'filter_status', status: st, raw };
+  }
+
+  // Show / list all products
+  if (/^(show|list|display|get|find)\s*(all\s*)?(products?|items?|catalog)/i.test(n)) return { type:'show_all', raw };
+
+  // Search
+  if (/^(search|find|look\s*for)\s+/i.test(n)) {
+    const q = n.replace(/^(search|find|look\s*for)\s+/i, '').replace(/^(for\s+)?/i, '');
+    return { type:'search', query: q, raw };
+  }
+
+  // Product detail
+  let dm = n.match(/^(show|view|open|details?|info)\s+(for\s+)?(.+)/i);
+  if (dm) return { type:'detail', query: dm[3].trim(), raw };
+
+  // Data quality
+  if (/data\s*quality|completeness|quality\s*(report|score|overview)?/i.test(n)) return { type:'quality', raw };
+
+  // Status overview
+  if (/^(status|overview|dashboard|how.*(catalog|data|products?))/i.test(n)) return { type:'overview', raw };
+
+  // Add label
+  let alm = n.match(/^(add|assign|tag|apply)\s+label\s+['"](.+?)['"]\s+to\s+(.+)/i);
+  if (!alm) alm = n.match(/^label\s+(.+?)\s+(?:as|with)\s+['"](.+?)['"]/i);
+  if (alm) {
+    const labelName = alm[2]; const target = alm[3] || alm[1];
+    return { type:'add_label', label: labelName, target: target.trim(), raw };
+  }
+
+  // Remove label
+  let rlm = n.match(/^remove\s+label\s+['"](.+?)['"]\s+from\s+(.+)/i);
+  if (rlm) return { type:'remove_label', label: rlm[1], target: rlm[2].trim(), raw };
+
+  // Create label
+  let clm = n.match(/^create\s+label\s+['"](.+?)['"](\s+(.+))?/i);
+  if (clm) return { type:'create_label', name: clm[1], color: clm[3] || null, raw };
+
+  // Edit / update product
+  let em = n.match(/^(edit|update|change|set|modify)\s+(the\s+)?(.+)/i);
+  if (em) return { type:'edit', query: em[3].trim(), raw };
+
+  // Bulk operations
+  if (/^(select|bulk)\s+/i.test(n)) return { type:'bulk_select', query: n.replace(/^(select|bulk)\s+/i,''), raw };
+
+  // Increase/decrease price
+  let pm = n.match(/(increase|decrease|raise|lower|reduce)\s+price\s*(of|for|on)?\s*(.*?)\s*by\s+(\d+)\s*%/i);
+  if (pm) return { type:'price_change', direction: pm[1], target: pm[3], percent: parseInt(pm[4]), raw };
+
+  // Delete
+  let delm = n.match(/^(delete|remove)\s+(product\s+)?(.+)/i);
+  if (delm) return { type:'delete', query: delm[3].trim(), raw };
+
+  // Create product
+  if (/^(create|add|new)\s+(a\s+)?(product|item)/i.test(n)) return { type:'create_product', raw };
+
+  // Fallback search
+  return { type:'search', query: n, raw };
+}
+
+// ============ FIND PRODUCTS ============
+function findProducts(query) {
+  const q = query.toLowerCase();
+  // Try SKU first
+  let found = DB.products.filter(p => p.sku.toLowerCase() === q);
+  if (found.length) return found;
+  // Try name exact
+  found = DB.products.filter(p => p.name.toLowerCase() === q);
+  if (found.length) return found;
+  // Try partial match
+  found = DB.products.filter(p =>
+    p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q) ||
+    p.brand.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
+  );
+  return found;
+}
+
+function findByTarget(target) {
+  const t = target.toLowerCase().trim();
+  // "all shoes", "all electronics", category names
+  const cleanT = t.replace(/^all\s+/,'');
+  // Check category
+  const cat = DB.categories.find(c => c.name.toLowerCase().includes(cleanT));
+  if (cat) return productsInCat(cat.id);
+  // Check label
+  const lbl = DB.labels.find(l => l.name.toLowerCase().includes(cleanT));
+  if (lbl) return DB.products.filter(p => p.labels.includes(lbl.id));
+  // Check status
+  if (['active','draft','archived'].includes(cleanT)) return DB.products.filter(p => p.status === cleanT);
+  // Check brand
+  let found = DB.products.filter(p => p.brand.toLowerCase().includes(cleanT));
+  if (found.length) return found;
+  // Fallback to search
+  return findProducts(cleanT);
+}
+
+// ============ COMMAND EXECUTION ============
+async function executeCommand(input) {
+  addUser(input);
+  const cmd = parseCommand(input);
+  showTyping();
+  await delay(400 + Math.random() * 500);
+  hideTyping();
+
+  switch (cmd.type) {
+    case 'greeting': execGreeting(); break;
+    case 'thanks': execThanks(); break;
+    case 'help': execHelp(); break;
+    case 'show_all': execShowAll(); break;
+    case 'filter_status': execFilterStatus(cmd.status); break;
+    case 'show_category': execShowCategory(cmd.category); break;
+    case 'show_label': execShowLabel(cmd.label); break;
+    case 'search': execSearch(cmd.query); break;
+    case 'detail': execDetail(cmd.query); break;
+    case 'quality': execQuality(); break;
+    case 'overview': execOverview(); break;
+    case 'add_label': execAddLabel(cmd.label, cmd.target); break;
+    case 'remove_label': execRemoveLabel(cmd.label, cmd.target); break;
+    case 'create_label': execCreateLabel(cmd.name, cmd.color); break;
+    case 'edit': execEdit(cmd.query); break;
+    case 'price_change': execPriceChange(cmd.direction, cmd.target, cmd.percent); break;
+    case 'bulk_select': execBulkSelect(cmd.query); break;
+    case 'delete': execDelete(cmd.query); break;
+    case 'create_product': execCreateProduct(); break;
+    default: execSearch(cmd.query || cmd.raw);
+  }
+}
+
+// ============ COMMAND HANDLERS ============
+
+function execGreeting() {
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const stats = {
+    total: DB.products.length,
+    active: DB.products.filter(p => p.status === 'active').length,
+    draft: DB.products.filter(p => p.status === 'draft').length,
+    avgQ: Math.round(DB.products.reduce((s,p) => s + completeness(p), 0) / DB.products.length)
+  };
+
+  addSystem(
+    `<p><strong>${greeting}!</strong> Welcome to Bluestone PIM Agent. I'm here to help you manage your product catalog.</p>
+    <p style="margin-top:8px">Here's a quick snapshot of your catalog:</p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0">
+      <div style="background:rgba(61,116,244,0.1);border:1px solid rgba(61,116,244,0.2);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:var(--blue)">${stats.total}</div><div style="font-size:10px;color:var(--muted)">Total Products</div>
+      </div>
+      <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:var(--green)">${stats.active}</div><div style="font-size:10px;color:var(--muted)">Active</div>
+      </div>
+      <div style="background:rgba(251,231,77,0.1);border:1px solid rgba(251,231,77,0.2);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:var(--yellow)">${stats.draft}</div><div style="font-size:10px;color:var(--muted)">Drafts</div>
+      </div>
+      <div style="background:rgba(167,139,255,0.1);border:1px solid rgba(167,139,255,0.2);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:var(--purple)">${stats.avgQ}%</div><div style="font-size:10px;color:var(--muted)">Avg Quality</div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:13px">What would you like to do? Here are some suggestions:</p>`,
+    ['Show all products', 'Data quality report', 'Show draft products', 'Show products labeled "Bestseller"', 'Create a new product']
+  );
+}
+
+function execThanks() {
+  addSystem(
+    `<p>${pick(["You're welcome!","Happy to help!","Anytime!","Glad I could help!"])} Let me know if there's anything else you need.</p>`,
+    ['Show all products', 'Data quality report', 'Overview']
+  );
+}
+
+function execHelp() {
+  addSystem(
+    `<p><strong>Here's what I can help you with:</strong></p>
+    <div style="margin:10px 0;font-size:13px">
+      <p style="margin:8px 0"><strong style="color:var(--blue)">Browse & Search</strong></p>
+      <ul style="margin-left:16px;color:var(--muted)">
+        <li>"Show all products" — full catalog view</li>
+        <li>"Show products in Shoes" — filter by category</li>
+        <li>"Show active products" — filter by status</li>
+        <li>"Show products labeled Summer Sale" — filter by label</li>
+        <li>"Search Nike" — find products by name, brand, or SKU</li>
+      </ul>
+      <p style="margin:8px 0"><strong style="color:var(--green)">Edit & Update</strong></p>
+      <ul style="margin-left:16px;color:var(--muted)">
+        <li>"Edit ELEC-001" — modify a specific product</li>
+        <li>"Increase price of all Shoes by 10%" — bulk price change</li>
+        <li>"Create a new product" — add product to catalog</li>
+      </ul>
+      <p style="margin:8px 0"><strong style="color:var(--purple)">Labels & Campaigns</strong></p>
+      <ul style="margin-left:16px;color:var(--muted)">
+        <li>"Add label 'Summer Sale' to all Shoes" — bulk labeling</li>
+        <li>"Create label 'Black Friday'" — new label</li>
+        <li>"Remove label 'Clearance' from SHOE-005" — remove label</li>
+      </ul>
+      <p style="margin:8px 0"><strong style="color:var(--orange)">Reports</strong></p>
+      <ul style="margin-left:16px;color:var(--muted)">
+        <li>"Data quality report" — completeness analysis</li>
+        <li>"Overview" — catalog summary</li>
+      </ul>
+    </div>
+    <p style="font-size:13px;color:var(--muted)">You can also click products in tables to see full details, or use the sidebar to browse by category and label.</p>`,
+    ['Show all products', 'Data quality report', 'Show draft products']
+  );
+}
+
+function execShowAll() {
+  addSystem(
+    `<p>Here's your full product catalog:</p>${productTableHtml(DB.products, 'All Products')}`,
+    ['Show draft products', 'Data quality report', 'Show products in Electronics']
+  );
+}
+
+function execFilterStatus(status) {
+  const products = DB.products.filter(p => p.status === status);
+  addSystem(
+    `<p>Found <strong>${products.length}</strong> products with status <span class="status-badge status-${status}">${status}</span>:</p>${productTableHtml(products)}`,
+    status === 'draft' ? ['Show active products', 'Edit first draft product'] : ['Show draft products', 'Data quality report']
+  );
+}
+
+function execShowCategory(category) {
+  const cat = DB.categories.find(c => c.name.toLowerCase().includes(category.toLowerCase()));
+  if (!cat) {
+    addSystem(`<p>I couldn't find a category matching "<strong>${esc(category)}</strong>". Available categories:</p>
+    <ul style="margin:8px 0 8px 16px;font-size:13px;color:var(--muted)">${DB.categories.map(c => `<li>${esc(c.name)}</li>`).join('')}</ul>`,
+    ['Show products in Electronics', 'Show products in Shoes', 'Show products in Jackets']);
+    return;
+  }
+  const products = productsInCat(cat.id);
+  addSystem(
+    `<p>Products in <strong>${esc(cat.name)}</strong>:</p>${productTableHtml(products, cat.name)}`,
+    [`Add label to all ${cat.name}`, `Show all products`, `Increase price of ${cat.name} by 5%`]
+  );
+}
+
+function execShowLabel(labelName) {
+  const lbl = DB.labels.find(l => l.name.toLowerCase().includes(labelName.toLowerCase()));
+  if (!lbl) {
+    addSystem(`<p>No label matching "<strong>${esc(labelName)}</strong>". Available labels:</p>
+    <div style="margin:8px 0">${DB.labels.map(l => labelHtml(l.id, false)).join(' ')}</div>`,
+    DB.labels.slice(0,3).map(l => `Show products labeled "${l.name}"`));
+    return;
+  }
+  const products = DB.products.filter(p => p.labels.includes(lbl.id));
+  addSystem(
+    `<p>Products with label ${labelHtml(lbl.id, false)}:</p>${productTableHtml(products)}`,
+    ['Show all products', `Remove label "${lbl.name}" from all`]
+  );
+}
+
+function execSearch(query) {
+  const results = findProducts(query);
+  if (results.length === 1) {
+    execDetailForProduct(results[0]);
+    return;
+  }
+  if (results.length === 0) {
+    addSystem(
+      `<p>No products found matching "<strong>${esc(query)}</strong>". Try a different search term or browse by category.</p>`,
+      ['Show all products', 'Show products in Electronics', 'Show products in Shoes']
+    );
+    return;
+  }
+  addSystem(
+    `<p>Found <strong>${results.length}</strong> products matching "<strong>${esc(query)}</strong>":</p>${productTableHtml(results, 'Search Results')}`,
+    [`Show products in Electronics`, `Data quality report`]
+  );
+}
+
+function execDetail(query) {
+  const q = query.toLowerCase().replace(/^(for|product|item)\s+/i, '');
+  const product = DB.products.find(p => p.sku.toLowerCase() === q || p.name.toLowerCase().includes(q));
+  if (!product) {
+    const results = findProducts(q);
+    if (results.length) {
+      addSystem(`<p>I found multiple matches. Which one did you mean?</p>${productTableHtml(results)}`, []);
+    } else {
+      addSystem(`<p>Couldn't find a product matching "<strong>${esc(query)}</strong>".</p>`, ['Show all products']);
+    }
+    return;
+  }
+  execDetailForProduct(product);
+}
+
+function execDetailForProduct(p) {
+  const q = completeness(p);
+  const lbls = p.labels.map(l => labelHtml(l, false)).join(' ') || '<span style="color:var(--muted)">None</span>';
+  const missing = [];
+  if (!p.description) missing.push('description');
+  if (!p.weight) missing.push('weight');
+  if (!p.material) missing.push('material');
+  if (!p.ean) missing.push('EAN');
+
+  let html = `
+    <div class="product-card">
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <div><div class="product-card-name">${esc(p.name)}</div><div class="product-card-sku">${esc(p.sku)}</div></div>
+        <span class="status-badge status-${p.status}">${p.status}</span>
+      </div>
+      <div class="product-card-grid">
+        <div><span class="field-label">Brand</span><div>${esc(p.brand) || '—'}</div></div>
+        <div><span class="field-label">Price</span><div>${fmtPrice(p.price)}</div></div>
+        <div><span class="field-label">Category</span><div>${esc(catName(p.category))}</div></div>
+        <div><span class="field-label">Weight</span><div>${esc(p.weight) || '—'}</div></div>
+        <div><span class="field-label">Material</span><div>${esc(p.material) || '—'}</div></div>
+        <div><span class="field-label">EAN</span><div>${esc(p.ean) || '—'}</div></div>
+      </div>
+      <div style="margin-top:10px"><span class="field-label">Labels</span><div style="margin-top:4px">${lbls}</div></div>
+      <div style="margin-top:10px"><span class="field-label">Quality Score</span>
+        <div class="quality-bar"><div class="quality-fill ${qClass(q)}" style="width:${q}%"></div></div>
+        <span style="font-size:12px;color:var(--muted)">${q}% complete</span>
+      </div>
+      ${p.description ? `<div style="margin-top:10px"><span class="field-label">Description</span><div style="font-size:13px;color:var(--muted);margin-top:4px">${esc(p.description)}</div></div>` : ''}
+    </div>`;
+
+  if (missing.length) {
+    html += `<p style="font-size:13px;color:var(--yellow);margin-top:4px">⚠ Missing fields: ${missing.join(', ')}</p>`;
+  }
+
+  addSystem(html, [`Edit ${p.sku}`, `Add label to ${p.sku}`, `Show products in ${catName(p.category)}`]);
+}
+
+function execQuality() {
+  const products = DB.products;
+  const scores = products.map(p => completeness(p));
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0) / scores.length);
+  const high = scores.filter(s => s >= 75).length;
+  const med = scores.filter(s => s >= 50 && s < 75).length;
+  const low = scores.filter(s => s < 50).length;
+  const incomplete = products.filter(p => !p.description).length;
+  const noEan = products.filter(p => !p.ean).length;
+
+  const worst = [...products].sort((a,b) => completeness(a) - completeness(b)).slice(0, 5);
+
+  addSystem(
+    `<p><strong>Data Quality Report</strong></p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0">
+      <div style="background:rgba(61,116,244,0.1);border:1px solid rgba(61,116,244,0.2);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:var(--blue)">${avg}%</div><div style="font-size:10px;color:var(--muted)">Avg Score</div>
+      </div>
+      <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:var(--green)">${high}</div><div style="font-size:10px;color:var(--muted)">High (75%+)</div>
+      </div>
+      <div style="background:rgba(251,231,77,0.1);border:1px solid rgba(251,231,77,0.2);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:var(--yellow)">${med}</div><div style="font-size:10px;color:var(--muted)">Medium</div>
+      </div>
+      <div style="background:rgba(235,72,94,0.1);border:1px solid rgba(235,72,94,0.2);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:var(--red)">${low}</div><div style="font-size:10px;color:var(--muted)">Low (&lt;50%)</div>
+      </div>
+    </div>
+    <p style="font-size:13px"><strong>Key issues:</strong></p>
+    <ul style="margin:6px 0 6px 16px;font-size:13px;color:var(--muted)">
+      <li><strong>${incomplete}</strong> products missing descriptions</li>
+      <li><strong>${noEan}</strong> products missing EAN codes</li>
+    </ul>
+    <p style="font-size:13px;margin-top:8px"><strong>Products needing attention:</strong></p>
+    ${productTableHtml(worst, 'Lowest Quality')}`,
+    ['Show draft products', 'Edit ' + worst[0]?.sku, 'Show all products']
+  );
+}
+
+function execOverview() {
+  const byStatus = { active: 0, draft: 0, archived: 0 };
+  DB.products.forEach(p => byStatus[p.status] = (byStatus[p.status]||0) + 1);
+  const topCats = DB.categories.filter(c => !c.parent).map(c => ({
+    name: c.name, count: productsInCat(c.id).length
+  })).sort((a,b) => b.count - a.count);
+
+  addSystem(
+    `<p><strong>Catalog Overview</strong></p>
+    <p style="margin:8px 0;font-size:13px">Your catalog contains <strong>${DB.products.length}</strong> products across <strong>${DB.categories.length}</strong> categories.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">
+      <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:8px">By Status</div>
+        <div style="font-size:13px"><span style="color:var(--green)">● Active:</span> <strong>${byStatus.active}</strong></div>
+        <div style="font-size:13px"><span style="color:var(--yellow)">● Draft:</span> <strong>${byStatus.draft}</strong></div>
+        <div style="font-size:13px"><span style="color:var(--muted)">● Archived:</span> <strong>${byStatus.archived || 0}</strong></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Top Categories</div>
+        ${topCats.map(c => `<div style="font-size:13px">${esc(c.name)}: <strong>${c.count}</strong></div>`).join('')}
+      </div>
+    </div>
+    <p style="font-size:13px"><strong>Active labels:</strong></p>
+    <div style="margin:6px 0">${DB.labels.map(l => {
+      const cnt = DB.products.filter(p => p.labels.includes(l.id)).length;
+      return labelHtml(l.id, false) + `<span style="font-size:11px;color:var(--muted);margin-right:8px">(${cnt})</span>`;
+    }).join('')}</div>`,
+    ['Show all products', 'Data quality report', 'Show draft products']
+  );
+}
+
+function execAddLabel(labelName, target) {
+  // Find or create label
+  let lbl = DB.labels.find(l => l.name.toLowerCase() === labelName.toLowerCase());
+  const products = findByTarget(target);
+  if (!products.length) {
+    addSystem(`<p>No products found matching "<strong>${esc(target)}</strong>".</p>`, ['Show all products']);
+    return;
+  }
+
+  const previewId = 'chg_' + Date.now();
+  const isNew = !lbl;
+  const already = lbl ? products.filter(p => p.labels.includes(lbl.id)).length : 0;
+  const toChange = lbl ? products.filter(p => !p.labels.includes(lbl.id)) : products;
+
+  let html = `<div class="change-preview" id="${previewId}">
+    <div class="change-preview-hdr">🏷️ ${isNew ? 'Create label & apply' : 'Apply label'} to ${toChange.length} product${toChange.length!==1?'s':''}</div>
+    <div class="change-preview-body">
+      ${isNew ? `<p style="font-size:13px;margin-bottom:8px">New label "<strong>${esc(labelName)}</strong>" will be created.</p>` : ''}
+      ${already > 0 ? `<p style="font-size:12px;color:var(--muted);margin-bottom:6px">${already} product${already!==1?'s':''} already have this label and will be skipped.</p>` : ''}
+      <p style="font-size:13px;font-weight:600;margin-bottom:4px">Products to be labeled:</p>
+      <ul style="margin:4px 0 0 16px;font-size:12px;color:var(--muted)">${toChange.slice(0,8).map(p => `<li>${esc(p.name)} (${esc(p.sku)})</li>`).join('')}
+      ${toChange.length > 8 ? `<li>...and ${toChange.length - 8} more</li>` : ''}</ul>
+    </div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Cancel</button>
+      <button class="btn btn-confirm" onclick="confirmAddLabel('${previewId}','${esc(labelName)}','${target}')">Apply Label</button>
+    </div>
+  </div>`;
+  addSystem(html, []);
+}
+
+window.confirmAddLabel = function(previewId, labelName, target) {
+  let lbl = DB.labels.find(l => l.name.toLowerCase() === labelName.toLowerCase());
+  if (!lbl) {
+    const colors = ['#EC672B','#3D74F4','#34D399','#EB485E','#A78BFF','#FBE74D'];
+    lbl = { id: genId('lbl'), name: labelName, color: pick(colors) };
+    DB.labels.push(lbl);
+  }
+  const products = findByTarget(target);
+  let count = 0;
+  products.forEach(p => {
+    if (!p.labels.includes(lbl.id)) { p.labels.push(lbl.id); p.updated = new Date().toISOString(); count++; }
+  });
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ Label ${labelHtml(lbl.id, false)} applied to ${count} product${count!==1?'s':''}.</p></div>`;
+  addAudit('label', `Added "${lbl.name}" to ${count} products`);
+};
+
+function execRemoveLabel(labelName, target) {
+  const lbl = DB.labels.find(l => l.name.toLowerCase() === labelName.toLowerCase());
+  if (!lbl) { addSystem(`<p>Label "<strong>${esc(labelName)}</strong>" not found.</p>`, []); return; }
+  const products = findByTarget(target);
+  const toChange = products.filter(p => p.labels.includes(lbl.id));
+  if (!toChange.length) { addSystem(`<p>None of the matched products have label "${esc(labelName)}".</p>`, []); return; }
+
+  const previewId = 'chg_' + Date.now();
+  addSystem(`<div class="change-preview destructive" id="${previewId}">
+    <div class="change-preview-hdr">🏷️ Remove label from ${toChange.length} product${toChange.length!==1?'s':''}</div>
+    <div class="change-preview-body">
+      <p style="font-size:13px">Label ${labelHtml(lbl.id,false)} will be removed from:</p>
+      <ul style="margin:6px 0 0 16px;font-size:12px;color:var(--muted)">${toChange.map(p => `<li>${esc(p.name)} (${esc(p.sku)})</li>`).join('')}</ul>
+    </div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmRemoveLabel('${previewId}','${lbl.id}','${target}')">Remove Label</button>
+    </div>
+  </div>`, []);
+}
+
+window.confirmRemoveLabel = function(previewId, lblId, target) {
+  const products = findByTarget(target);
+  let count = 0;
+  products.forEach(p => {
+    if (p.labels.includes(lblId)) { p.labels = p.labels.filter(l => l !== lblId); p.updated = new Date().toISOString(); count++; }
+  });
+  const lbl = labelObj(lblId);
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ Label removed from ${count} product${count!==1?'s':''}.</p></div>`;
+  addAudit('label', `Removed "${lbl?.name}" from ${count} products`);
+};
+
+function execCreateLabel(name, color) {
+  if (DB.labels.find(l => l.name.toLowerCase() === name.toLowerCase())) {
+    addSystem(`<p>Label "<strong>${esc(name)}</strong>" already exists.</p>`, [`Show products labeled "${name}"`]);
+    return;
+  }
+  const colors = ['#EC672B','#3D74F4','#34D399','#EB485E','#A78BFF','#FBE74D'];
+  const lbl = { id: genId('lbl'), name, color: color || pick(colors) };
+  DB.labels.push(lbl);
+  addAudit('create', `Created label "${name}"`);
+  addSystem(
+    `<p>Label ${labelHtml(lbl.id, false)} has been created.</p><p style="font-size:13px;color:var(--muted);margin-top:4px">You can now apply it to products.</p>`,
+    [`Add label "${name}" to all products`, `Show all products`]
+  );
+}
+
+function execEdit(query) {
+  const q = query.replace(/^(product|item|the)\s+/i, '').replace(/\s*(price|name|description|status|brand|weight|material|ean)\s+/i, '');
+  const product = DB.products.find(p => p.sku.toLowerCase() === q.toLowerCase() || p.name.toLowerCase().includes(q.toLowerCase()));
+  if (!product) {
+    const results = findProducts(q);
+    if (results.length > 1) {
+      addSystem(`<p>Multiple products match. Which one?</p>${productTableHtml(results)}`, results.slice(0,3).map(p => `Edit ${p.sku}`));
+    } else {
+      addSystem(`<p>No product found matching "<strong>${esc(query)}</strong>".</p>`, ['Show all products']);
+    }
+    return;
+  }
+
+  // Show edit modal
+  openModal(`
+    <h3 style="font-size:16px;font-weight:800;margin-bottom:16px">Edit ${esc(product.name)}</h3>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:16px">${esc(product.sku)}</div>
+    <div style="display:grid;gap:12px">
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Name</label><input id="edit-name" value="${esc(product.name)}" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Price</label><input id="edit-price" type="number" step="0.01" value="${product.price}" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Brand</label><input id="edit-brand" value="${esc(product.brand)}" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Status</label>
+        <select id="edit-status" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px">
+          <option value="active" ${product.status==='active'?'selected':''}>Active</option>
+          <option value="draft" ${product.status==='draft'?'selected':''}>Draft</option>
+          <option value="archived" ${product.status==='archived'?'selected':''}>Archived</option>
+        </select></div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Description</label><textarea id="edit-desc" rows="3" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px;resize:vertical">${esc(product.description)}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Weight</label><input id="edit-weight" value="${esc(product.weight)}" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+        <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Material</label><input id="edit-material" value="${esc(product.material)}" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+      </div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">EAN</label><input id="edit-ean" value="${esc(product.ean)}" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-confirm" onclick="saveEdit('${product.id}')">Save Changes</button>
+    </div>
+  `);
+}
+
+window.saveEdit = function(productId) {
+  const p = DB.products.find(x => x.id === productId);
+  if (!p) return;
+  const changes = [];
+  const fields = {name:'edit-name',price:'edit-price',brand:'edit-brand',status:'edit-status',description:'edit-desc',weight:'edit-weight',material:'edit-material',ean:'edit-ean'};
+  const newVals = {};
+  for (const [key, elId] of Object.entries(fields)) {
+    const val = document.getElementById(elId).value.trim();
+    const newVal = key === 'price' ? parseFloat(val) : val;
+    if (String(p[key]) !== String(newVal)) {
+      changes.push({ field: key, from: p[key], to: newVal });
+      newVals[key] = newVal;
+    }
+  }
+  if (!changes.length) { closeModal(); addSystem('<p>No changes made.</p>', []); return; }
+  closeModal();
+
+  // Show diff preview
+  const previewId = 'chg_' + Date.now();
+  let diffHtml = changes.map(c =>
+    `<div class="diff-row"><span class="diff-label">${c.field}</span><span class="diff-before">${esc(String(c.from || '(empty)'))}</span><span class="diff-arrow">→</span><span class="diff-after">${esc(String(c.to || '(empty)'))}</span></div>`
+  ).join('');
+
+  addSystem(`<div class="change-preview" id="${previewId}">
+    <div class="change-preview-hdr">📝 Update ${esc(p.name)}</div>
+    <div class="change-preview-body">${diffHtml}</div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Discard</button>
+      <button class="btn btn-confirm" onclick="confirmEdit('${previewId}','${p.id}',${JSON.stringify(JSON.stringify(newVals))})">Confirm Changes</button>
+    </div>
+  </div>`, []);
+};
+
+window.confirmEdit = function(previewId, productId, newValsJson) {
+  const p = DB.products.find(x => x.id === productId);
+  const newVals = JSON.parse(newValsJson);
+  Object.assign(p, newVals);
+  p.updated = new Date().toISOString();
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ ${esc(p.name)} updated successfully.</p></div>`;
+  addAudit('update', `Updated ${p.sku}: ${Object.keys(newVals).join(', ')}`);
+};
+
+function execPriceChange(direction, target, percent) {
+  const products = findByTarget(target);
+  if (!products.length) { addSystem(`<p>No products found matching "${esc(target)}".</p>`, ['Show all products']); return; }
+  const isUp = /increase|raise/i.test(direction);
+  const multiplier = isUp ? (1 + percent/100) : (1 - percent/100);
+  const previewId = 'chg_' + Date.now();
+
+  let diffHtml = products.slice(0, 10).map(p => {
+    const newPrice = Math.round(p.price * multiplier * 100) / 100;
+    return `<div class="diff-row"><span class="diff-label">${esc(p.sku)}</span><span class="diff-before">${fmtPrice(p.price)}</span><span class="diff-arrow">→</span><span class="diff-after">${fmtPrice(newPrice)}</span></div>`;
+  }).join('');
+  if (products.length > 10) diffHtml += `<p style="font-size:12px;color:var(--muted);padding-top:6px">...and ${products.length - 10} more products</p>`;
+
+  addSystem(`<div class="change-preview" id="${previewId}">
+    <div class="change-preview-hdr">💰 ${isUp?'Increase':'Decrease'} price by ${percent}% — ${products.length} product${products.length!==1?'s':''}</div>
+    <div class="change-preview-body">${diffHtml}</div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Cancel</button>
+      <button class="btn btn-confirm" onclick="confirmPriceChange('${previewId}','${target}',${multiplier})">Apply Price Change</button>
+    </div>
+  </div>`, []);
+}
+
+window.confirmPriceChange = function(previewId, target, multiplier) {
+  const products = findByTarget(target);
+  products.forEach(p => { p.price = Math.round(p.price * multiplier * 100) / 100; p.updated = new Date().toISOString(); });
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ Prices updated for ${products.length} product${products.length!==1?'s':''}.</p></div>`;
+  addAudit('bulk', `Bulk price update: ${products.length} products`);
+};
+
+function execBulkSelect(query) {
+  const products = findByTarget(query);
+  if (!products.length) { addSystem(`<p>No products found matching "${esc(query)}".</p>`, ['Show all products']); return; }
+  DB.selectedProducts = products.map(p => p.id);
+  addSystem(
+    `<p><strong>${products.length} products selected.</strong> What would you like to do with them?</p>${productTableHtml(products, 'Selected Products')}`,
+    [`Increase price of selection by 10%`, `Add label "Sale" to selection`, `Set status to active`]
+  );
+}
+
+function execDelete(query) {
+  const q = query.replace(/^(product|item)\s+/i, '');
+  const product = DB.products.find(p => p.sku.toLowerCase() === q.toLowerCase() || p.name.toLowerCase().includes(q.toLowerCase()));
+  if (!product) { addSystem(`<p>No product found matching "${esc(query)}".</p>`, ['Show all products']); return; }
+
+  const previewId = 'chg_' + Date.now();
+  addSystem(`<div class="change-preview destructive" id="${previewId}">
+    <div class="change-preview-hdr">🗑️ Delete Product</div>
+    <div class="change-preview-body">
+      <p style="font-size:13px"><strong>${esc(product.name)}</strong> (${esc(product.sku)}) will be permanently removed.</p>
+      <p style="font-size:12px;color:var(--red);margin-top:6px">This action cannot be undone.</p>
+    </div>
+    <div class="change-actions">
+      <button class="btn btn-cancel" onclick="dismissChange('${previewId}')">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDelete('${previewId}','${product.id}')">Delete Product</button>
+    </div>
+  </div>`, []);
+}
+
+window.confirmDelete = function(previewId, productId) {
+  const p = DB.products.find(x => x.id === productId);
+  DB.products = DB.products.filter(x => x.id !== productId);
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:var(--radius);padding:12px;margin:8px 0">
+    <p style="color:var(--green);font-weight:700">✓ ${esc(p?.name)} has been deleted.</p></div>`;
+  addAudit('delete', `Deleted ${p?.sku} (${p?.name})`);
+};
+
+function execCreateProduct() {
+  openModal(`
+    <h3 style="font-size:16px;font-weight:800;margin-bottom:16px">Create New Product</h3>
+    <div style="display:grid;gap:12px">
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">SKU *</label><input id="new-sku" placeholder="e.g. PROD-001" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Name *</label><input id="new-name" placeholder="Product name" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Brand</label><input id="new-brand" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Price</label><input id="new-price" type="number" step="0.01" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px"></div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Category</label>
+        <select id="new-cat" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px">
+          ${DB.categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}
+        </select></div>
+      <div><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">Description</label><textarea id="new-desc" rows="3" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;margin-top:4px;resize:vertical"></textarea></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-confirm" onclick="saveNewProduct()">Create Product</button>
+    </div>
+  `);
+}
+
+window.saveNewProduct = function() {
+  const sku = document.getElementById('new-sku').value.trim();
+  const name = document.getElementById('new-name').value.trim();
+  if (!sku || !name) { alert('SKU and Name are required'); return; }
+  if (DB.products.find(p => p.sku.toLowerCase() === sku.toLowerCase())) { alert('SKU already exists'); return; }
+
+  const product = {
+    id: genId('prod'), sku, name,
+    brand: document.getElementById('new-brand').value.trim(),
+    price: parseFloat(document.getElementById('new-price').value) || 0,
+    category: document.getElementById('new-cat').value,
+    description: document.getElementById('new-desc').value.trim(),
+    status: 'draft', labels: [], weight: '', material: '', ean: '',
+    created: new Date().toISOString(), updated: new Date().toISOString()
+  };
+  DB.products.push(product);
+  closeModal();
+  addAudit('create', `Created ${sku} (${name})`);
+  addSystem(
+    `<p style="color:var(--green);font-weight:700">✓ Product created successfully!</p>` + productTableHtml([product]),
+    [`Edit ${sku}`, `Show all products`, `Add label to ${sku}`]
+  );
+};
+
+window.dismissChange = function(previewId) {
+  const el = document.getElementById(previewId);
+  if (el) el.outerHTML = `<div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin:8px 0;font-size:13px;color:var(--muted)">Change cancelled.</div>`;
+};
+
+// ============ SIDEBAR CLICK HANDLERS ============
+function handleCatClick(catId) {
+  const cat = DB.categories.find(c => c.id === catId);
+  if (cat) { document.getElementById('prompt-input').value = `Show products in ${cat.name}`; handleSend(); }
+}
+
+function handleLabelClick(labelId) {
+  const lbl = labelObj(labelId);
+  if (lbl) { document.getElementById('prompt-input').value = `Show products labeled "${lbl.name}"`; handleSend(); }
+}
+
+// ============ SEND HANDLER ============
+function handleSend() {
+  const input = document.getElementById('prompt-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  executeCommand(text);
+}
+
+document.getElementById('prompt-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleSend();
+});
+
+// ============ INIT ============
+render();
+
+// Welcome message on load
+setTimeout(() => {
+  addSystem(
+    `<p><strong>Welcome to Bluestone PIM Agent</strong></p>
+    <p style="margin-top:6px;color:var(--muted)">I'm your AI-powered product information assistant. I can help you browse, edit, organize, and analyze your product catalog — all through natural conversation.</p>
+    <p style="margin-top:8px;color:var(--muted)">Your catalog has been loaded with <strong style="color:var(--white)">${DB.products.length} products</strong> across <strong style="color:var(--white)">${DB.categories.filter(c=>!c.parent).length} categories</strong>.</p>
+    <p style="margin-top:8px;font-size:13px;color:var(--muted)">Try one of these to get started:</p>`,
+    ['Hey', 'Show all products', 'Data quality report', 'Help']
+  );
+}, 300);
 </script>
 </body>
 </html>
