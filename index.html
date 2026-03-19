@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bluestone PIM Agent</title>
+<title>Agentic PIM</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -176,7 +176,7 @@ html,body{height:100%;font-family:'Montserrat',sans-serif;background:var(--bg);c
   <div id="header">
     <div class="logo">
       <svg viewBox="0 0 34 34" fill="none"><polygon points="17,3 31,29 3,29" fill="url(#lg)"/><defs><linearGradient id="lg" x1="3" y1="3" x2="31" y2="29"><stop offset="0%" stop-color="#3D74F4"/><stop offset="100%" stop-color="#0F05CC"/></linearGradient></defs></svg>
-      Bluestone PIM Agent
+      Agentic PIM
     </div>
     <span class="env-badge">Prototype</span>
     <div class="header-stats">
@@ -663,7 +663,7 @@ function execGreeting() {
   };
 
   addSystem(
-    `<p><strong>${greeting}!</strong> Welcome to Bluestone PIM Agent. I'm here to help you manage your product catalog.</p>
+    `<p><strong>${greeting}!</strong> Welcome to Agentic PIM. I'm here to help you manage your product catalog.</p>
     <p style="margin-top:8px">Here's a quick snapshot of your catalog:</p>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0">
       <div style="background:rgba(61,116,244,0.1);border:1px solid rgba(61,116,244,0.2);border-radius:8px;padding:10px;text-align:center">
@@ -1246,7 +1246,7 @@ render();
 // Welcome message on load
 setTimeout(() => {
   addSystem(
-    `<p><strong>Welcome to Bluestone PIM Agent</strong></p>
+    `<p><strong>Welcome to Agentic PIM</strong></p>
     <p style="margin-top:6px;color:var(--muted)">I'm your AI-powered product information assistant. I can help you browse, edit, organize, and analyze your product catalog — all through natural conversation.</p>
     <p style="margin-top:8px;color:var(--muted)">Your catalog has been loaded with <strong style="color:var(--white)">${DB.products.length} products</strong> across <strong style="color:var(--white)">${DB.categories.filter(c=>!c.parent).length} categories</strong>.</p>
     <p style="margin-top:8px;font-size:13px;color:var(--muted)">Try one of these to get started:</p>`,
