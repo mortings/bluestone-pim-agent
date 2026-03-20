@@ -259,6 +259,79 @@ html,body{height:100%;font-family:'Montserrat',sans-serif;background:var(--bg);c
 .compare-product{font-weight:700;color:var(--blue)}
 .compare-diff{color:var(--yellow)}
 
+/* ========== MODE TOGGLE ========== */
+.mode-toggle{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;height:34px}
+.mode-toggle-btn{display:flex;align-items:center;gap:6px;padding:0 14px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);background:transparent;border:none;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.mode-toggle-btn:hover{color:var(--text)}
+.mode-toggle-btn.active{background:linear-gradient(135deg,var(--blue),var(--electric));color:var(--white);box-shadow:0 0 12px rgba(61,116,244,0.3)}
+.mode-toggle-btn svg{width:14px;height:14px}
+
+/* ========== DATA VIEWER ========== */
+#data-view{display:none;flex-direction:column;overflow:hidden;flex:1}
+#data-view.active{display:flex}
+#chat-area.hidden,#input-area.hidden,#drop-overlay.hidden{display:none!important}
+
+/* Data toolbar */
+.data-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.data-search{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px 7px 32px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:12px;outline:none;width:240px;transition:border-color 0.2s}
+.data-search:focus{border-color:var(--blue)}
+.data-search-wrap{position:relative}
+.data-search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--muted);pointer-events:none}
+.data-filter{display:flex;align-items:center;gap:4px}
+.data-filter-btn{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;padding:5px 12px;border-radius:100px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all 0.15s}
+.data-filter-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.data-filter-btn.active{background:rgba(61,116,244,0.12);color:var(--blue);border-color:rgba(61,116,244,0.3)}
+.data-toolbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.data-count{font-size:11px;color:var(--muted);font-weight:600}
+.data-bulk-bar{display:none;align-items:center;gap:10px;padding:8px 16px;background:rgba(61,116,244,0.08);border-bottom:1px solid rgba(61,116,244,0.2);font-size:12px;font-weight:600;color:var(--blue);flex-shrink:0}
+.data-bulk-bar.active{display:flex}
+.data-bulk-bar .sel-count{font-weight:800}
+.data-bulk-actions{display:flex;gap:6px;margin-left:auto}
+.data-bulk-actions button{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;cursor:pointer;border:none;transition:all 0.15s}
+
+/* Data grid */
+.data-grid-wrap{flex:1;overflow:auto}
+.data-grid{width:100%;border-collapse:collapse;font-size:12px}
+.data-grid thead{position:sticky;top:0;z-index:5}
+.data-grid th{text-align:left;padding:8px 12px;background:var(--surface);font-weight:700;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
+.data-grid th:hover{color:var(--text)}
+.data-grid th .sort-icon{font-size:9px;margin-left:4px;opacity:0.4}
+.data-grid th.sorted .sort-icon{opacity:1;color:var(--blue)}
+.data-grid td{padding:7px 12px;border-bottom:1px solid rgba(255,255,255,0.03);transition:background 0.1s;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.data-grid tr:hover td{background:rgba(255,255,255,0.02)}
+.data-grid tr.selected td{background:rgba(61,116,244,0.06)}
+.data-grid .cb-cell{width:36px;text-align:center}
+.data-grid input[type="checkbox"]{accent-color:var(--blue);cursor:pointer;width:14px;height:14px}
+.data-grid .sku-cell{font-family:'Courier New',monospace;font-size:11px;color:var(--muted)}
+.data-grid .name-cell{font-weight:700;color:var(--white);cursor:pointer}
+.data-grid .name-cell:hover{color:var(--blue);text-decoration:underline}
+.data-grid .price-cell{font-weight:600;font-family:'Courier New',monospace}
+.data-grid .status-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.3px}
+.data-grid .status-active{background:rgba(52,211,153,0.13);color:var(--green)}
+.data-grid .status-draft{background:rgba(251,231,77,0.13);color:var(--yellow)}
+.data-grid .status-archived{background:rgba(255,255,255,0.06);color:var(--muted)}
+.data-grid .label-chips{display:flex;gap:3px;flex-wrap:nowrap;overflow:hidden}
+.data-grid .label-chip-sm{font-size:9px;font-weight:700;padding:1px 6px;border-radius:100px;white-space:nowrap}
+.data-grid .quality-mini{width:50px;height:5px;background:rgba(255,255,255,0.06);border-radius:100px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:4px}
+.data-grid .quality-mini-fill{height:100%;border-radius:100px}
+.data-grid .action-btns{display:flex;gap:4px;opacity:0;transition:opacity 0.15s}
+.data-grid tr:hover .action-btns{opacity:1}
+.data-grid .action-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.15s}
+.data-grid .action-btn:hover{background:rgba(61,116,244,0.1);color:var(--blue);border-color:rgba(61,116,244,0.3)}
+.data-grid .action-btn.danger:hover{background:rgba(235,72,94,0.1);color:var(--red);border-color:rgba(235,72,94,0.3)}
+
+/* Inline edit */
+.data-grid td.editing{padding:3px 6px;background:rgba(61,116,244,0.05)}
+.inline-edit{background:var(--surface2);border:1px solid var(--blue);border-radius:4px;padding:4px 8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:12px;outline:none;width:100%;box-shadow:0 0 8px rgba(61,116,244,0.2)}
+.inline-edit-select{background:var(--surface2);border:1px solid var(--blue);border-radius:4px;padding:4px 8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:12px;outline:none;cursor:pointer}
+
+/* Pending changes bar */
+.changes-bar{display:none;align-items:center;gap:12px;padding:10px 16px;background:rgba(251,231,77,0.08);border-top:1px solid rgba(251,231,77,0.2);flex-shrink:0}
+.changes-bar.active{display:flex}
+.changes-bar .changes-text{font-size:12px;font-weight:700;color:var(--yellow)}
+.changes-bar .changes-count{font-size:18px;font-weight:800;color:var(--yellow)}
+.changes-bar .changes-list{flex:1;font-size:11px;color:var(--muted);max-width:500px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 /* Scrollbar */
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -275,6 +348,16 @@ html,body{height:100%;font-family:'Montserrat',sans-serif;background:var(--bg);c
       Agentic PIM
     </div>
     <span class="env-badge">Prototype</span>
+    <div class="mode-toggle" id="mode-toggle">
+      <button class="mode-toggle-btn active" data-mode="chat" onclick="setMode('chat')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Agent
+      </button>
+      <button class="mode-toggle-btn" data-mode="data" onclick="setMode('data')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Data
+      </button>
+    </div>
     <button id="new-chat-btn" onclick="startNewChat()" title="Start a new conversation">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
       New Chat
@@ -317,6 +400,49 @@ html,body{height:100%;font-family:'Montserrat',sans-serif;background:var(--bg);c
         <p>CSV, Excel (.xlsx), or TSV files supported</p>
       </div>
     </div>
+    <!-- DATA VIEWER MODE -->
+    <div id="data-view">
+      <div class="data-toolbar">
+        <div class="data-search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="data-search" type="text" placeholder="Filter products..." id="data-search" oninput="renderDataGrid()">
+        </div>
+        <div class="data-filter">
+          <button class="data-filter-btn active" data-filter="all" onclick="setDataFilter('all')">All</button>
+          <button class="data-filter-btn" data-filter="active" onclick="setDataFilter('active')">Active</button>
+          <button class="data-filter-btn" data-filter="draft" onclick="setDataFilter('draft')">Draft</button>
+          <button class="data-filter-btn" data-filter="archived" onclick="setDataFilter('archived')">Archived</button>
+        </div>
+        <div class="data-toolbar-right">
+          <span class="data-count" id="data-count">0 products</span>
+        </div>
+      </div>
+      <div class="data-bulk-bar" id="data-bulk-bar">
+        <input type="checkbox" id="bulk-select-all" onchange="toggleSelectAll(this.checked)">
+        <span><span class="sel-count" id="sel-count">0</span> selected</span>
+        <div class="data-bulk-actions">
+          <button class="btn btn-confirm" style="font-size:11px;padding:5px 12px" onclick="bulkSetStatus('active')">Set Active</button>
+          <button class="btn btn-cancel" style="font-size:11px;padding:5px 12px" onclick="bulkSetStatus('draft')">Set Draft</button>
+          <button class="btn btn-cancel" style="font-size:11px;padding:5px 12px" onclick="bulkAddLabel()">Add Label</button>
+          <button class="btn btn-danger" style="font-size:11px;padding:5px 12px" onclick="bulkDelete()">Delete</button>
+          <button class="btn btn-cancel" style="font-size:11px;padding:5px 12px" onclick="clearSelection()">✕ Clear</button>
+        </div>
+      </div>
+      <div class="data-grid-wrap">
+        <table class="data-grid" id="data-grid">
+          <thead id="data-grid-head"></thead>
+          <tbody id="data-grid-body"></tbody>
+        </table>
+      </div>
+      <div class="changes-bar" id="changes-bar">
+        <span class="changes-count" id="changes-count">0</span>
+        <span class="changes-text">unsaved changes</span>
+        <span class="changes-list" id="changes-list"></span>
+        <button class="btn btn-cancel" onclick="discardChanges()" style="font-size:11px;padding:5px 12px">Discard</button>
+        <button class="btn btn-confirm" onclick="saveChanges()" style="font-size:11px;padding:5px 12px">Save All Changes</button>
+      </div>
+    </div>
+
     <div id="detail-overlay" onclick="closeDetail()"></div>
     <div id="detail-panel"></div>
     <div id="input-area">
@@ -2297,6 +2423,398 @@ function handleCatClick(catId) {
 function handleLabelClick(labelId) {
   const lbl = labelObj(labelId);
   if (lbl) { document.getElementById('prompt-input').value = `Show products labeled "${lbl.name}"`; handleSend(); }
+}
+
+// ============ DATA VIEWER MODE ============
+
+let currentMode = 'chat';
+let dataFilter = 'all';
+let dataSort = { key: 'name', asc: true };
+let selectedIds = new Set();
+let pendingChanges = {}; // { productId: { field: newValue, ... } }
+
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+
+  const chatArea = document.getElementById('chat-area');
+  const inputArea = document.getElementById('input-area');
+  const dropOverlay = document.getElementById('drop-overlay');
+  const dataView = document.getElementById('data-view');
+  const newChatBtn = document.getElementById('new-chat-btn');
+
+  if (mode === 'data') {
+    chatArea.classList.add('hidden');
+    inputArea.classList.add('hidden');
+    dropOverlay.classList.add('hidden');
+    dataView.classList.add('active');
+    newChatBtn.style.display = 'none';
+    renderDataGrid();
+    document.getElementById('status-text').textContent = 'Data View — click any cell to edit · changes are tracked';
+  } else {
+    chatArea.classList.remove('hidden');
+    inputArea.classList.remove('hidden');
+    dropOverlay.classList.remove('hidden');
+    dataView.classList.remove('active');
+    newChatBtn.style.display = '';
+    document.getElementById('status-text').textContent = 'PIM Agent ready — all systems operational';
+  }
+}
+
+function setDataFilter(filter) {
+  dataFilter = filter;
+  document.querySelectorAll('.data-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
+  selectedIds.clear();
+  renderDataGrid();
+}
+
+function getFilteredProducts() {
+  let products = [...DB.products];
+  const search = (document.getElementById('data-search')?.value || '').toLowerCase();
+  if (search) {
+    products = products.filter(p =>
+      p.name.toLowerCase().includes(search) ||
+      p.sku.toLowerCase().includes(search) ||
+      (p.brand || '').toLowerCase().includes(search) ||
+      (p.description || '').toLowerCase().includes(search)
+    );
+  }
+  if (dataFilter !== 'all') products = products.filter(p => p.status === dataFilter);
+
+  // Sort
+  products.sort((a, b) => {
+    let va = a[dataSort.key] || '', vb = b[dataSort.key] || '';
+    if (dataSort.key === 'price') { va = Number(va) || 0; vb = Number(vb) || 0; }
+    if (dataSort.key === 'completeness') { va = completeness(a); vb = completeness(b); }
+    if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+    if (va < vb) return dataSort.asc ? -1 : 1;
+    if (va > vb) return dataSort.asc ? 1 : -1;
+    return 0;
+  });
+  return products;
+}
+
+function sortBy(key) {
+  if (dataSort.key === key) dataSort.asc = !dataSort.asc;
+  else { dataSort.key = key; dataSort.asc = true; }
+  renderDataGrid();
+}
+
+function renderDataGrid() {
+  const products = getFilteredProducts();
+  const head = document.getElementById('data-grid-head');
+  const body = document.getElementById('data-grid-body');
+
+  // Header
+  const cols = [
+    { key: 'cb', label: '', nosort: true },
+    { key: 'sku', label: 'SKU' },
+    { key: 'name', label: 'Product Name' },
+    { key: 'brand', label: 'Brand' },
+    { key: 'category', label: 'Category' },
+    { key: 'price', label: 'Price' },
+    { key: 'status', label: 'Status' },
+    { key: 'labels', label: 'Labels', nosort: true },
+    { key: 'completeness', label: 'Quality' },
+    { key: 'actions', label: '', nosort: true }
+  ];
+
+  head.innerHTML = '<tr>' + cols.map(c => {
+    if (c.key === 'cb') return `<th class="cb-cell"><input type="checkbox" id="header-cb" onchange="toggleSelectAll(this.checked)" ${selectedIds.size === products.length && products.length > 0 ? 'checked' : ''}></th>`;
+    if (c.nosort) return `<th>${c.label}</th>`;
+    const sorted = dataSort.key === c.key;
+    const arrow = sorted ? (dataSort.asc ? '▲' : '▼') : '▲';
+    return `<th class="${sorted ? 'sorted' : ''}" onclick="sortBy('${c.key}')">${c.label} <span class="sort-icon">${arrow}</span></th>`;
+  }).join('') + '</tr>';
+
+  // Body
+  body.innerHTML = products.map(p => {
+    const sel = selectedIds.has(p.id);
+    const cat = DB.categories.find(c => c.id === p.category);
+    const comp = completeness(p);
+    const qClass = comp >= 75 ? 'var(--green)' : comp >= 50 ? 'var(--yellow)' : 'var(--red)';
+    const changes = pendingChanges[p.id];
+    const rowClass = sel ? 'selected' : '';
+
+    // Labels
+    const labelHtml = (p.labels || []).map(lid => {
+      const l = DB.labels.find(lb => lb.id === lid);
+      return l ? `<span class="label-chip-sm" style="background:${l.color}22;color:${l.color}">${esc(l.name)}</span>` : '';
+    }).join('');
+
+    // Get displayed values (showing pending changes if any)
+    const displayName = changes?.name ?? p.name;
+    const displayBrand = changes?.brand ?? p.brand ?? '';
+    const displayPrice = changes?.price ?? p.price;
+    const displayStatus = changes?.status ?? p.status;
+
+    const statusClass = `status-${displayStatus}`;
+    const changedMark = changes ? ' style="border-left:3px solid var(--yellow)"' : '';
+
+    return `<tr class="${rowClass}"${changedMark}>
+      <td class="cb-cell"><input type="checkbox" ${sel ? 'checked' : ''} onchange="toggleSelect('${p.id}', this.checked)"></td>
+      <td class="sku-cell">${esc(p.sku)}</td>
+      <td class="name-cell" onclick="selectProduct('${p.id}')" title="Click to view details">${esc(displayName)}</td>
+      <td ondblclick="startEdit(this, '${p.id}', 'brand')">${esc(displayBrand)}</td>
+      <td>${cat ? esc(cat.name) : '—'}</td>
+      <td class="price-cell" ondblclick="startEdit(this, '${p.id}', 'price')">$${Number(displayPrice).toFixed(2)}</td>
+      <td ondblclick="startEditStatus(this, '${p.id}')"><span class="status-badge ${statusClass}">${displayStatus}</span></td>
+      <td><div class="label-chips">${labelHtml || '<span style="color:var(--muted);font-size:11px">—</span>'}</div></td>
+      <td><div class="quality-mini"><div class="quality-mini-fill" style="width:${comp}%;background:${qClass}"></div></div>${comp}%</td>
+      <td><div class="action-btns">
+        <button class="action-btn" onclick="selectProduct('${p.id}')" title="View details">👁</button>
+        <button class="action-btn danger" onclick="confirmDeleteSingle('${p.id}')" title="Delete">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+
+  // Update counts
+  document.getElementById('data-count').textContent = `${products.length} product${products.length !== 1 ? 's' : ''}`;
+
+  // Bulk bar
+  const bulkBar = document.getElementById('data-bulk-bar');
+  if (selectedIds.size > 0) {
+    bulkBar.classList.add('active');
+    document.getElementById('sel-count').textContent = selectedIds.size;
+  } else {
+    bulkBar.classList.remove('active');
+  }
+
+  // Changes bar
+  updateChangesBar();
+}
+
+function toggleSelect(id, checked) {
+  if (checked) selectedIds.add(id); else selectedIds.delete(id);
+  renderDataGrid();
+}
+
+function toggleSelectAll(checked) {
+  const products = getFilteredProducts();
+  if (checked) products.forEach(p => selectedIds.add(p.id));
+  else selectedIds.clear();
+  renderDataGrid();
+}
+
+function clearSelection() {
+  selectedIds.clear();
+  renderDataGrid();
+}
+
+// Inline editing
+function startEdit(td, productId, field) {
+  if (td.querySelector('.inline-edit')) return;
+  const product = DB.products.find(p => p.id === productId);
+  const currentVal = pendingChanges[productId]?.[field] ?? product[field] ?? '';
+
+  td.classList.add('editing');
+  const input = document.createElement('input');
+  input.className = 'inline-edit';
+  input.value = currentVal;
+  input.type = field === 'price' ? 'number' : 'text';
+  if (field === 'price') input.step = '0.01';
+  td.textContent = '';
+  td.appendChild(input);
+  input.focus();
+  input.select();
+
+  const finish = () => {
+    const newVal = field === 'price' ? parseFloat(input.value) || 0 : input.value.trim();
+    const origVal = product[field];
+    td.classList.remove('editing');
+
+    if (newVal !== origVal && String(newVal) !== String(origVal)) {
+      if (!pendingChanges[productId]) pendingChanges[productId] = {};
+      pendingChanges[productId][field] = newVal;
+    } else if (pendingChanges[productId]) {
+      delete pendingChanges[productId][field];
+      if (Object.keys(pendingChanges[productId]).length === 0) delete pendingChanges[productId];
+    }
+    renderDataGrid();
+  };
+
+  input.addEventListener('blur', finish);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+    if (e.key === 'Escape') { td.classList.remove('editing'); renderDataGrid(); }
+  });
+}
+
+function startEditStatus(td, productId) {
+  if (td.querySelector('.inline-edit-select')) return;
+  const product = DB.products.find(p => p.id === productId);
+  const currentVal = pendingChanges[productId]?.status ?? product.status;
+
+  td.classList.add('editing');
+  const select = document.createElement('select');
+  select.className = 'inline-edit-select';
+  ['active', 'draft', 'archived'].forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s.charAt(0).toUpperCase() + s.slice(1);
+    if (s === currentVal) opt.selected = true;
+    select.appendChild(opt);
+  });
+  td.textContent = '';
+  td.appendChild(select);
+  select.focus();
+
+  const finish = () => {
+    const newVal = select.value;
+    if (newVal !== product.status) {
+      if (!pendingChanges[productId]) pendingChanges[productId] = {};
+      pendingChanges[productId].status = newVal;
+    } else if (pendingChanges[productId]) {
+      delete pendingChanges[productId].status;
+      if (Object.keys(pendingChanges[productId]).length === 0) delete pendingChanges[productId];
+    }
+    renderDataGrid();
+  };
+
+  select.addEventListener('blur', finish);
+  select.addEventListener('change', () => select.blur());
+}
+
+function updateChangesBar() {
+  const bar = document.getElementById('changes-bar');
+  const count = Object.keys(pendingChanges).length;
+  if (count > 0) {
+    bar.classList.add('active');
+    document.getElementById('changes-count').textContent = count;
+    const summaries = [];
+    for (const [pid, changes] of Object.entries(pendingChanges)) {
+      const p = DB.products.find(pr => pr.id === pid);
+      if (p) summaries.push(`${p.sku}: ${Object.keys(changes).join(', ')}`);
+    }
+    document.getElementById('changes-list').textContent = summaries.join(' · ');
+  } else {
+    bar.classList.remove('active');
+  }
+}
+
+function discardChanges() {
+  pendingChanges = {};
+  renderDataGrid();
+  showToast('Changes discarded', 'var(--muted)');
+}
+
+function saveChanges() {
+  let count = 0;
+  for (const [pid, changes] of Object.entries(pendingChanges)) {
+    const p = DB.products.find(pr => pr.id === pid);
+    if (!p) continue;
+    for (const [field, val] of Object.entries(changes)) {
+      p[field] = val;
+    }
+    p.updated = new Date().toISOString();
+    if (!DB.history[pid]) DB.history[pid] = [];
+    DB.history[pid].push({ action: 'updated', detail: `Edited in Data View: ${Object.keys(changes).join(', ')}`, user: 'You', time: new Date().toISOString() });
+    count++;
+  }
+  pendingChanges = {};
+  render();
+  renderDataGrid();
+  showToast(`✓ Saved changes to ${count} product${count !== 1 ? 's' : ''}`, 'var(--green)');
+}
+
+function showToast(msg, color) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span style="color:${color || 'var(--white)'}">${msg}</span>`;
+  document.body.appendChild(t);
+  setTimeout(() => { t.classList.add('hide'); setTimeout(() => t.remove(), 300); }, 2500);
+}
+
+function confirmDeleteSingle(productId) {
+  const p = DB.products.find(pr => pr.id === productId);
+  if (!p) return;
+  openModal(`
+    <p style="font-weight:700;font-size:16px;margin-bottom:8px">Delete Product?</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">This will permanently remove <strong style="color:var(--white)">${esc(p.name)}</strong> (${esc(p.sku)}).</p>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="doDeleteProduct('${p.id}'); closeModal()">Delete</button>
+    </div>
+  `);
+}
+
+function doDeleteProduct(id) {
+  DB.products = DB.products.filter(p => p.id !== id);
+  delete pendingChanges[id];
+  selectedIds.delete(id);
+  render();
+  if (currentMode === 'data') renderDataGrid();
+  showToast('Product deleted', 'var(--red)');
+}
+
+// Bulk actions
+function bulkSetStatus(status) {
+  const count = selectedIds.size;
+  if (!count) return;
+  selectedIds.forEach(id => {
+    if (!pendingChanges[id]) pendingChanges[id] = {};
+    pendingChanges[id].status = status;
+  });
+  renderDataGrid();
+  showToast(`Marked ${count} product${count > 1 ? 's' : ''} as ${status} (unsaved)`, 'var(--yellow)');
+}
+
+function bulkAddLabel() {
+  let labelsHtml = DB.labels.map(l =>
+    `<button class="btn btn-cancel" style="font-size:12px;margin:3px" onclick="doBulkAddLabel('${l.id}');closeModal()">
+      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${l.color};margin-right:6px"></span>${esc(l.name)}
+    </button>`
+  ).join('');
+
+  openModal(`
+    <p style="font-weight:700;font-size:16px;margin-bottom:8px">Add Label to ${selectedIds.size} product${selectedIds.size > 1 ? 's' : ''}</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Choose a label to apply:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">${labelsHtml}</div>
+    <div style="margin-top:12px;display:flex;justify-content:flex-end"><button class="btn btn-cancel" onclick="closeModal()">Cancel</button></div>
+  `);
+}
+
+function doBulkAddLabel(labelId) {
+  selectedIds.forEach(id => {
+    const p = DB.products.find(pr => pr.id === id);
+    if (p && !p.labels.includes(labelId)) {
+      p.labels.push(labelId);
+      p.updated = new Date().toISOString();
+    }
+  });
+  render();
+  if (currentMode === 'data') renderDataGrid();
+  const lbl = DB.labels.find(l => l.id === labelId);
+  showToast(`Added "${lbl?.name}" to ${selectedIds.size} products`, 'var(--green)');
+}
+
+function bulkDelete() {
+  const count = selectedIds.size;
+  openModal(`
+    <p style="font-weight:700;font-size:16px;margin-bottom:8px;color:var(--red)">⚠️ Delete ${count} product${count > 1 ? 's' : ''}?</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">This action cannot be undone. The following products will be permanently removed:</p>
+    <div style="max-height:200px;overflow-y:auto;margin-bottom:12px">
+      ${[...selectedIds].map(id => {
+        const p = DB.products.find(pr => pr.id === id);
+        return p ? `<div style="font-size:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03)"><strong>${esc(p.name)}</strong> <span style="color:var(--muted)">${esc(p.sku)}</span></div>` : '';
+      }).join('')}
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="doBulkDelete();closeModal()">Delete ${count} products</button>
+    </div>
+  `);
+}
+
+function doBulkDelete() {
+  const count = selectedIds.size;
+  DB.products = DB.products.filter(p => !selectedIds.has(p.id));
+  selectedIds.forEach(id => delete pendingChanges[id]);
+  selectedIds.clear();
+  render();
+  if (currentMode === 'data') renderDataGrid();
+  showToast(`Deleted ${count} products`, 'var(--red)');
 }
 
 // ============ IMPORT / DATA ONBOARDING ============
