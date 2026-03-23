@@ -507,30 +507,30 @@ const DB = {
 
 // Seed products
 const seedProducts = [
-  { sku:'ELEC-001', name:'iPhone 15 Pro Max', category:'cat-phones', price:1199, status:'active', brand:'Apple', description:'Latest flagship smartphone with A17 Pro chip, titanium design, and 48MP camera system.', labels:['lbl-best','lbl-premium'], weight:'221g', material:'Titanium', ean:'5901234123457' },
-  { sku:'ELEC-002', name:'Samsung Galaxy S24 Ultra', category:'cat-phones', price:1299, status:'active', brand:'Samsung', description:'Premium Android smartphone with built-in S Pen, 200MP camera, and Galaxy AI features.', labels:['lbl-new'], weight:'232g', material:'Titanium', ean:'4901234567890' },
-  { sku:'ELEC-003', name:'Sony WH-1000XM5', category:'cat-audio', price:349, status:'active', brand:'Sony', description:'Industry-leading noise cancelling wireless headphones with exceptional sound quality.', labels:['lbl-best'], weight:'250g', material:'Plastic/Leather', ean:'4548736132153' },
-  { sku:'ELEC-004', name:'AirPods Pro 2', category:'cat-audio', price:249, status:'active', brand:'Apple', description:'Active noise cancelling earbuds with adaptive audio and USB-C charging.', labels:['lbl-best'], weight:'50.8g', material:'Plastic', ean:'' },
-  { sku:'ELEC-005', name:'MacBook Air M3', category:'cat-laptops', price:1099, status:'active', brand:'Apple', description:'Supercharged by M3 chip. Up to 18 hours battery life. Fanless design.', labels:['lbl-new','lbl-premium'], weight:'1.24kg', material:'Aluminium', ean:'5901234567891' },
-  { sku:'ELEC-006', name:'ThinkPad X1 Carbon Gen 11', category:'cat-laptops', price:1449, status:'active', brand:'Lenovo', description:'Ultralight 14" business laptop with Intel 13th gen processor.', labels:['lbl-premium'], weight:'1.12kg', material:'Carbon Fiber', ean:'1234567890123' },
-  { sku:'ELEC-007', name:'Apple Watch Ultra 2', category:'cat-wear', price:799, status:'active', brand:'Apple', description:'The most rugged and capable Apple Watch with precision GPS and 36-hour battery.', labels:['lbl-premium'], weight:'61.4g', material:'Titanium', ean:'' },
-  { sku:'ELEC-008', name:'Galaxy Buds3 Pro', category:'cat-audio', price:229, status:'draft', brand:'Samsung', description:'', labels:['lbl-new'], weight:'', material:'', ean:'' },
-  { sku:'SHOE-001', name:'Nike Air Max 90', category:'cat-shoes', price:129, status:'active', brand:'Nike', description:'Iconic sneaker with visible Air cushioning and retro design.', labels:['lbl-best','lbl-summer'], weight:'350g', material:'Mesh/Leather', ean:'1928374650123' },
-  { sku:'SHOE-002', name:'Adidas Ultraboost Light', category:'cat-shoes', price:189, status:'active', brand:'Adidas', description:'Lightweight performance running shoe with BOOST midsole technology.', labels:['lbl-new'], weight:'280g', material:'Primeknit', ean:'4001234567890' },
-  { sku:'SHOE-003', name:'New Balance 574', category:'cat-shoes', price:89, status:'active', brand:'New Balance', description:'Classic heritage sneaker with ENCAP midsole cushioning.', labels:[], weight:'340g', material:'Suede/Mesh', ean:'7391234567890' },
-  { sku:'SHOE-004', name:'Salomon Speedcross 6', category:'cat-shoes', price:139, status:'active', brand:'Salomon', description:'Aggressive trail running shoe with Contagrip outsole.', labels:['lbl-eco'], weight:'310g', material:'Synthetic', ean:'' },
-  { sku:'JACK-001', name:'North Face Thermoball Eco', category:'cat-jackets', price:199, status:'active', brand:'The North Face', description:'Lightweight insulated jacket made from recycled materials.', labels:['lbl-eco','lbl-summer'], weight:'420g', material:'Recycled Polyester', ean:'8801234567890' },
-  { sku:'JACK-002', name:'Patagonia Down Sweater', category:'cat-jackets', price:279, status:'active', brand:'Patagonia', description:'800-fill-power down jacket with Fair Trade Certified sewing.', labels:['lbl-premium','lbl-eco'], weight:'371g', material:'Recycled Nylon/Down', ean:'2201234567890' },
-  { sku:'SHRT-001', name:'Uniqlo Supima Cotton Tee', category:'cat-shirts', price:19.90, status:'active', brand:'Uniqlo', description:'Premium cotton crew neck t-shirt with smooth texture.', labels:[], weight:'180g', material:'Supima Cotton', ean:'4901234567001' },
-  { sku:'SHRT-002', name:'Ralph Lauren Oxford Shirt', category:'cat-shirts', price:119, status:'active', brand:'Ralph Lauren', description:'', labels:['lbl-premium'], weight:'', material:'Cotton', ean:'' },
-  { sku:'FURN-001', name:'IKEA KALLAX Shelf', category:'cat-furniture', price:69.99, status:'active', brand:'IKEA', description:'Versatile shelving unit, can be placed on the floor or mounted on a wall.', labels:[], weight:'18.5kg', material:'Particleboard', ean:'7021234567890' },
-  { sku:'FURN-002', name:'HAY About A Chair', category:'cat-furniture', price:349, status:'draft', brand:'HAY', description:'Minimalist Scandinavian design chair with shell seat.', labels:['lbl-premium'], weight:'3.8kg', material:'Polypropylene/Oak', ean:'' },
-  { sku:'LITE-001', name:'Muuto E27 Pendant', category:'cat-lighting', price:89, status:'active', brand:'Muuto', description:'Iconic pendant lamp celebrating the beauty of the bare bulb.', labels:[], weight:'0.5kg', material:'Silicone Rubber', ean:'5701234567890' },
-  { sku:'CAMP-001', name:'Thule Capstone 50L', category:'cat-camping', price:219, status:'active', brand:'Thule', description:'Comfortable hiking backpack with VersaClick accessories system.', labels:['lbl-eco'], weight:'1.75kg', material:'Recycled Nylon', ean:'' },
-  { sku:'CAMP-002', name:'Fjallraven Keb Tent 2', category:'cat-camping', price:899, status:'active', brand:'Fjallraven', description:'Lightweight 3-season tunnel tent for two persons.', labels:['lbl-premium'], weight:'2.4kg', material:'G-1000 HeavyDuty', ean:'7323450123456' },
-  { sku:'FIT-001', name:'Garmin Forerunner 265', category:'cat-fitness', price:449, status:'active', brand:'Garmin', description:'GPS running smartwatch with AMOLED display and training readiness.', labels:['lbl-new','lbl-best'], weight:'47g', material:'Fiber-reinforced polymer', ean:'7531234567890' },
-  { sku:'FIT-002', name:'Theragun Elite', category:'cat-fitness', price:399, status:'active', brand:'Therabody', description:'', labels:[], weight:'1.0kg', material:'', ean:'' },
-  { sku:'SHOE-005', name:'Dr. Martens 1460 Boot', category:'cat-shoes', price:169, status:'draft', brand:'Dr. Martens', description:'Classic 8-eye boot with air-cushioned sole.', labels:['lbl-clearance'], weight:'', material:'Leather', ean:'' }
+  { sku:'ELEC-001', name:'iPhone 15 Pro Max', category:'cat-phones', price:1199, status:'active', brand:'Apple', description:'Latest flagship smartphone with A17 Pro chip, titanium design, and 48MP camera system.', labels:['lbl-best','lbl-premium'], weight:'221g', material:'Titanium', color:'Black Titanium', ean:'5901234123457' },
+  { sku:'ELEC-002', name:'Samsung Galaxy S24 Ultra', category:'cat-phones', price:1299, status:'active', brand:'Samsung', description:'Premium Android smartphone with built-in S Pen, 200MP camera, and Galaxy AI features.', labels:['lbl-new'], weight:'232g', material:'Titanium', color:'Titanium Gray', ean:'4901234567890' },
+  { sku:'ELEC-003', name:'Sony WH-1000XM5', category:'cat-audio', price:349, status:'active', brand:'Sony', description:'Industry-leading noise cancelling wireless headphones with exceptional sound quality.', labels:['lbl-best'], weight:'250g', material:'Plastic/Leather', color:'Black', ean:'4548736132153' },
+  { sku:'ELEC-004', name:'AirPods Pro 2', category:'cat-audio', price:249, status:'active', brand:'Apple', description:'Active noise cancelling earbuds with adaptive audio and USB-C charging.', labels:['lbl-best'], weight:'50.8g', material:'Plastic', color:'White', ean:'' },
+  { sku:'ELEC-005', name:'MacBook Air M3', category:'cat-laptops', price:1099, status:'active', brand:'Apple', description:'Supercharged by M3 chip. Up to 18 hours battery life. Fanless design.', labels:['lbl-new','lbl-premium'], weight:'1.24kg', material:'Aluminium', color:'Silver', ean:'5901234567891' },
+  { sku:'ELEC-006', name:'ThinkPad X1 Carbon Gen 11', category:'cat-laptops', price:1449, status:'active', brand:'Lenovo', description:'Ultralight 14" business laptop with Intel 13th gen processor.', labels:['lbl-premium'], weight:'1.12kg', material:'Carbon Fiber', color:'Black', ean:'1234567890123' },
+  { sku:'ELEC-007', name:'Apple Watch Ultra 2', category:'cat-wear', price:799, status:'active', brand:'Apple', description:'The most rugged and capable Apple Watch with precision GPS and 36-hour battery.', labels:['lbl-premium'], weight:'61.4g', material:'Titanium', color:'Orange', ean:'' },
+  { sku:'ELEC-008', name:'Galaxy Buds3 Pro', category:'cat-audio', price:229, status:'draft', brand:'Samsung', description:'', labels:['lbl-new'], weight:'', material:'', color:'White', ean:'' },
+  { sku:'SHOE-001', name:'Nike Air Max 90', category:'cat-shoes', price:129, status:'active', brand:'Nike', description:'Iconic sneaker with visible Air cushioning and retro design.', labels:['lbl-best','lbl-summer'], weight:'350g', material:'Mesh/Leather', color:'White', ean:'1928374650123' },
+  { sku:'SHOE-002', name:'Adidas Ultraboost Light', category:'cat-shoes', price:189, status:'active', brand:'Adidas', description:'Lightweight performance running shoe with BOOST midsole technology.', labels:['lbl-new'], weight:'280g', material:'Primeknit', color:'Black', ean:'4001234567890' },
+  { sku:'SHOE-003', name:'New Balance 574', category:'cat-shoes', price:89, status:'active', brand:'New Balance', description:'Classic heritage sneaker with ENCAP midsole cushioning.', labels:[], weight:'340g', material:'Suede/Mesh', color:'Gray', ean:'7391234567890' },
+  { sku:'SHOE-004', name:'Salomon Speedcross 6', category:'cat-shoes', price:139, status:'active', brand:'Salomon', description:'Aggressive trail running shoe with Contagrip outsole.', labels:['lbl-eco'], weight:'310g', material:'Synthetic', color:'Blue', ean:'' },
+  { sku:'JACK-001', name:'North Face Thermoball Eco', category:'cat-jackets', price:199, status:'active', brand:'The North Face', description:'Lightweight insulated jacket made from recycled materials.', labels:['lbl-eco','lbl-summer'], weight:'420g', material:'Recycled Polyester', color:'Black', ean:'8801234567890' },
+  { sku:'JACK-002', name:'Patagonia Down Sweater', category:'cat-jackets', price:279, status:'active', brand:'Patagonia', description:'800-fill-power down jacket with Fair Trade Certified sewing.', labels:['lbl-premium','lbl-eco'], weight:'371g', material:'Recycled Nylon/Down', color:'Navy', ean:'2201234567890' },
+  { sku:'SHRT-001', name:'Uniqlo Supima Cotton Tee', category:'cat-shirts', price:19.90, status:'active', brand:'Uniqlo', description:'Premium cotton crew neck t-shirt with smooth texture.', labels:[], weight:'180g', material:'Supima Cotton', color:'White', ean:'4901234567001' },
+  { sku:'SHRT-002', name:'Ralph Lauren Oxford Shirt', category:'cat-shirts', price:119, status:'active', brand:'Ralph Lauren', description:'', labels:['lbl-premium'], weight:'', material:'Cotton', color:'Blue', ean:'' },
+  { sku:'FURN-001', name:'IKEA KALLAX Shelf', category:'cat-furniture', price:69.99, status:'active', brand:'IKEA', description:'Versatile shelving unit, can be placed on the floor or mounted on a wall.', labels:[], weight:'18.5kg', material:'Particleboard', color:'White', ean:'7021234567890' },
+  { sku:'FURN-002', name:'HAY About A Chair', category:'cat-furniture', price:349, status:'draft', brand:'HAY', description:'Minimalist Scandinavian design chair with shell seat.', labels:['lbl-premium'], weight:'3.8kg', material:'Polypropylene/Oak', color:'Black', ean:'' },
+  { sku:'LITE-001', name:'Muuto E27 Pendant', category:'cat-lighting', price:89, status:'active', brand:'Muuto', description:'Iconic pendant lamp celebrating the beauty of the bare bulb.', labels:[], weight:'0.5kg', material:'Silicone Rubber', color:'Gray', ean:'5701234567890' },
+  { sku:'CAMP-001', name:'Thule Capstone 50L', category:'cat-camping', price:219, status:'active', brand:'Thule', description:'Comfortable hiking backpack with VersaClick accessories system.', labels:['lbl-eco'], weight:'1.75kg', material:'Recycled Nylon', color:'Green', ean:'' },
+  { sku:'CAMP-002', name:'Fjallraven Keb Tent 2', category:'cat-camping', price:899, status:'active', brand:'Fjallraven', description:'Lightweight 3-season tunnel tent for two persons.', labels:['lbl-premium'], weight:'2.4kg', material:'G-1000 HeavyDuty', color:'Green', ean:'7323450123456' },
+  { sku:'FIT-001', name:'Garmin Forerunner 265', category:'cat-fitness', price:449, status:'active', brand:'Garmin', description:'GPS running smartwatch with AMOLED display and training readiness.', labels:['lbl-new','lbl-best'], weight:'47g', material:'Fiber-reinforced polymer', color:'Black', ean:'7531234567890' },
+  { sku:'FIT-002', name:'Theragun Elite', category:'cat-fitness', price:399, status:'active', brand:'Therabody', description:'', labels:[], weight:'1.0kg', material:'', color:'Black', ean:'' },
+  { sku:'SHOE-005', name:'Dr. Martens 1460 Boot', category:'cat-shoes', price:169, status:'draft', brand:'Dr. Martens', description:'Classic 8-eye boot with air-cushioned sole.', labels:['lbl-clearance'], weight:'', material:'Leather', color:'Black', ean:'' }
 ];
 
 seedProducts.forEach((p, i) => {
@@ -540,7 +540,7 @@ seedProducts.forEach((p, i) => {
     id, sku: p.sku, name: p.name, category: p.category, price: p.price,
     status: p.status, brand: p.brand || '', description: p.description || '',
     labels: p.labels || [], weight: p.weight || '', material: p.material || '',
-    ean: p.ean || '', channels: p.channels || [], created,
+    color: p.color || '', ean: p.ean || '', channels: p.channels || [], created,
     updated: new Date(Date.now() - Math.random() * 7 * 86400000).toISOString()
   });
   // Seed some history
@@ -961,6 +961,13 @@ function parseCommand(input) {
   if (/^(show\s*me\s*everything|everything|all|give\s*me\s*everything)/i.test(n)) return { type:'show_all', raw };
   if (/^(how'?s?\s*(my|the|our)?\s*(data\s*)?quality)/i.test(n)) return { type:'quality', raw };
 
+  // ============ SMART NATURAL LANGUAGE QUERIES ============
+  // These catch rich attribute/property queries before simpler patterns
+
+  // Smart query: detect compound queries like "find all white products", "show published shoes", etc.
+  const smartResult = parseSmartQuery(n, raw);
+  if (smartResult) return smartResult;
+
   // Show by category (must come before show_all to avoid false match)
   let cm = n.match(/^(show|list|find|get|browse|see)\s*(me\s*)?(all\s*)?(the\s*)?(products?\s*)?(in|from|under|for)\s+(.+)/i);
   if (cm) return { type:'show_category', category: cm[7].trim(), raw };
@@ -1141,6 +1148,325 @@ function smartFallback(n, raw) {
   return { type:'fuzzy_search', query: n, raw };
 }
 
+// ============ SMART NATURAL LANGUAGE QUERY ENGINE ============
+
+function parseSmartQuery(n, raw) {
+  // Only trigger if there's a verb that indicates searching/filtering
+  if (!/^(show|find|list|get|give|display|search|browse|see|which|what|are there|do we have|how many|count)/i.test(n)) return null;
+
+  const filters = [];
+  let remaining = n;
+
+  // Strip leading verbs and filler words
+  remaining = remaining.replace(/^(show|find|list|get|give|display|search|browse|see)\s*(me\s*)?(all\s*)?(the\s*)?(products?|items?)?\s*(that\s*(are|have|were|with))?\s*/i, '');
+  remaining = remaining.replace(/^(which|what)\s*(products?|items?)?\s*(are|have|were|with)?\s*/i, '');
+  remaining = remaining.replace(/^(are there|do we have|how many)\s*(products?|items?)?\s*(that\s*(are|have|were|with))?\s*/i, '');
+  remaining = remaining.replace(/^(count)\s*(all\s*)?(the\s*)?(products?|items?)?\s*(that\s*(are|have|were|with))?\s*/i, '');
+
+  if (!remaining.trim()) return null;
+
+  // ---- Status filters ----
+  const statusMap = {
+    'published': 'active', 'live': 'active', 'active': 'active', 'online': 'active', 'enabled': 'active',
+    'draft': 'draft', 'drafts': 'draft', 'unpublished': 'draft', 'not published': 'draft', 'pending': 'draft',
+    'archived': 'archived', 'disabled': 'archived', 'inactive': 'archived', 'retired': 'archived', 'discontinued': 'archived'
+  };
+  for (const [word, status] of Object.entries(statusMap)) {
+    const re = new RegExp(`\\b${word.replace(/\s/g,'\\s+')}\\b`, 'i');
+    if (re.test(remaining)) {
+      filters.push({ type: 'status', value: status, display: word });
+      remaining = remaining.replace(re, ' ');
+    }
+  }
+
+  // ---- Missing field filters (must come before quality to avoid "missing" triggering low quality) ----
+  const missingFieldMatch = remaining.match(/\b(without|missing|no|empty|blank|lacking)\s+(a\s+)?(description|price|brand|sku|ean|barcode|weight|material|color|colour|image|name)/i);
+  if (missingFieldMatch) {
+    const field = missingFieldMatch[3].toLowerCase().replace('colour','color');
+    filters.push({ type: 'missing_field', field: field, display: `missing ${field}` });
+    remaining = remaining.replace(missingFieldMatch[0], ' ');
+  }
+
+  // ---- Quality filters ----
+  // "missing/incomplete" only trigger quality when followed by quality/data/completeness
+  if (/\b(low|poor|bad)\s*(quality|data|completeness|score)?\b/i.test(remaining) || /\b(incomplete|missing)\s+(quality|data|completeness|score)\b/i.test(remaining)) {
+    filters.push({ type: 'quality', op: 'lt', value: 50, display: 'low quality (<50%)' });
+    remaining = remaining.replace(/\b(low|poor|bad)\s*(quality|data|completeness|score)?\b/i, ' ');
+    remaining = remaining.replace(/\b(incomplete|missing)\s+(quality|data|completeness|score)\b/i, ' ');
+  }
+  if (/\b(high|good|great|excellent|complete)\s*(quality|data|completeness|score)?\b/i.test(remaining)) {
+    filters.push({ type: 'quality', op: 'gt', value: 75, display: 'high quality (>75%)' });
+    remaining = remaining.replace(/\b(high|good|great|excellent|complete)\s*(quality|data|completeness|score)?\b/i, ' ');
+  }
+  if (/\b(medium|moderate|okay|ok|average)\s*(quality|data|completeness|score)?\b/i.test(remaining)) {
+    filters.push({ type: 'quality', op: 'between', low: 50, high: 75, display: 'medium quality (50-75%)' });
+    remaining = remaining.replace(/\b(medium|moderate|okay|ok|average)\s*(quality|data|completeness|score)?\b/i, ' ');
+  }
+
+  // ---- Price filters ----
+  const priceAbove = remaining.match(/\b(over|above|more\s*than|exceeding|pricier\s*than|expensive)\s*\$?(\d+(?:\.\d+)?)\b/i);
+  if (priceAbove) {
+    filters.push({ type: 'price', op: 'gt', value: parseFloat(priceAbove[2]), display: `price > $${priceAbove[2]}` });
+    remaining = remaining.replace(priceAbove[0], ' ');
+  }
+  const priceBelow = remaining.match(/\b(under|below|less\s*than|cheaper\s*than|up\s*to)\s*\$?(\d+(?:\.\d+)?)\b/i);
+  if (priceBelow) {
+    filters.push({ type: 'price', op: 'lt', value: parseFloat(priceBelow[2]), display: `price < $${priceBelow[2]}` });
+    remaining = remaining.replace(priceBelow[0], ' ');
+  }
+  const priceBetween = remaining.match(/\bbetween\s*\$?(\d+(?:\.\d+)?)\s*(and|to|-)\s*\$?(\d+(?:\.\d+)?)\b/i);
+  if (priceBetween) {
+    filters.push({ type: 'price', op: 'between', low: parseFloat(priceBetween[1]), high: parseFloat(priceBetween[3]), display: `$${priceBetween[1]}-$${priceBetween[3]}` });
+    remaining = remaining.replace(priceBetween[0], ' ');
+  }
+  // "expensive" / "cheap" standalone
+  if (/\b(expensive|premium\s*priced|high.?priced|pricey)\b/i.test(remaining) && !filters.some(f => f.type === 'price')) {
+    const prices = DB.products.map(p => p.price).sort((a,b) => b-a);
+    const threshold = prices[Math.floor(prices.length * 0.25)] || 200;
+    filters.push({ type: 'price', op: 'gt', value: threshold, display: `expensive (>$${threshold.toFixed(0)})` });
+    remaining = remaining.replace(/\b(expensive|premium\s*priced|high.?priced|pricey)\b/i, ' ');
+  }
+  if (/\b(cheap|affordable|budget|low.?priced|bargain)\b/i.test(remaining) && !filters.some(f => f.type === 'price')) {
+    const prices = DB.products.map(p => p.price).sort((a,b) => a-b);
+    const threshold = prices[Math.floor(prices.length * 0.25)] || 100;
+    filters.push({ type: 'price', op: 'lt', value: threshold, display: `affordable (<$${threshold.toFixed(0)})` });
+    remaining = remaining.replace(/\b(cheap|affordable|budget|low.?priced|bargain)\b/i, ' ');
+  }
+
+  // ---- Category filters ----
+  for (const cat of DB.categories) {
+    const catName = cat.name.toLowerCase();
+    const catRe = new RegExp(`\\b${catName.replace(/[&]/g,'.')}\\b`, 'i');
+    if (catRe.test(remaining)) {
+      filters.push({ type: 'category', id: cat.id, display: cat.name });
+      remaining = remaining.replace(catRe, ' ');
+      break; // one category at a time
+    }
+  }
+  // Also check singular/plural variants
+  const catSingularPlural = {
+    'shoe': 'cat-shoes', 'shoes': 'cat-shoes', 'jacket': 'cat-jackets', 'jackets': 'cat-jackets',
+    'shirt': 'cat-shirts', 'shirts': 'cat-shirts', 'phone': 'cat-phones', 'phones': 'cat-phones',
+    'smartphone': 'cat-phones', 'smartphones': 'cat-phones', 'laptop': 'cat-laptops', 'laptops': 'cat-laptops',
+    'headphone': 'cat-audio', 'headphones': 'cat-audio', 'speaker': 'cat-audio', 'speakers': 'cat-audio',
+    'watch': 'cat-wear', 'watches': 'cat-wear', 'wearable': 'cat-wear', 'wearables': 'cat-wear',
+    'tent': 'cat-camping', 'tents': 'cat-camping', 'lamp': 'cat-lighting', 'lamps': 'cat-lighting',
+    'light': 'cat-lighting', 'lights': 'cat-lighting', 'chair': 'cat-furniture', 'chairs': 'cat-furniture',
+    'furniture': 'cat-furniture', 'shelf': 'cat-furniture', 'shelves': 'cat-furniture',
+    'sport': 'cat-sports', 'sports': 'cat-sports', 'outdoor': 'cat-sports', 'fitness': 'cat-fitness',
+    'gym': 'cat-fitness', 'exercise': 'cat-fitness', 'camping': 'cat-camping'
+  };
+  if (!filters.some(f => f.type === 'category')) {
+    for (const [word, catId] of Object.entries(catSingularPlural)) {
+      const re = new RegExp(`\\b${word}\\b`, 'i');
+      if (re.test(remaining)) {
+        const cat = DB.categories.find(c => c.id === catId);
+        if (cat) {
+          filters.push({ type: 'category', id: catId, display: cat.name });
+          remaining = remaining.replace(re, ' ');
+          break;
+        }
+      }
+    }
+  }
+
+  // ---- Label filters ----
+  for (const lbl of DB.labels) {
+    const lblName = lbl.name.toLowerCase();
+    if (remaining.toLowerCase().includes(lblName)) {
+      filters.push({ type: 'label', id: lbl.id, display: lbl.name });
+      remaining = remaining.replace(new RegExp(lblName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), ' ');
+      break;
+    }
+  }
+  // Also match "labeled as X", "tagged X"
+  const lblMatch = remaining.match(/\b(labeled?|tagged?)\s*(?:as\s*)?['"]?(.+?)['"]?\s*$/i);
+  if (lblMatch && !filters.some(f => f.type === 'label')) {
+    const lbl = DB.labels.find(l => l.name.toLowerCase().includes(lblMatch[2].trim().toLowerCase()));
+    if (lbl) {
+      filters.push({ type: 'label', id: lbl.id, display: lbl.name });
+      remaining = remaining.replace(lblMatch[0], ' ');
+    }
+  }
+
+  // ---- Brand filters ----
+  const brands = [...new Set(DB.products.map(p => p.brand).filter(Boolean))];
+  for (const brand of brands) {
+    const brandRe = new RegExp(`\\b${brand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    if (brandRe.test(remaining)) {
+      filters.push({ type: 'brand', value: brand, display: brand });
+      remaining = remaining.replace(brandRe, ' ');
+      break;
+    }
+  }
+
+  // ---- Attribute/property text filters (color, material, etc.) ----
+  // Clean remaining text of filler words
+  let attrText = remaining.replace(/\b(and|or|with|that|are|is|in|the|a|an|all|products?|items?|which|have|has)\b/gi, ' ').trim();
+  // Split into potential attribute terms
+  const attrTerms = attrText.split(/\s+/).filter(t => t.length > 1);
+
+  // Known color words
+  const COLORS = ['red','blue','green','black','white','yellow','orange','pink','purple','brown','grey','gray','silver','gold','beige','navy','teal','maroon','cream','ivory','charcoal','tan','olive','coral','turquoise','indigo','magenta','cyan','burgundy','lavender','mint','peach','rose','bronze','copper','slate','stone','stonewash','denim'];
+  // Known materials
+  const MATERIALS = ['leather','cotton','wool','silk','polyester','nylon','aluminum','aluminium','steel','wood','bamboo','rubber','plastic','canvas','suede','mesh','foam','carbon','titanium','ceramic','glass','linen','denim','gore-tex','goretex','fleece','down','synthetic','organic'];
+
+  for (const term of attrTerms) {
+    const tLow = term.toLowerCase();
+    if (COLORS.includes(tLow)) {
+      filters.push({ type: 'attribute', field: 'color', value: tLow, display: `${tLow} colored` });
+    } else if (MATERIALS.includes(tLow)) {
+      filters.push({ type: 'attribute', field: 'material', value: tLow, display: `${tLow} material` });
+    } else if (tLow.length > 2 && !['show','find','list','get','all','the','and','for','not','how','with'].includes(tLow)) {
+      // Generic text search on all fields
+      filters.push({ type: 'text', value: tLow, display: `"${tLow}"` });
+    }
+  }
+
+  // Only return a smart query if we found meaningful filters
+  if (filters.length === 0) return null;
+
+  // Check if this is a count query
+  const isCount = /^(how many|count)/i.test(n);
+
+  return { type: 'smart_query', filters, isCount, raw };
+}
+
+function executeSmartFilter(filters) {
+  let products = [...DB.products];
+
+  for (const f of filters) {
+    switch (f.type) {
+      case 'status':
+        products = products.filter(p => p.status === f.value);
+        break;
+      case 'quality':
+        if (f.op === 'lt') products = products.filter(p => completeness(p) < f.value);
+        else if (f.op === 'gt') products = products.filter(p => completeness(p) > f.value);
+        else if (f.op === 'between') products = products.filter(p => { const c = completeness(p); return c >= f.low && c <= f.high; });
+        break;
+      case 'missing_field':
+        products = products.filter(p => !p[f.field] || String(p[f.field]).trim() === '');
+        break;
+      case 'price':
+        if (f.op === 'gt') products = products.filter(p => p.price > f.value);
+        else if (f.op === 'lt') products = products.filter(p => p.price < f.value);
+        else if (f.op === 'between') products = products.filter(p => p.price >= f.low && p.price <= f.high);
+        break;
+      case 'category':
+        const catIds = getAllDescendantCatIds(f.id);
+        catIds.push(f.id);
+        products = products.filter(p => catIds.includes(p.category));
+        break;
+      case 'label':
+        products = products.filter(p => p.labels && p.labels.includes(f.id));
+        break;
+      case 'brand':
+        products = products.filter(p => p.brand && p.brand.toLowerCase() === f.value.toLowerCase());
+        break;
+      case 'attribute':
+        products = products.filter(p => {
+          const val = (p[f.field] || '').toLowerCase();
+          return val.includes(f.value);
+        });
+        break;
+      case 'text':
+        products = products.filter(p =>
+          p.name.toLowerCase().includes(f.value) ||
+          (p.description || '').toLowerCase().includes(f.value) ||
+          (p.brand || '').toLowerCase().includes(f.value) ||
+          (p.material || '').toLowerCase().includes(f.value) ||
+          (p.color || '').toLowerCase().includes(f.value) ||
+          p.sku.toLowerCase().includes(f.value)
+        );
+        break;
+    }
+  }
+  return products;
+}
+
+function getAllDescendantCatIds(parentId) {
+  const children = DB.categories.filter(c => c.parent === parentId);
+  let ids = children.map(c => c.id);
+  for (const child of children) ids = ids.concat(getAllDescendantCatIds(child.id));
+  return ids;
+}
+
+function execSmartQuery(filters, isCount, raw) {
+  const products = executeSmartFilter(filters);
+  convo.lastProducts = products;
+
+  // Build a natural language description of what was searched
+  const filterDescriptions = filters.map(f => `<span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px;background:rgba(61,116,244,0.12);color:#8BAAFF;margin:1px 2px">${esc(f.display)}</span>`).join(' ');
+
+  if (isCount) {
+    // Count query — answer directly
+    addSystem(
+      `<p><strong style="font-size:22px;color:var(--blue)">${products.length}</strong> product${products.length !== 1 ? 's' : ''} match${products.length === 1 ? 'es' : ''}:</p>
+      <div style="margin:6px 0">${filterDescriptions}</div>
+      ${products.length > 0 ? `<p style="font-size:12px;color:var(--muted);margin-top:6px">Say "show" to see them, or refine your query.</p>` : ''}`,
+      products.length > 0
+        ? [`Show ${products.length > 10 ? 'first 10' : 'them'}`, 'Show all products', 'Data quality report']
+        : ['Show all products', 'Help']
+    );
+    return;
+  }
+
+  if (products.length === 0) {
+    addSystem(
+      `<p>${pick(["No products match those criteria:","I couldn't find any products matching:","Nothing found for:"])}</p>
+      <div style="margin:8px 0">${filterDescriptions}</div>
+      <p style="font-size:13px;color:var(--muted);margin-top:6px">${pick([
+        "Try broadening your search — maybe drop one of the filters?",
+        "Want to try a different combination?",
+        "I searched across names, descriptions, colors, materials, and more."
+      ])}</p>`,
+      ['Show all products', 'Show draft products', 'Help']
+    );
+    return;
+  }
+
+  if (products.length === 1) {
+    convo.lastProduct = products[0];
+  }
+
+  // Build smart commentary based on what was found
+  let commentary = '';
+  if (filters.some(f => f.type === 'quality' && f.op === 'lt')) {
+    commentary = `<p style="font-size:12px;color:var(--yellow);margin-top:6px">💡 These products need enrichment. Say <strong>"enrich all"</strong> to get AI suggestions, or click any product to edit.</p>`;
+  } else if (filters.some(f => f.type === 'status' && f.value === 'draft')) {
+    commentary = `<p style="font-size:12px;color:var(--yellow);margin-top:6px">💡 Draft products aren't live yet. Say <strong>"publish all"</strong> to activate them, or review individually.</p>`;
+  } else if (filters.some(f => f.type === 'missing_field')) {
+    const field = filters.find(f => f.type === 'missing_field').field;
+    commentary = `<p style="font-size:12px;color:var(--yellow);margin-top:6px">💡 These products are missing their ${field}. Want me to help fill them in?</p>`;
+  }
+
+  // Smart follow-up suggestions
+  const suggestions = [];
+  if (products.length > 1) suggestions.push(`Add label to these ${products.length} products`);
+  if (filters.some(f => f.type === 'status' && f.value === 'draft') && products.length > 0) suggestions.push('Publish all drafts');
+  if (filters.some(f => f.type === 'quality')) suggestions.push('Enrich all');
+  if (filters.some(f => f.type === 'category')) {
+    const catFilter = filters.find(f => f.type === 'category');
+    const cat = DB.categories.find(c => c.id === catFilter.id);
+    if (cat) suggestions.push(`Increase price of ${cat.name} by 5%`);
+  }
+  suggestions.push('Show all products');
+  if (suggestions.length < 3) suggestions.push('Data quality report');
+
+  addSystem(
+    `<p>${pick([
+      `Found <strong>${products.length}</strong> product${products.length !== 1 ? 's' : ''} matching:`,
+      `<strong>${products.length}</strong> product${products.length !== 1 ? 's' : ''} match your query:`,
+      `Here ${products.length === 1 ? 'is' : 'are'} <strong>${products.length}</strong> result${products.length !== 1 ? 's' : ''} for:`
+    ])}</p>
+    <div style="margin:6px 0">${filterDescriptions}</div>
+    ${productTableHtml(products, `${products.length} Results`)}
+    ${commentary}`,
+    suggestions.slice(0, 4)
+  );
+}
+
 // ============ FIND PRODUCTS ============
 function findProducts(query) {
   const q = query.toLowerCase();
@@ -1211,6 +1537,7 @@ async function executeCommand(input) {
     case 'greeting': execGreeting(); break;
     case 'thanks': execThanks(); break;
     case 'help': execHelp(); break;
+    case 'smart_query': execSmartQuery(cmd.filters, cmd.isCount, cmd.raw); break;
     case 'show_all': execShowAll(); break;
     case 'filter_status': execFilterStatus(cmd.status); break;
     case 'show_category': execShowCategory(cmd.category); break;
