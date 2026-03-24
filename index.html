@@ -362,8 +362,8 @@ html,body{height:100%;font-family:'Montserrat',sans-serif;background:var(--bg);c
 #dam-view{display:none;flex-direction:column;overflow:hidden;flex:1}
 #dam-view.active{display:flex}
 .dam-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
-.dam-grid-wrap{flex:1;overflow-y:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;align-content:start}
-.dam-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.15s}
+.dam-grid-wrap{flex:1;overflow-y:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));grid-auto-rows:min-content;gap:12px;align-content:start}
+.dam-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.15s;contain:content}
 .dam-card:hover{border-color:rgba(61,116,244,0.4);box-shadow:0 4px 16px rgba(0,0,0,0.2)}
 .dam-card-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:rgba(255,255,255,0.03)}
 .dam-card-placeholder{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);color:var(--muted);font-size:32px}
@@ -749,31 +749,79 @@ const seedProducts = [
   { sku:'SHRT-004', name:'Comme des Garçons Play Tee', category:'cat-shirts', price:0, status:'draft', brand:'', description:'', labels:[], weight:'', material:'', color:'', ean:'' }
 ];
 
-// Generate product placeholder images (colored SVG data URIs)
-const catImageColors = {
-  'cat-phones':'#3D74F4','cat-audio':'#A78BFF','cat-laptops':'#0F05CC','cat-wear':'#EC672B',
-  'cat-shoes':'#34D399','cat-jackets':'#EB485E','cat-shirts':'#FBE74D','cat-furniture':'#3D74F4',
-  'cat-lighting':'#FBE74D','cat-camping':'#34D399','cat-fitness':'#EC672B'
+// Product photo URLs from Unsplash (real product photos on neutral backgrounds)
+const catImageUrls = {
+  'cat-phones': [
+    'https://images.unsplash.com/photo-1751699187649-efce189ff2c5?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1692521726889-02fda2c15454?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1573808092199-d471c3b83d7e?w=400&h=400&fit=crop'
+  ],
+  'cat-audio': [
+    'https://images.unsplash.com/photo-1722891067479-5fd39edbfc3d?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1677019758448-4c34a78df2c3?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1640643639986-c0bbc3634637?w=400&h=400&fit=crop'
+  ],
+  'cat-laptops': [
+    'https://images.unsplash.com/photo-1655226569940-b0ed83f6e268?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1527443195645-1133f7f28990?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1587716645570-e1715ad0a0a0?w=400&h=400&fit=crop'
+  ],
+  'cat-wear': [
+    'https://images.unsplash.com/photo-1593871978329-02621035b835?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1737731662588-729f42147158?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1651563688824-a853587bfb2c?w=400&h=400&fit=crop'
+  ],
+  'cat-shoes': [
+    'https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1731132198530-e4b2dc51d511?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1637437757614-6491c8e915b5?w=400&h=400&fit=crop'
+  ],
+  'cat-jackets': [
+    'https://images.unsplash.com/photo-1746813627956-64cf760e3085?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1727519366940-fd9b926e362e?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1742151103404-fc8a4248f6b5?w=400&h=400&fit=crop'
+  ],
+  'cat-shirts': [
+    'https://images.unsplash.com/photo-1631479501467-a46d06c900fc?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1580598302731-b98fbf7191a5?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1654886778524-91a7e966e062?w=400&h=400&fit=crop'
+  ],
+  'cat-furniture': [
+    'https://images.unsplash.com/photo-1551459456-12c91f20a130?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1740154093925-ffb8e7ae526e?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1629642608911-119c25ef2e33?w=400&h=400&fit=crop'
+  ],
+  'cat-lighting': [
+    'https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1639311206439-12b12b53e020?w=400&h=400&fit=crop'
+  ],
+  'cat-camping': [
+    'https://images.unsplash.com/photo-1763741958009-fcd40f6145ef?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1760716530071-95e9684e85ff?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1773658949444-8b250016919d?w=400&h=400&fit=crop'
+  ],
+  'cat-fitness': [
+    'https://images.unsplash.com/photo-1627257058769-0a99529e4312?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1722925541311-2117dfa21fe3?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1674834727206-4bc272bfd8da?w=400&h=400&fit=crop'
+  ]
 };
 const catImageIcons = {
   'cat-phones':'📱','cat-audio':'🎧','cat-laptops':'💻','cat-wear':'⌚',
   'cat-shoes':'👟','cat-jackets':'🧥','cat-shirts':'👕','cat-furniture':'🪑',
   'cat-lighting':'💡','cat-camping':'⛺','cat-fitness':'🏋️'
 };
-function generateProductImage(name, category) {
-  const color = catImageColors[category] || '#3D74F4';
-  const initials = name.split(/\s+/).map(w => w[0]).join('').slice(0,2).toUpperCase();
-  return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" fill="${color}" opacity="0.15"/><rect x="10" y="10" width="380" height="380" rx="20" fill="${color}" opacity="0.08"/><text x="200" y="180" text-anchor="middle" font-family="sans-serif" font-size="80" font-weight="bold" fill="${color}" opacity="0.6">${initials}</text><text x="200" y="260" text-anchor="middle" font-family="sans-serif" font-size="40">${catImageIcons[category]||'📦'}</text></svg>`)}`;
-}
 
 // Image count per product (active products get 2-4, drafts get 0-1)
 function seedImages(p, category) {
   const count = p.status === 'active' ? (2 + Math.floor(Math.random() * 3)) : (Math.random() > 0.5 ? 1 : 0);
+  const urls = catImageUrls[category] || catImageUrls['cat-phones'];
   const imgs = [];
   for (let i = 0; i < count; i++) {
     imgs.push({
       id: 'img_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5),
-      url: generateProductImage(p.name + (i > 0 ? ' ' + (i+1) : ''), category),
+      url: urls[i % urls.length],
       name: `${p.name}${i > 0 ? ' - View ' + (i+1) : ' - Main'}`.replace(/[^\w\s-]/g,'') + '.jpg',
       primary: i === 0,
       size: Math.round(200 + Math.random() * 800) + 'KB'
