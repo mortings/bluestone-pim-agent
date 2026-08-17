@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root{
+    --bone:#FAF8F5; --white:#FFFFFF; --tint:#F2EEE8; --tint2:#EAE5DC;
+    --line:#E5DFD5; --line-strong:#CFC7B9;
+    --ink:#1A1815; --body:#514B43; --muted:#7A736A; --faint:#9C948A;
+    --accent:#1A1815;
+    --sale:#8C3A2B;
+    --radius:4px;
+    --shadow:0 1px 2px rgba(26,24,21,.05);
+    --shadow-lg:0 18px 44px rgba(26,24,21,.10);
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+    --serif:'Fraunces',Georgia,serif;
+  }
+
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--sans);background:var(--bone);color:var(--body);
+    font-size:14px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;
+  }
+  a{color:inherit;text-decoration:none}
+  button,input,select{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:none}
+  img{display:block;max-width:100%}
+  ::selection{background:var(--tint2)}
+  :focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ── Masthead: the collection title is the header ──── */
+  .topbar{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:40px;
+    padding:52px 0 34px;border-bottom:1px solid var(--line);margin-bottom:30px;
+  }
+  .topbar.compact{padding:34px 0 22px;align-items:center;margin-bottom:0}
+
+  /* search — the primary way into the catalogue, so give it presence */
+  .searchfield{
+    flex:1;max-width:480px;display:flex;align-items:center;gap:13px;
+    background:var(--white);border:1px solid var(--line-strong);border-radius:var(--radius);
+    padding:0 16px;height:54px;transition:border-color .15s,box-shadow .15s;
+  }
+  .searchfield:focus-within{border-color:var(--ink);box-shadow:0 0 0 3px var(--tint2)}
+  .searchfield .mag{width:19px;height:19px;color:var(--muted);flex-shrink:0}
+  #q{
+    flex:1;min-width:0;border:none;background:none;font-size:15px;
+    color:var(--ink);padding:0;height:100%;
+  }
+  #q::placeholder{color:var(--faint)}
+  #q:focus{outline:none}
+  #q::-webkit-search-cancel-button{display:none}
+  #qclear{
+    display:flex;align-items:center;justify-content:center;width:24px;height:24px;
+    border-radius:50%;color:var(--muted);background:var(--tint);flex-shrink:0;
+  }
+  #qclear:hover{color:var(--ink)}
+  #qclear svg{width:11px;height:11px}
+  #qclear[hidden]{display:none}
+
+  /* ── Page frame ───────────────────────────────────── */
+  main{flex:1;max-width:1360px;width:100%;margin:0 auto;padding:0 28px}
+
+  /* ── Collection title ─────────────────────────────── */
+  .collhead{min-width:0;max-width:620px}
+  .collhead .eyebrow{
+    font-size:11px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;
+    color:var(--faint);margin-bottom:12px;
+  }
+  .collhead h1{
+    font-family:var(--serif);font-size:46px;font-weight:400;color:var(--ink);
+    line-height:1.06;letter-spacing:-.02em;
+  }
+  .collhead h1 a{color:inherit}
+  .collhead h1 a:hover{color:var(--body)}
+  .collhead p{font-size:14.5px;color:var(--muted);line-height:1.65;margin-top:13px}
+  .topbar.compact .collhead h1{font-size:26px}
+
+  /* ── Layout ───────────────────────────────────────── */
+  .shop{display:grid;grid-template-columns:210px minmax(0,1fr);gap:52px;align-items:start;padding-bottom:80px}
+
+  /* ── Filters ──────────────────────────────────────── */
+  aside{position:sticky;top:28px}
+  .filterbtn{
+    display:none;align-items:center;gap:8px;padding:8px 14px;
+    border:1px solid var(--line-strong);border-radius:var(--radius);
+    font-size:12.5px;font-weight:500;color:var(--ink);
+  }
+  .filterbtn:hover{border-color:var(--ink)}
+  .filterbtn svg{width:14px;height:14px}
+  .iconbtn{
+    width:34px;height:34px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;color:var(--ink);transition:background .15s;
+  }
+  .iconbtn:hover{background:var(--tint)}
+  .iconbtn svg{width:15px;height:15px}
+  .fblock{padding:0 0 24px}
+  .fblock h3{
+    font-size:11px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;
+    color:var(--ink);margin-bottom:12px;
+  }
+  .flist{display:flex;flex-direction:column;gap:1px}
+  .fopt{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    padding:5px 0;font-size:13px;color:var(--body);transition:color .12s;
+  }
+  .fopt:hover{color:var(--ink)}
+  .fopt .tick{
+    width:14px;height:14px;border:1px solid var(--line-strong);border-radius:2px;
+    flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .12s;
+  }
+  .fopt .tick svg{width:9px;height:9px;color:var(--white);opacity:0}
+  .fopt[aria-pressed="true"]{color:var(--ink);font-weight:500}
+  .fopt[aria-pressed="true"] .tick{background:var(--ink);border-color:var(--ink)}
+  .fopt[aria-pressed="true"] .tick svg{opacity:1}
+  .fopt .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .fopt .ct{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;flex-shrink:0}
+  .fopt:disabled{opacity:.35;cursor:default}
+  .sw{
+    width:16px;height:16px;border-radius:50%;flex-shrink:0;
+    border:1px solid rgba(26,24,21,.14);
+  }
+  .catlist a{
+    display:flex;justify-content:space-between;gap:10px;padding:5px 0;
+    font-size:13px;color:var(--body);
+  }
+  .catlist a:hover{color:var(--ink)}
+  .catlist a.on{color:var(--ink);font-weight:600}
+  .catlist .sub{padding-left:14px}
+  .catlist .ct{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .clearall{
+    font-size:12px;color:var(--muted);text-decoration:underline;
+    text-underline-offset:3px;padding:4px 0;
+  }
+  .clearall:hover{color:var(--ink)}
+
+  /* ── Toolbar ──────────────────────────────────────── */
+  .toolbar{
+    display:flex;align-items:center;gap:16px;
+    padding-bottom:22px;flex-wrap:wrap;
+  }
+  .toolbar .sortwrap{margin-left:auto}
+  .resnum{font-size:13px;color:var(--muted)}
+  .resnum b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .sortwrap{position:relative;display:flex;align-items:center;gap:7px}
+  .sortwrap label{font-size:12px;color:var(--muted)}
+  #sort{
+    appearance:none;border:none;background:none;font-size:13px;font-weight:500;
+    color:var(--ink);padding-right:18px;cursor:pointer;
+  }
+  .sortwrap .chev{position:absolute;right:0;width:11px;height:11px;color:var(--ink);pointer-events:none}
+
+  .activechips{display:flex;flex-wrap:wrap;gap:7px;padding-bottom:22px}
+  .achip{
+    display:inline-flex;align-items:center;gap:8px;padding:5px 8px 5px 11px;
+    border:1px solid var(--line-strong);border-radius:100px;font-size:12px;color:var(--ink);
+  }
+  .achip svg{width:9px;height:9px;color:var(--muted)}
+  .achip:hover svg{color:var(--ink)}
+
+  /* ── Product grid ─────────────────────────────────── */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:40px 28px}
+  .card{display:block;position:relative}
+  .cardimg{
+    position:relative;background:var(--white);border-radius:var(--radius);
+    aspect-ratio:7/4;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;border:1px solid var(--line);
+  }
+  .cardimg img{
+    width:100%;height:100%;object-fit:contain;padding:10px 16px;
+    transition:opacity .35s cubic-bezier(.4,0,.2,1);
+  }
+  .cardimg img.alt{position:absolute;inset:0;opacity:0}
+  .card:hover .cardimg img.alt{opacity:1}
+  .card:hover .cardimg img.base{opacity:0}
+  .noimg{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--faint)}
+  .noimg svg{width:26px;height:26px}
+  .noimg span{font-size:10px;font-weight:500;letter-spacing:.8px;text-transform:uppercase}
+  .cardbody{padding-top:15px}
+  .cardbrand{
+    font-size:10.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;
+    color:var(--faint);margin-bottom:5px;
+  }
+  .cardname{
+    font-family:var(--serif);font-size:17px;font-weight:400;color:var(--ink);
+    line-height:1.25;margin-bottom:6px;
+  }
+  .cardmeta{font-size:12.5px;color:var(--muted)}
+  .cardsw{display:flex;gap:5px;margin-top:11px;align-items:center}
+  .cardsw .sw{width:13px;height:13px}
+  .cardsw .more{font-size:11px;color:var(--faint);margin-left:3px}
+
+  /* ── States ───────────────────────────────────────── */
+  .skel .sh{aspect-ratio:7/4;background:var(--tint);border-radius:var(--radius)}
+  .skel .sl{height:10px;background:var(--tint);border-radius:2px;margin-top:14px;width:60%}
+  .skel .sl.w{width:85%}
+  .shimmer{position:relative;overflow:hidden}
+  .shimmer::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+    animation:sweep 1.4s infinite;
+  }
+  @keyframes sweep{to{transform:translateX(100%)}}
+
+  .blank{grid-column:1/-1;text-align:center;padding:80px 24px}
+  .blank h3{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--ink);margin-bottom:10px}
+  .blank p{font-size:14px;color:var(--muted);max-width:380px;margin:0 auto 22px}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    padding:13px 26px;background:var(--ink);color:#F7F4EF;font-size:13px;
+    font-weight:500;letter-spacing:.3px;border-radius:var(--radius);
+    transition:opacity .15s;
+  }
+  .btn:hover{opacity:.86}
+  .btn.ghost{background:none;color:var(--ink);border:1px solid var(--line-strong)}
+  .btn.ghost:hover{border-color:var(--ink);opacity:1}
+  .btn.block{width:100%}
+  .btn svg{width:15px;height:15px}
+
+  .errbox{
+    border:1px solid var(--line-strong);border-radius:var(--radius);
+    padding:22px;margin:32px 0;background:var(--white);
+  }
+  .errbox h3{font-family:var(--serif);font-size:19px;color:var(--ink);margin-bottom:8px;font-weight:400}
+  .errbox p{font-size:13px;color:var(--muted)}
+
+  /* ── Product page ─────────────────────────────────── */
+  .crumbs{display:flex;gap:8px;padding:26px 0 30px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .sep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  .pdp{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:64px;align-items:start;padding-bottom:90px}
+
+  .shots{display:flex;flex-direction:column;gap:10px}
+  .shot{
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+    aspect-ratio:7/4;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
+  .shot img{width:100%;height:100%;object-fit:contain;padding:20px 30px}
+  .shotgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .shotgrid .shot{aspect-ratio:7/4}
+  .shotgrid .shot img{padding:12px 18px}
+
+  .detail{position:sticky;top:28px}
+  .dbrand{
+    font-size:11px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;
+    color:var(--faint);margin-bottom:12px;
+  }
+  .detail h1{
+    font-family:var(--serif);font-size:36px;font-weight:400;color:var(--ink);
+    line-height:1.12;letter-spacing:-.02em;margin-bottom:10px;
+  }
+  .dcolour{font-size:14px;color:var(--muted);margin-bottom:22px}
+  .dcolour b{color:var(--ink);font-weight:500}
+  .dref{
+    display:flex;flex-wrap:wrap;gap:8px;padding-bottom:26px;
+    border-bottom:1px solid var(--line);margin-bottom:26px;
+  }
+  .refpill{
+    display:inline-flex;align-items:center;gap:8px;padding:5px 10px;
+    background:var(--tint);border-radius:var(--radius);font-size:11.5px;
+  }
+  .refpill .k{color:var(--muted);letter-spacing:.5px;text-transform:uppercase;font-size:9.5px;font-weight:600}
+  .refpill .v{color:var(--ink);font-weight:500;font-family:ui-monospace,Menlo,monospace}
+  .refpill button{display:flex;color:var(--muted)}
+  .refpill button:hover{color:var(--ink)}
+  .refpill svg{width:12px;height:12px}
+
+  .pickhead{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px;
+  }
+  .pickhead h2{font-size:11px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;color:var(--ink)}
+  .pickhead .val{font-size:12.5px;color:var(--muted)}
+  .swatches{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:28px}
+  .swbtn{
+    width:38px;height:38px;border-radius:50%;padding:3px;border:1.5px solid transparent;
+    display:flex;align-items:center;justify-content:center;transition:border-color .15s;
+  }
+  .swbtn .sw{width:100%;height:100%}
+  .swbtn:hover{border-color:var(--line-strong)}
+  .swbtn[aria-pressed="true"]{border-color:var(--ink)}
+
+  /* downloadable imagery */
+  .assetlist{display:flex;flex-direction:column;gap:8px}
+  .assetrow{
+    display:flex;align-items:center;gap:12px;padding:8px;
+    border:1px solid var(--line);border-radius:var(--radius);background:var(--white);
+  }
+  .assetrow .th{
+    width:42px;height:42px;flex-shrink:0;background:var(--tint);
+    border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  }
+  .assetrow .th img{width:100%;height:100%;object-fit:cover}
+  .assetrow .txt{flex:1;min-width:0}
+  .assetrow .fn{font-size:12px;color:var(--ink);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .assetrow .mt{font-size:11px;color:var(--muted)}
+  .assetrow .kind{
+    font-size:9.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
+    color:var(--muted);background:var(--tint);padding:2px 6px;border-radius:2px;flex-shrink:0;
+  }
+  .assetrow a.dl{color:var(--muted);display:flex;padding:6px;border-radius:2px;flex-shrink:0}
+  .assetrow a.dl:hover{color:var(--ink);background:var(--tint)}
+  .assetrow a.dl svg{width:15px;height:15px}
+
+  .acc{border-top:1px solid var(--line)}
+  .acc details{border-bottom:1px solid var(--line)}
+  .acc summary{
+    padding:18px 0;font-size:13px;font-weight:500;color:var(--ink);cursor:pointer;
+    display:flex;justify-content:space-between;align-items:center;list-style:none;
+  }
+  .acc summary::-webkit-details-marker{display:none}
+  .acc summary .pm{position:relative;width:11px;height:11px;flex-shrink:0}
+  .acc summary .pm::before,.acc summary .pm::after{
+    content:'';position:absolute;background:var(--ink);transition:transform .2s;
+  }
+  .acc summary .pm::before{left:0;top:5px;width:11px;height:1px}
+  .acc summary .pm::after{left:5px;top:0;width:1px;height:11px}
+  .acc details[open] summary .pm::after{transform:scaleY(0)}
+  .acc .accbody{padding:0 0 20px}
+
+  table.specs{width:100%;border-collapse:collapse;font-size:13px}
+  table.specs > tr > th{
+    text-align:left;padding:7px 16px 7px 0;font-weight:400;color:var(--muted);
+    width:44%;vertical-align:top;
+  }
+  table.specs > tr > td{padding:7px 0;color:var(--ink);font-weight:500}
+  .chipset{display:flex;flex-wrap:wrap;gap:6px}
+  .vchip{
+    display:inline-flex;align-items:center;gap:6px;padding:3px 9px;
+    background:var(--tint);border-radius:100px;font-size:12px;color:var(--ink);
+  }
+  .vchip .sw{width:12px;height:12px}
+  .subscroll{overflow-x:auto;max-width:100%}
+  table.subtable{border-collapse:collapse;font-size:12px}
+  table.subtable th,table.subtable td{
+    text-align:left;padding:4px 14px 4px 0;white-space:nowrap;
+    border-bottom:1px solid var(--line);
+  }
+  table.subtable th{color:var(--muted);font-weight:500}
+
+  /* rich text */
+  .rich{font-size:13.5px;line-height:1.7;color:var(--body)}
+  .rich > *:first-child{margin-top:0}
+  .rich > *:last-child{margin-bottom:0}
+  .rich p{margin:0 0 11px}
+  .rich h3,.rich h4,.rich h5,.rich h6{
+    font-family:var(--serif);color:var(--ink);font-weight:500;margin:16px 0 7px;line-height:1.3;
+  }
+  .rich h3{font-size:16px}.rich h4{font-size:14.5px}.rich h5,.rich h6{font-size:13.5px}
+  .rich ul,.rich ol{margin:0 0 11px;padding-left:19px}
+  .rich li{margin-bottom:5px}
+  .rich a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+  .rich strong,.rich b{color:var(--ink);font-weight:600}
+  .rich code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--tint);padding:1px 5px;border-radius:3px}
+  .rich pre{background:var(--tint);border-radius:var(--radius);padding:12px;overflow-x:auto;margin:0 0 12px;font-size:12px;white-space:pre}
+  .rich blockquote{margin:0 0 12px;padding-left:14px;border-left:2px solid var(--line-strong);color:var(--muted)}
+  .rich hr{border:none;border-top:1px solid var(--line);margin:16px 0}
+  .rich table{border-collapse:collapse;font-size:12.5px;margin:0 0 12px;display:block;overflow-x:auto}
+  .rich th,.rich td{border:1px solid var(--line);padding:6px 10px;text-align:left}
+
+  /* ── Related ──────────────────────────────────────── */
+  .more-sec{border-top:1px solid var(--line);padding:56px 0 90px}
+  .more-sec h2{
+    font-family:var(--serif);font-size:26px;font-weight:400;color:var(--ink);
+    margin-bottom:28px;letter-spacing:-.01em;
+  }
+
+  /* ── Footer ───────────────────────────────────────── */
+  footer{border-top:1px solid var(--line);padding:26px 28px 40px;margin-top:auto}
+  .finner{
+    max-width:1360px;margin:0 auto;display:flex;justify-content:space-between;
+    align-items:center;gap:22px;flex-wrap:wrap;font-size:12px;color:var(--muted);
+  }
+  .fnav{display:flex;gap:22px;flex-wrap:wrap}
+  .fnav a{color:var(--muted);transition:color .15s}
+  .fnav a:hover{color:var(--ink)}
+
+  /* ── Responsive ───────────────────────────────────── */
+  @media (max-width:1040px){
+    .pdp{grid-template-columns:1fr;gap:36px}
+    .detail{position:static}
+  }
+  @media (max-width:900px){
+    .shop{grid-template-columns:1fr;gap:0}
+    aside{
+      position:fixed;inset:0 auto 0 0;width:300px;max-width:88vw;z-index:60;
+      background:var(--bone);padding:24px;overflow-y:auto;
+      transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    }
+    aside.open{transform:none;box-shadow:var(--shadow-lg)}
+    #scrim{
+      position:fixed;inset:0;background:rgba(26,24,21,.4);z-index:55;
+      opacity:0;pointer-events:none;transition:opacity .28s;
+    }
+    #scrim.on{opacity:1;pointer-events:auto}
+    .asidehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+    .asidehead h2{font-family:var(--serif);font-size:20px;color:var(--ink);font-weight:400}
+    .filterbtn{display:inline-flex}
+  }
+  @media (min-width:901px){ .asidehead{display:none} }
+  @media (max-width:860px){
+    /* title and search stack rather than the field shrinking away */
+    .topbar{flex-direction:column;align-items:stretch;gap:22px;padding:34px 0 26px}
+    .topbar.compact{padding:24px 0 18px}
+    .searchfield{max-width:none}
+  }
+  @media (max-width:720px){
+    main{padding:0 16px}
+    .collhead h1{font-size:34px}
+    .topbar.compact .collhead h1{font-size:22px}
+    .detail h1{font-size:27px}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 14px}
+    .cardname{font-size:15px}
+    .shotgrid{grid-template-columns:1fr 1fr}
+    footer{padding:22px 16px 32px}
+    .more-sec{padding:40px 0 60px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+
+<div id="scrim"></div>
+
+<main>
+  <!-- masthead: the collection is the title, search sits beside it -->
+  <div class="topbar" id="topbar">
+    <div class="collhead" id="collhead"></div>
+    <div class="searchfield">
+      <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false"
+             placeholder="Search products, colourways, references…" aria-label="Search the catalogue">
+      <button id="qclear" aria-label="Clear search" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- listing -->
+  <div id="listing">
+    <div id="errslot"></div>
+    <div class="shop">
+      <aside id="filters" aria-label="Filter products"></aside>
+      <section>
+        <div class="toolbar">
+          <button id="menubtn" class="filterbtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 6h18M3 12h12M3 18h6"/></svg>
+            <span>Filters</span>
+          </button>
+          <div class="resnum" id="resnum" aria-live="polite"></div>
+          <div class="sortwrap">
+            <label for="sort">Sort</label>
+            <select id="sort">
+              <option value="featured">Featured</option>
+              <option value="name-asc">Name A–Z</option>
+              <option value="name-desc">Name Z–A</option>
+            </select>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+        </div>
+        <div class="activechips" id="chips"></div>
+        <div class="grid" id="grid"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- product -->
+  <div id="product" hidden></div>
+</main>
+
+<footer>
+  <div class="finner">
+    <div class="fnav" id="fcats"></div>
+    <span id="fcount"></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════
+   Catalogue source — search-only credentials, safe client-side
+   ═══════════════════════════════════════════════════════════ */
+const ALGOLIA = {
+  appId:  'Q81U464C66',
+  apiKey: '7c820b7ba044038f4e6644ae640fdb8e',
+  index:  'BluestoneContentstore'
+};
+const ENDPOINT = `https://${ALGOLIA.appId}-dsn.algolia.net/1/indexes/${encodeURIComponent(ALGOLIA.index)}/query`;
+const MAX_CORPUS = 1000;
+const PER_PAGE = 48;
+
+async function search(body){
+  const res = await fetch(ENDPOINT, {
+    method:'POST',
+    headers:{
+      'X-Algolia-API-Key': ALGOLIA.apiKey,
+      'X-Algolia-Application-Id': ALGOLIA.appId,
+      'Content-Type':'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if(!res.ok){
+    let d = res.status + ' ' + res.statusText;
+    try{ const j = await res.json(); if(j && j.message) d += ' — ' + j.message; }catch(_){}
+    throw new Error(d);
+  }
+  return res.json();
+}
+
+/* ── helpers ─────────────────────────────────────────────── */
+const $  = (s,r)=>(r||document).querySelector(s);
+const el = (t,c,txt)=>{ const n=document.createElement(t); if(c)n.className=c; if(txt!=null)n.textContent=txt; return n; };
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const fmtN = n => Number(n).toLocaleString();
+const plural = (n,s,p)=> n===1 ? `${n} ${s}` : `${fmtN(n)} ${p||s+'s'}`;
+const fmtDate = ms => !ms ? '—' : new Date(Number(ms)).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+
+const svg = (p,x)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" ${x||''}>${p}</svg>`;
+const IC = {
+  tick:  svg('<path d="M20 6L9 17l-5-5"/>','stroke-width="2.6"'),
+  x:     svg('<path d="M6 6l12 12M18 6L6 18"/>','stroke-width="2"'),
+  img:   svg('<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>'),
+  copy:  svg('<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 5H6a2 2 0 00-2 2v9"/>'),
+  dl:    svg('<path d="M12 3v12M7 11l5 5 5-5"/><path d="M4 20h16"/>')
+};
+
+/* ═══════════════════════════════════════════════════════════
+   Colourway swatches
+   Frame colours read like "Havana On Blu On Gunmetal", so each
+   segment becomes a band in the swatch.
+   ═══════════════════════════════════════════════════════════ */
+const HEX_RE = /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+const COLOUR_HEX = {
+  black:'#1B1B1D', grey:'#8B9096', gray:'#8B9096', silver:'#C6CAD0',
+  gunmetal:'#4C525A', havana:'#6B4324', brown:'#6B4324', tortoise:'#7C4A1F',
+  striped:'#8B5A30', blu:'#2E5AA8', blue:'#2E5AA8', navy:'#1F3866',
+  green:'#2E6338', arista:'#C6A02B', gold:'#C6A02B', bronze:'#8A6036',
+  transparent:'#E2E6EC', clear:'#E2E6EC', crystal:'#E2E6EC',
+  white:'#F2F0EC', red:'#A82B2B', pink:'#D592A8', purple:'#6A4BC4',
+  yellow:'#D4AE1C', orange:'#CF6F26', rose:'#C98B7A', beige:'#D8C6AC',
+  // gemstone colourways used by the 2180/2201 models
+  sapphire:'#1F4E9C', ruby:'#9B1B30', emerald:'#1F6B4A', diamond:'#DCE3EB',
+  onyx:'#1B1B1D', amber:'#C67A1E', topaz:'#C9962F'
+};
+function colourStops(c){
+  if(!c) return ['#C6CEDB'];
+  const stops = String(c).split(/\s+on\s+/i).map(part=>{
+    const w = part.toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).filter(Boolean);
+    for(let i=w.length-1;i>=0;i--) if(COLOUR_HEX[w[i]]) return COLOUR_HEX[w[i]];
+    return null;
+  }).filter(Boolean);
+  return stops.length ? stops : ['#C6CEDB'];
+}
+function swatch(colour, hex){
+  const n = el('span','sw');
+  if(hex && HEX_RE.test(String(hex).trim())){
+    n.style.background = String(hex).trim();
+  } else {
+    const s = colourStops(colour);
+    n.style.background = s.length === 1 ? s[0]
+      : `linear-gradient(135deg,${s.map((c,i)=>`${c} ${Math.round(i*100/s.length)}% ${Math.round((i+1)*100/s.length)}%`).join(',')})`;
+  }
+  n.title = colour || '';
+  return n;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Attribute normalisation
+   Values arrive wrapped in `values:[…]` with dataType, unit and
+   groupName alongside. Nothing trusts the declared type blindly —
+   every branch is taken from the actual value.
+   ═══════════════════════════════════════════════════════════ */
+const CONTEXT_KEY_RE = /^(?:[a-z]{2}(?:[-_][A-Za-z0-9]{2,})?|[lL]\d+)$/;
+const PREFERRED_CONTEXT = 'en';
+const RICH_TYPES  = new Set(['formatted_text']);
+const NUM_TYPES   = new Set(['integer','decimal']);
+const DATE_TYPES  = new Set(['date','date_time']);
+const TABLE_TYPES = new Set(['matrix','column']);
+const ENUM_TYPES  = new Set(['single_select','multi_select','dictionary']);
+
+const firstDefined = (...v)=>{ for(const x of v) if(x !== undefined && x !== null && x !== '') return x; return null; };
+const isPlain = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+const isScalar = v => v === null || ['string','number','boolean'].includes(typeof v);
+
+function prettify(k){
+  return String(k).replace(/[_\-.]+/g,' ').replace(/([a-z0-9])([A-Z])/g,'$1 $2')
+    .replace(/\s+/g,' ').trim().replace(/^./,c=>c.toUpperCase()) || String(k);
+}
+function looksLocalised(o){
+  const k = Object.keys(o);
+  if(!k.length || k.length > 24) return false;
+  return k.every(x=>CONTEXT_KEY_RE.test(x)) && k.some(x=>isScalar(o[x]) || isPlain(o[x]));
+}
+function pickLocalised(o){
+  if(!isPlain(o) || !looksLocalised(o)) return o;
+  if(o[PREFERRED_CONTEXT] != null && o[PREFERRED_CONTEXT] !== '') return o[PREFERRED_CONTEXT];
+  for(const k of Object.keys(o)) if(o[k] != null && o[k] !== '') return o[k];
+  return null;
+}
+const ENVELOPE_KEYS = ['dataType','type','unit','group','groupName','attributeId','definitionId','contentType','internal'];
+const isEnvelope = o => isPlain(o) && ENVELOPE_KEYS.some(k=>o[k] !== undefined);
+const looksOption = o => isPlain(o) && (o.value !== undefined || o.label !== undefined || o.displayValue !== undefined);
+
+function attrMeta(raw){
+  if(!isEnvelope(raw)) return {};
+  const label = firstDefined(raw.label, raw.name);
+  const group = firstDefined(raw.group, raw.groupName);
+  return {
+    label: label ? String(pickLocalised(label) || label) : null,
+    group: group ? String(group) : null,
+    dataType: firstDefined(raw.dataType, raw.type) ? String(firstDefined(raw.dataType, raw.type)).toLowerCase() : null,
+    unit: raw.unit ? String(raw.unit) : null,
+    contentType: raw.contentType ? String(raw.contentType) : null,
+    internal: raw.internal === true
+  };
+}
+function optionOf(o){
+  if(o === null || o === undefined || o === '') return null;
+  if(!isPlain(o)) return { label:String(o), colour:null };
+  const loc = pickLocalised(o);
+  if(loc !== o) return optionOf(loc);
+  const raw = firstDefined(o.value, o.name, o.label, o.title, o.displayValue);
+  const label = isPlain(raw) ? firstDefined(pickLocalised(raw)) : raw;
+  if(label === null) return null;
+  const meta = firstDefined(o.metadata, o.color, o.colour, o.hex);
+  return {
+    label:String(label),
+    colour:(typeof meta === 'string' && HEX_RE.test(meta.trim())) ? meta.trim() : null
+  };
+}
+function cellText(x){
+  if(x === null || x === undefined) return '';
+  if(isScalar(x)) return String(x);
+  const o = optionOf(x);
+  return o ? o.label : '';
+}
+
+function describeValue(raw, dataType){
+  let v = raw, unit = null, contentType = null;
+  if(isEnvelope(v)){
+    unit = v.unit ? String(v.unit) : null;
+    contentType = v.contentType ? String(v.contentType) : null;
+    const inner = firstDefined(v.value, v.values, v.displayValue, v.content, v.text);
+    if(inner === null && !isPlain(v.value)) return null;
+    v = inner;
+  }
+  if(isPlain(v)){ const p = pickLocalised(v); if(p !== v) v = p; }
+  if(v === null || v === undefined || v === '') return null;
+
+  const dt = String(dataType || '').toLowerCase();
+  if(RICH_TYPES.has(dt) && isScalar(v)) return { kind:'rich', value:String(v), contentType, unit:null };
+
+  if(Array.isArray(v)){
+    const items = v.filter(x=>x !== null && x !== undefined && x !== '');
+    if(!items.length) return null;
+    if(items.every(Array.isArray))
+      return { kind:'table', table:{ head:null, rows:items.map(r=>r.map(cellText)) }, unit };
+    if(TABLE_TYPES.has(dt) && items.every(isPlain)){
+      const head = Array.from(new Set(items.flatMap(Object.keys)));
+      return { kind:'table', table:{ head, rows:items.map(r=>head.map(h=>cellText(r[h]))) }, unit };
+    }
+    // A lone non-enum value renders as its own type, not as a chip.
+    if(items.length === 1 && isScalar(items[0]) && dt && !ENUM_TYPES.has(dt))
+      return describeValue(items[0], dt);
+    const opts = items.map(optionOf).filter(Boolean);
+    if(!opts.length) return null;
+    return { kind:'list', values:opts, unit };
+  }
+
+  if(isPlain(v)){
+    if(looksOption(v)){ const o = optionOf(v); return o ? { kind:'list', values:[o], unit } : null; }
+    const entries = Object.entries(v).filter(([,x])=>x !== null && x !== undefined && x !== '');
+    if(!entries.length) return null;
+    return { kind:'table', table:{ head:null, rows:entries.map(([k,x])=>[prettify(k), cellText(x)]) }, unit };
+  }
+
+  if(typeof v === 'boolean' || dt === 'boolean'){
+    const b = typeof v === 'boolean' ? v : /^(?:true|1|yes)$/i.test(String(v).trim());
+    return { kind:'scalar', value:b, valueType:'boolean', unit:null };
+  }
+  if(typeof v === 'number'){
+    if(DATE_TYPES.has(dt)) return { kind:'scalar', value:v, valueType:'date', unit:null };
+    return { kind:'scalar', value:v, valueType:'number', unit };
+  }
+  const s = String(v);
+  if(!dt && /<[a-z][\s\S]*>/i.test(s)) return { kind:'rich', value:s, contentType, unit:null };
+  if(DATE_TYPES.has(dt) && /^\d+$/.test(s)) return { kind:'scalar', value:Number(s), valueType:'date', unit:null };
+  if(NUM_TYPES.has(dt) && s.trim() !== '' && !isNaN(Number(s))) return { kind:'scalar', value:Number(s), valueType:'number', unit };
+  return { kind:'scalar', value:s, valueType:'text', unit };
+}
+
+/* ── Shop presentation of attributes ─────────────────────────
+   The catalogue carries operational fields (stock, reorder points,
+   supplier, sync flags) that a customer must never see, plus tenant
+   name suffixes. This maps the feed onto shopper language.
+   ────────────────────────────────────────────────────────────── */
+const TENANT_SUFFIX_RE = /_hakim\b/i;
+const HIDE_ATTR_RE = new RegExp([
+  'algolia','supplier','parent code','^current$','buffer','reorder',
+  'stock','sync','^frame size$(?=_)','internal','^default '
+].join('|'),'i');
+// A second size field duplicates the first in a rougher format.
+const DUPLICATE_ATTR_RE = /^frame size$/i;
+const RELABEL = [
+  [/^frame colour$/i, 'Colour'],
+  [/^colour$/i,       'Colour'],
+  [/^frame type$/i,   'Frame'],
+  [/^frame size$/i,   'Size'],
+  [/^gender$/i,       'Wearer'],
+  [/^brand$/i,        'Brand'],
+  [/^material$/i,     'Material'],
+  [/^maxdiagonal$/i,  'Lens width'],
+  [/^max diagonal$/i, 'Lens width']
+];
+const UNIT_FOR = { 'Lens width':'mm' };
+const SPEC_ORDER = ['Brand','Colour','Frame','Size','Lens width','Material','Wearer'];
+
+function shopLabel(raw){
+  let s = String(raw).replace(TENANT_SUFFIX_RE,'').trim();
+  for(const [re,to] of RELABEL) if(re.test(s)) return to;
+  return prettify(s);
+}
+function isHiddenAttr(rawLabel, group){
+  if(group && /algolia internal/i.test(group)) return true;
+  const bare = String(rawLabel).replace(TENANT_SUFFIX_RE,'').trim();
+  // Keep the clean "Frame Size", drop the tenant-suffixed duplicate.
+  if(DUPLICATE_ATTR_RE.test(bare) && TENANT_SUFFIX_RE.test(rawLabel)) return true;
+  return HIDE_ATTR_RE.test(rawLabel) || HIDE_ATTR_RE.test(bare);
+}
+
+// → { specs:[…], story:[…] }  specs = short key/value; story = rich text
+function readAttributes(rec){
+  const src = rec && rec.attributes;
+  const specs = [], story = [];
+  if(!isPlain(src)) return { specs, story };
+
+  Object.keys(src).forEach(key=>{
+    const raw = src[key];
+    const meta = attrMeta(raw);
+    if(meta.internal) return;
+    const rawLabel = meta.label || key;
+    if(isHiddenAttr(rawLabel, meta.group)) return;
+    const desc = describeValue(raw, meta.dataType);
+    if(!desc) return;
+    const label = shopLabel(rawLabel);
+    // desc first — the explicit fields below must win, not be overwritten by it.
+    const entry = Object.assign({}, desc, {
+      label,
+      unit: desc.unit || meta.unit || UNIT_FOR[label] || null,
+      contentType: desc.contentType || meta.contentType || null
+    });
+    // Colourways read as prose ("Blu on Silver"), consistently everywhere.
+    if(label === 'Colour'){
+      if(entry.kind === 'list') entry.values = entry.values.map(v=>Object.assign({},v,{label:colourName(v.label)}));
+      else if(entry.kind === 'scalar') entry.value = colourName(String(entry.value));
+    }
+    (desc.kind === 'rich' ? story : specs).push(entry);
+  });
+
+  specs.sort((a,b)=>{
+    const ia = SPEC_ORDER.indexOf(a.label), ib = SPEC_ORDER.indexOf(b.label);
+    if(ia !== -1 || ib !== -1) return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    return a.label.localeCompare(b.label);
+  });
+  story.sort((a,b)=>a.label.localeCompare(b.label));
+  return { specs, story };
+}
+const specText = a => a.kind === 'list'
+  ? a.values.map(v=>v.label).join(', ')
+  : a.kind === 'scalar' ? String(a.value) : '';
+function specValue(rec, label){
+  const found = readAttributes(rec).specs.find(a=>a.label === label);
+  return found ? specText(found) : null;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Rich text — DOM-built, never innerHTML from feed content
+   ═══════════════════════════════════════════════════════════ */
+const safeUrl = u => /^(?:https?:|mailto:)/i.test(String(u==null?'':u).trim()) ? String(u).trim() : null;
+
+function inlineMD(text, parent){
+  const re = /(\*\*|__)([\s\S]+?)\1|(\*|_)([\s\S]+?)\3|`([^`]+)`|\[([^\]]*)\]\(([^)\s]+)\)/g;
+  let last = 0, m;
+  while((m = re.exec(text))){
+    if(m.index > last) parent.appendChild(document.createTextNode(text.slice(last,m.index)));
+    if(m[2] != null){ const n=el('strong'); inlineMD(m[2],n); parent.appendChild(n); }
+    else if(m[4] != null){ const n=el('em'); inlineMD(m[4],n); parent.appendChild(n); }
+    else if(m[5] != null){ parent.appendChild(el('code',null,m[5])); }
+    else {
+      const href = safeUrl(m[7]);
+      if(href){ const a=el('a',null,m[6]||href); a.href=href; a.target='_blank'; a.rel='noopener noreferrer'; parent.appendChild(a); }
+      else parent.appendChild(document.createTextNode(m[6]||''));
+    }
+    last = re.lastIndex;
+  }
+  if(last < text.length) parent.appendChild(document.createTextNode(text.slice(last)));
+}
+function renderMarkdown(src){
+  const frag = document.createDocumentFragment();
+  const lines = String(src==null?'':src).replace(/\r\n?/g,'\n').split('\n');
+  let para=[], list=null, code=null;
+  const flushP=()=>{ if(!para.length) return; const p=el('p'); inlineMD(para.join(' ').trim(),p); frag.appendChild(p); para=[]; };
+  const flushL=()=>{ if(list){ frag.appendChild(list.node); list=null; } };
+  const flush =()=>{ flushP(); flushL(); };
+  lines.forEach(line=>{
+    if(/^\s*```/.test(line)){
+      if(code){ frag.appendChild(code); code=null; } else { flush(); code=el('pre'); }
+      return;
+    }
+    if(code){ code.appendChild(document.createTextNode(line+'\n')); return; }
+    if(!line.trim()){ flush(); return; }
+    const h=/^(#{1,6})\s+(.*)$/.exec(line);
+    if(h){ flush(); const n=el('h'+Math.min(6,Math.max(3,h[1].length+2))); inlineMD(h[2].trim(),n); frag.appendChild(n); return; }
+    if(/^\s*([-*_])\s*\1\s*\1[\s\-*_]*$/.test(line)){ flush(); frag.appendChild(el('hr')); return; }
+    const bq=/^\s*>\s?(.*)$/.exec(line);
+    if(bq){ flush(); const q=el('blockquote'); inlineMD(bq[1],q); frag.appendChild(q); return; }
+    const li=/^\s*(?:([-*+])|(\d+)[.)])\s+(.*)$/.exec(line);
+    if(li){
+      flushP();
+      const want = li[1] ? 'ul' : 'ol';
+      if(!list || list.type !== want){ flushL(); list={type:want,node:el(want)}; }
+      const item=el('li'); inlineMD(li[3],item); list.node.appendChild(item);
+      return;
+    }
+    flushL(); para.push(line.trim());
+  });
+  if(code) frag.appendChild(code);
+  flush();
+  return frag;
+}
+const ALLOWED_TAGS = new Set(['P','BR','STRONG','B','EM','I','U','UL','OL','LI','H3','H4','H5','H6',
+  'A','CODE','PRE','BLOCKQUOTE','TABLE','THEAD','TBODY','TR','TH','TD','SPAN','DIV','HR']);
+const DROP_TAGS = new Set(['SCRIPT','STYLE','IFRAME','OBJECT','EMBED','NOSCRIPT','TEMPLATE',
+  'LINK','META','SVG','MATH','FORM','INPUT','BUTTON']);
+function sanitizeHTML(src){
+  const frag = document.createDocumentFragment();
+  let doc;
+  try{ doc = new DOMParser().parseFromString(String(src==null?'':src),'text/html'); }
+  catch(_){ frag.appendChild(document.createTextNode(String(src))); return frag; }
+  const walk=(from,to,depth)=>{
+    if(depth > 24) return;
+    Array.from(from.childNodes).forEach(node=>{
+      if(node.nodeType === 3){ to.appendChild(document.createTextNode(node.nodeValue)); return; }
+      if(node.nodeType !== 1) return;
+      const tag = node.tagName.toUpperCase();
+      if(DROP_TAGS.has(tag)) return;
+      if(!ALLOWED_TAGS.has(tag)){ walk(node,to,depth+1); return; }
+      const clean = document.createElement(tag.toLowerCase());
+      if(tag === 'A'){
+        const href = safeUrl(node.getAttribute('href'));
+        if(href){ clean.setAttribute('href',href); clean.target='_blank'; clean.rel='noopener noreferrer'; }
+      }
+      walk(node,clean,depth+1);
+      to.appendChild(clean);
+    });
+  };
+  walk(doc.body, frag, 0);
+  return frag;
+}
+function renderRich(value, contentType){
+  const src = String(value==null?'':value);
+  const ct = String(contentType||'').toLowerCase();
+  const isHTML = ct.includes('html') || (!ct && /<[a-z][\s\S]*>/i.test(src));
+  return isHTML ? sanitizeHTML(src) : renderMarkdown(src);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Catalogue model
+   ═══════════════════════════════════════════════════════════ */
+// Workflow states and internal buckets are not shopper categories.
+const HIDE_CAT_RE = /^(approved|unapproved|draft|pending|in review|review|rejected|published|unpublished|archived|to be published|frames)$/i;
+const CAT_RELABEL = [[/^male$/i,'Men'],[/^female$/i,'Women'],[/^unisex$/i,'Unisex']];
+const catLabel = s=>{ for(const [re,to] of CAT_RELABEL) if(re.test(s)) return to; return s; };
+// Longest leading run of shopper-facing segments; '' when the first is internal.
+function visiblePathOf(path){
+  const out = [];
+  for(const seg of String(path||'').split(' > ')){
+    if(HIDE_CAT_RE.test(seg)) break;
+    out.push(seg);
+  }
+  return out.join(' > ');
+}
+
+// `style` is derived from the parent product rather than an attribute, so it
+// carries no `spec` and is populated separately.
+const FACETS = [
+  { key:'style',  label:'Style',  derived:true },
+  { key:'colour', label:'Colour', spec:'Colour', swatch:true },
+  { key:'size',   label:'Size',   spec:'Size' },
+  { key:'frame',  label:'Frame',  spec:'Frame' },
+  { key:'wearer', label:'Wearer', spec:'Wearer' },
+  { key:'brand',  label:'Brand',  spec:'Brand' }
+];
+
+const store = {
+  records:[], byId:new Map(), childrenOf:new Map(),
+  items:[], tree:[], nodeByPath:new Map(),
+  stats:{ nbHits:0, lastQueryMs:null }
+};
+
+function pathsOf(rec){
+  const out = new Set();
+  const h = rec.hierarchicalCategories || {};
+  Object.keys(h).forEach(k=>{
+    const v = h[k];
+    (Array.isArray(v)?v:[v]).forEach(p=>{ if(p) out.add(String(p)); });
+  });
+  return out;
+}
+const assetsOf = rec => (rec.assets || []).filter(a=>a && (a.previewUri || a.downloadUri));
+
+// Strip the brand out of the product name so the title reads as a model.
+function modelName(rec, brand){
+  let n = String(rec.name || '').trim();
+  if(brand){
+    const b = String(brand).replace(/[-\s]+/g,'[-\\s]*');
+    n = n.replace(new RegExp('\\s*' + b + '\\s*','ig'),' ');
+  }
+  return n.replace(/\s{2,}/g,' ').replace(/^[\s\-–—]+|[\s\-–—]+$/g,'').trim() || String(rec.name||'');
+}
+// "Blu On Silver" → "Blu on Silver"
+const colourName = c => !c ? null : String(c).replace(/\s+on\s+/gi,' on ');
+
+// Reads a raw attribute value regardless of the shopper-facing hide list —
+// some operational fields are useful for grouping even when never displayed.
+function rawAttrValue(rec, labelRe){
+  const src = rec && rec.attributes;
+  if(!isPlain(src)) return null;
+  for(const key of Object.keys(src)){
+    const raw = src[key];
+    const label = String((attrMeta(raw).label) || key).replace(TENANT_SUFFIX_RE,'').trim();
+    if(!labelRe.test(label)) continue;
+    const d = describeValue(raw, attrMeta(raw).dataType);
+    if(!d) continue;
+    if(d.kind === 'list') return d.values[0] && d.values[0].label;
+    if(d.kind === 'scalar') return String(d.value);
+  }
+  return null;
+}
+
+// Standalone products carry their model in "Parent Code" and their colour in
+// the name; their Frame Colour attribute holds an internal code such as "2012".
+const CODE_ONLY_RE = /^[\d\s./-]+$/;
+function colourFromName(rec){
+  const n = String(rec.name || '');
+  const paren = /\(([^)]+)\)\s*$/.exec(n);
+  if(paren) return paren[1].trim();
+  const i = n.lastIndexOf(' - ');
+  return i > -1 ? n.slice(i + 3).trim() : null;
+}
+// The colourway as a person would say it, wherever the catalogue keeps it.
+function resolvedColour(rec){
+  const raw = specValue(rec,'Colour');
+  if(raw && !CODE_ONLY_RE.test(raw)) return colourName(raw);
+  const fromName = colourFromName(rec);
+  if(fromName && fromName !== rec.name) return colourName(fromName);
+  return raw ? colourName(raw) : null;
+}
+
+function buildItems(){
+  store.byId = new Map(store.records.map(r=>[r.objectID,r]));
+  store.childrenOf = new Map();
+  store.records.forEach(r=>{
+    const pid = r.variantParent && r.variantParent.id;
+    if(!pid) return;
+    if(!store.childrenOf.has(pid)) store.childrenOf.set(pid,[]);
+    store.childrenOf.get(pid).push(r);
+  });
+  store.childrenOf.forEach(l=>l.sort((a,b)=>String(a.name).localeCompare(String(b.name))));
+
+  const pull = (specs, facets, key, label)=>{
+    const hit = specs.find(a=>a.label === label);
+    if(!hit) return;
+    (hit.kind === 'list' ? hit.values.map(v=>v.label) : [specText(hit)])
+      .filter(Boolean).forEach(v=>facets[key].add(v));
+  };
+
+  const make = rec=>{
+    // Prefer the live parent record over the denormalised snapshot, which can
+    // hold a stale name if the parent was renamed and re-indexed alone.
+    const parent = (rec.variantParent && store.byId.get(rec.variantParent.id)) || null;
+    const siblings = parent ? (store.childrenOf.get(parent.objectID) || []) : [];
+
+    // Only this product's own imagery. Pooling the whole style's shots showed
+    // other colourways next to a frame's name, which read as the wrong product.
+    const own = assetsOf(rec);
+    const gallery = own.length ? own : (parent ? assetsOf(parent) : []);
+
+    const paths = pathsOf(rec);
+    if(parent) pathsOf(parent).forEach(p=>paths.add(p));
+
+    const brand = specValue(rec,'Brand') || (parent && specValue(parent,'Brand')) || null;
+    // Style: the live parent record, else the model code the product states,
+    // else its own name. Keeps unlinked products of one model together.
+    const parentCode = rawAttrValue(rec, /^parent code$/i);
+    const style = parent ? modelName(parent, brand)
+                : parentCode ? modelName({name:parentCode}, brand)
+                : modelName(rec, brand);
+
+    const facets = {};
+    FACETS.forEach(f=>facets[f.key] = new Set());
+    facets.style.add(style);
+
+    const own_specs = readAttributes(rec).specs;
+    FACETS.forEach(f=>{ if(f.spec) pull(own_specs, facets, f.key, f.spec); });
+    // Inherit style-level attributes the product doesn't state itself.
+    if(parent){
+      const ps = readAttributes(parent).specs;
+      FACETS.forEach(f=>{ if(f.spec && !facets[f.key].size) pull(ps, facets, f.key, f.spec); });
+    }
+
+    // A colour recorded as a bare code is not a colourway a person can read,
+    // so fall back to the name, which spells it out.
+    const onlyCode = facets.colour.size &&
+      Array.from(facets.colour).every(v=>CODE_ONLY_RE.test(v));
+    if(!facets.colour.size || onlyCode){
+      const fromName = colourFromName(rec);
+      if(fromName && fromName !== rec.name){
+        if(onlyCode) facets.colour.clear();
+        facets.colour.add(fromName);
+      }
+    }
+
+    return {
+      id: rec.objectID, rec, parent, siblings, gallery, ownAssets: own, paths, facets, brand,
+      style, title: style,
+      colour: colourName(Array.from(facets.colour)[0] || null),
+      size: Array.from(facets.size)[0] || null,
+      rank: null
+    };
+  };
+
+  // One card per product. A record that only groups variants is a style, not a
+  // product, so it never appears in the listing — it becomes a Style filter.
+  store.items = store.records
+    .filter(r => !(store.childrenOf.get(r.objectID) || []).length)
+    .map(make);
+
+  // A colour that every product in a style reports identically cannot be the
+  // colourway — it is a placeholder code such as "2012" or "ORT". The name
+  // spells out the real one. Structural test, so it needs no list of codes.
+  const byStyle = new Map();
+  store.items.forEach(it=>{
+    if(!byStyle.has(it.style)) byStyle.set(it.style, []);
+    byStyle.get(it.style).push(it);
+  });
+  byStyle.forEach(list=>{
+    if(list.length < 2) return;
+    const vals = list.map(it=>Array.from(it.facets.colour)[0] || null);
+    if(vals.some(v=>!v)) return;
+    if(new Set(vals.map(v=>String(v).toLowerCase())).size > 1) return;
+    list.forEach(it=>{
+      const alt = colourFromName(it.rec);
+      if(alt && alt !== it.rec.name){
+        it.facets.colour = new Set([alt]);
+        it.colour = colourName(alt);
+      }
+    });
+  });
+
+  buildTree();
+}
+
+function buildTree(){
+  const nodes = new Map();
+  const ensure = path=>{
+    if(nodes.has(path)) return nodes.get(path);
+    const parts = path.split(' > ');
+    const node = { path, label:catLabel(parts[parts.length-1]), depth:parts.length-1, children:[], count:0 };
+    nodes.set(path,node);
+    if(parts.length > 1){
+      const parent = ensure(parts.slice(0,-1).join(' > '));
+      parent.children.push(node);
+    }
+    return node;
+  };
+  // Truncate each path at its first internal segment, so a workflow bucket
+  // never becomes a node — not even via a deeper child.
+  store.records.forEach(r=>pathsOf(r).forEach(p=>{
+    const vis = visiblePathOf(p);
+    if(vis) ensure(vis);
+  }));
+  nodes.forEach(n=>{ n.count = store.items.filter(it=>inPath(it,n.path)).length; });
+  const roots = [];
+  nodes.forEach(n=>{ if(n.depth === 0) roots.push(n); });
+  const srt = l=>{ l.sort((a,b)=>b.count-a.count || a.label.localeCompare(b.label)); l.forEach(n=>srt(n.children)); };
+  srt(roots);
+  store.tree = roots; store.nodeByPath = nodes;
+}
+const inPath = (item,path)=>{
+  if(!path) return true;
+  for(const p of item.paths) if(p === path || p.startsWith(path + ' > ')) return true;
+  return false;
+};
+function visibleCrumbs(path){
+  return String(path||'').split(' > ')
+    .filter(s=>!HIDE_CAT_RE.test(s))
+    .map(s=>({ label:catLabel(s), raw:s }));
+}
+function deepestPath(rec){
+  const h = rec.hierarchicalCategories || {};
+  const lv = Object.keys(h).filter(k=>/^lvl\d+$/.test(k)).sort((a,b)=>parseInt(b.slice(3))-parseInt(a.slice(3)));
+  for(const k of lv){
+    const v = h[k], arr = Array.isArray(v)?v:(v?[v]:[]);
+    if(arr.length) return String(arr[0]);
+  }
+  return null;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   State (mirrored to the URL so views are shareable)
+   ═══════════════════════════════════════════════════════════ */
+const state = {
+  q:'', sort:'featured', path:null, page:1,
+  route:{ name:'list', id:null }
+};
+FACETS.forEach(f=>state[f.key] = new Set());
+
+function readHash(){
+  const raw = location.hash.replace(/^#/,'');
+  const [p0,qs] = raw.split('?');
+  const p = new URLSearchParams(qs||'');
+  const m = /^\/p\/(.+)$/.exec(p0||'');
+  state.route = m ? { name:'pdp', id:decodeURIComponent(m[1]) } : { name:'list', id:null };
+  state.q = p.get('q') || '';
+  state.sort = ['featured','name-asc','name-desc'].includes(p.get('sort')) ? p.get('sort') : 'featured';
+  state.path = p.get('c') || null;
+  state.page = Math.max(1, parseInt(p.get('page')||'1',10) || 1);
+  FACETS.forEach(f=>{ state[f.key] = new Set((p.getAll(f.key)||[]).filter(Boolean)); });
+}
+let quiet = false;
+function writeHash(replace){
+  const p = new URLSearchParams();
+  if(state.q) p.set('q', state.q);
+  if(state.sort !== 'featured') p.set('sort', state.sort);
+  if(state.path) p.set('c', state.path);
+  if(state.page > 1) p.set('page', String(state.page));
+  FACETS.forEach(f=>Array.from(state[f.key]).forEach(v=>p.append(f.key,v)));
+  const base = state.route.name === 'pdp' ? `#/p/${encodeURIComponent(state.route.id)}` : '#/';
+  const s = p.toString();
+  const next = base + (s ? '?' + s : '');
+  if(next === location.hash) return;
+  quiet = true;
+  if(replace) history.replaceState(null,'',next); else history.pushState(null,'',next);
+  quiet = false;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Query + filtering
+   ═══════════════════════════════════════════════════════════ */
+let hits = new Map(), token = 0;
+async function runQuery(){
+  const q = state.q.trim();
+  if(!q){ hits = new Map(); store.stats.lastQueryMs = null; return; }
+  const t = ++token;
+  // Product references differ by a single digit, so typo tolerance would
+  // return the whole run. Pasting a reference should find that one product.
+  const looksLikeRef = /^[A-Za-z]{1,4}[-_]?\d{4,}$/.test(q);
+  const body = {
+    query:q, hitsPerPage:MAX_CORPUS,
+    attributesToRetrieve:['objectID'],
+    attributesToHighlight:['name','number'],
+    removeWordsIfNoResults:'lastWords'
+  };
+  if(looksLikeRef) body.typoTolerance = false;
+  const res = await search(body);
+  if(t !== token) return;
+  const m = new Map();
+  (res.hits||[]).forEach((h,i)=>m.set(h.objectID,{ rank:i, highlight:h._highlightResult||null }));
+  hits = m;
+  store.stats.lastQueryMs = res.processingTimeMS;
+}
+// Every field is indexed, so a style record also matches through the variant
+// data nested inside it. Only a match on its own name or number means "this
+// style is what you searched for".
+const matchedOnIdentity = h =>
+  !!h && ['name','number'].some(k => h[k] && h[k].matchLevel && h[k].matchLevel !== 'none');
+
+function base(){
+  if(!state.q.trim()) return store.items.map(it=>Object.assign({},it,{rank:null}));
+  const out = [];
+  store.items.forEach(it=>{
+    let rank = null;
+    const self = hits.get(it.id);
+    if(self) rank = self.rank;
+    // A hit on the style's own name belongs to every product in that style.
+    const ph = it.parent ? hits.get(it.parent.objectID) : null;
+    if(ph && matchedOnIdentity(ph.highlight) && (rank === null || ph.rank < rank)) rank = ph.rank;
+    if(rank === null) return;
+    out.push(Object.assign({},it,{rank}));
+  });
+  return out;
+}
+function passes(item, skip){
+  if(skip !== '__path' && !inPath(item, state.path)) return false;
+  for(const f of FACETS){
+    if(f.key === skip) continue;
+    const sel = state[f.key];
+    if(!sel.size) continue;
+    let ok = false;
+    for(const v of sel) if(item.facets[f.key].has(v)){ ok = true; break; }
+    if(!ok) return false;
+  }
+  return true;
+}
+function sortItems(list){
+  // Products share a style name, so colour is the tiebreak throughout.
+  const byName = (a,b)=>
+    a.style.localeCompare(b.style,undefined,{numeric:true}) ||
+    String(a.colour||'').localeCompare(String(b.colour||''));
+  if(state.sort === 'name-asc')  return list.sort(byName);
+  if(state.sort === 'name-desc') return list.sort((a,b)=>byName(b,a));
+  return list.sort((a,b)=>{
+    if(a.rank !== null && b.rank !== null && a.rank !== b.rank) return a.rank - b.rank;
+    if(a.rank !== null && b.rank === null) return -1;
+    if(a.rank === null && b.rank !== null) return 1;
+    // Keep a style's products together, imagery first.
+    return byName(a,b) || (b.ownAssets.length - a.ownAssets.length);
+  });
+}
+// Counts per dimension exclude that dimension's own refinement, so ticking
+// one box never zeroes its siblings.
+function computeView(){
+  const pool = base();
+  const results = sortItems(pool.filter(it=>passes(it,null)));
+  const counts = {};
+  FACETS.forEach(f=>{
+    const sub = pool.filter(it=>passes(it,f.key));
+    const c = new Map();
+    sub.forEach(it=>it.facets[f.key].forEach(v=>c.set(v,(c.get(v)||0)+1)));
+    counts[f.key] = c;
+  });
+  const catPool = pool.filter(it=>passes(it,'__path'));
+  const catCounts = new Map();
+  store.nodeByPath.forEach(n=>catCounts.set(n.path, catPool.filter(it=>inPath(it,n.path)).length));
+  return { pool, results, counts, catCounts };
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Rendering — listing
+   ═══════════════════════════════════════════════════════════ */
+function thumb(asset,w){
+  if(!asset) return null;
+  const u = asset.previewUri || asset.downloadUri;
+  if(!u) return null;
+  try{ const url = new URL(u); if(url.searchParams.has('w')){ url.searchParams.set('w',String(w)); return url.toString(); } return u; }
+  catch(_){ return u; }
+}
+const noImg = ()=>`<div class="noimg">${IC.img}<span>Image coming soon</span></div>`;
+
+const COLLECTION = 'Eyewear';
+
+// The collection title doubles as the masthead: full size on the listing,
+// compact and clickable on a product page.
+function renderTop(view){
+  const h = $('#collhead');
+  const bar = $('#topbar');
+  h.textContent = '';
+
+  if(!view){
+    bar.classList.add('compact');
+    const t = el('h1');
+    const a = el('a', null, COLLECTION);
+    a.href = '#/';
+    a.onclick = e=>{
+      e.preventDefault();
+      state.route = {name:'list', id:null};
+      go(); window.scrollTo(0,0);
+    };
+    t.appendChild(a);
+    h.appendChild(t);
+    return;
+  }
+
+  bar.classList.remove('compact');
+  const node = state.path ? store.nodeByPath.get(state.path) : null;
+  h.appendChild(el('div','eyebrow', state.q ? 'Search results' : 'Collection'));
+  h.appendChild(el('h1', null, state.q ? COLLECTION : (node ? node.label : COLLECTION)));
+  const n = view.results.length;
+  const styles = new Set(view.results.map(it=>it.style)).size;
+  h.appendChild(el('p', null, state.q
+    ? `${plural(n,'product')} matching “${state.q}”.`
+    : `${plural(n,'product')} across ${plural(styles,'style')}. Specifications, colourways and imagery for every frame.`));
+}
+
+function renderFilters(view){
+  const a = $('#filters');
+  a.textContent = '';
+
+  const head = el('div','asidehead');
+  head.appendChild(el('h2',null,'Filter'));
+  const close = el('button','iconbtn'); close.setAttribute('aria-label','Close filters');
+  close.innerHTML = IC.x; close.onclick = ()=>drawer(false);
+  head.appendChild(close);
+  a.appendChild(head);
+
+  // categories
+  if(store.tree.length){
+    const b = el('div','fblock');
+    b.appendChild(el('h3',null,'Category'));
+    const list = el('div','catlist');
+    const mk = (label,path,sub)=>{
+      const link = el('a', (state.path===path?'on ':'') + (sub?'sub':''));
+      link.href = '#/';
+      link.appendChild(el('span',null,label));
+      link.appendChild(el('span','ct', fmtN(path ? (view.catCounts.get(path)||0) : view.pool.filter(it=>passes(it,'__path')).length)));
+      link.onclick = e=>{ e.preventDefault(); state.path = path; state.page=1; go(); };
+      return link;
+    };
+    list.appendChild(mk('All', null, false));
+    const walk=(nodes,sub)=>nodes.forEach(n=>{
+      if(!n.count) return;
+      list.appendChild(mk(n.label,n.path,sub));
+      walk(n.children,true);
+    });
+    // A lone root just repeats "All" — start from its children instead.
+    if(store.tree.length === 1) walk(store.tree[0].children,false);
+    else walk(store.tree,false);
+    b.appendChild(list);
+    a.appendChild(b);
+  }
+
+  FACETS.forEach(f=>{
+    const c = view.counts[f.key] || new Map();
+    const sel = state[f.key];
+    const keys = Array.from(new Set([...c.keys(),...sel]));
+    if(keys.length < 2 && !sel.size) return;   // a single option is not a filter
+    keys.sort((x,y)=>(c.get(y)||0)-(c.get(x)||0) || String(x).localeCompare(String(y)));
+    const b = el('div','fblock');
+    b.appendChild(el('h3',null,f.label));
+    const list = el('div','flist');
+    keys.forEach(name=>{
+      const n = c.get(name)||0, on = sel.has(name);
+      const btn = el('button','fopt');
+      btn.setAttribute('aria-pressed',String(on));
+      if(!n && !on) btn.disabled = true;
+      btn.innerHTML = `<span class="tick">${IC.tick}</span>`;
+      if(f.swatch) btn.appendChild(swatch(name));
+      btn.insertAdjacentHTML('beforeend',
+        `<span class="nm">${esc(f.swatch ? colourName(name) : name)}</span><span class="ct">${fmtN(n)}</span>`);
+      btn.onclick = ()=>{ on ? sel.delete(name) : sel.add(name); state.page=1; go(); };
+      list.appendChild(btn);
+    });
+    b.appendChild(list);
+    a.appendChild(b);
+  });
+
+  if(activeCount()){
+    const c = el('button','clearall','Clear all');
+    c.onclick = clearAll;
+    a.appendChild(c);
+  }
+}
+const activeCount = ()=>(state.path?1:0) + FACETS.reduce((s,f)=>s+state[f.key].size,0);
+function clearAll(){ state.path=null; FACETS.forEach(f=>state[f.key]=new Set()); state.page=1; go(); }
+
+function renderChips(){
+  const w = $('#chips');
+  w.textContent = '';
+  const add = (label,onRemove)=>{
+    const c = el('button','achip');
+    c.appendChild(el('span',null,label));
+    c.insertAdjacentHTML('beforeend',IC.x);
+    c.onclick = onRemove;
+    w.appendChild(c);
+  };
+  if(state.path){
+    const n = store.nodeByPath.get(state.path);
+    add(n?n.label:state.path, ()=>{ state.path=null; state.page=1; go(); });
+  }
+  FACETS.forEach(f=>Array.from(state[f.key]).forEach(v=>
+    add(f.swatch ? colourName(v) : v, ()=>{ state[f.key].delete(v); state.page=1; go(); })));
+  w.style.display = w.children.length ? 'flex' : 'none';
+}
+
+function card(item){
+  const a = el('a','card');
+  a.href = `#/p/${encodeURIComponent(item.id)}`;
+
+  const box = el('div','cardimg');
+  const hero = item.gallery[0], alt = item.gallery[1];
+  const u = thumb(hero,600);
+  if(u){
+    const img = el('img','base');
+    img.src = u; img.alt = item.title; img.loading='lazy'; img.decoding='async';
+    img.onerror = ()=>{ box.innerHTML = noImg(); };
+    box.appendChild(img);
+    const u2 = thumb(alt,600);
+    if(u2){
+      const i2 = el('img','alt');
+      i2.src = u2; i2.alt=''; i2.loading='lazy'; i2.setAttribute('aria-hidden','true');
+      box.appendChild(i2);
+    }
+  } else box.innerHTML = noImg();
+  a.appendChild(box);
+
+  const body = el('div','cardbody');
+  if(item.brand) body.appendChild(el('div','cardbrand',item.brand));
+  // Always the cleaned model name — the brand already sits above it, and a
+  // search highlight would reintroduce the raw catalogue name.
+  body.appendChild(el('div','cardname', item.title));
+
+  // One card is one product, so its own colourway and size identify it.
+  const bits = [item.colour, item.size].filter(Boolean);
+  if(bits.length) body.appendChild(el('div','cardmeta', bits.join(' · ')));
+
+  if(item.colour){
+    const row = el('div','cardsw');
+    row.appendChild(swatch(item.colour));
+    body.appendChild(row);
+  }
+  a.appendChild(body);
+  return a;
+}
+
+function renderGrid(view){
+  const g = $('#grid');
+  g.textContent = '';
+  if(!view.results.length){
+    const b = el('div','blank');
+    b.appendChild(el('h3',null,state.q ? 'No frames found' : 'Nothing in this selection'));
+    b.appendChild(el('p',null, state.q
+      ? `We couldn't match “${state.q}”. Try a colour, a size, or a model name.`
+      : 'Try removing a filter to see more frames.'));
+    const row = el('div');
+    row.style.cssText='display:flex;gap:10px;justify-content:center;flex-wrap:wrap';
+    if(activeCount()){ const x=el('button','btn ghost','Clear filters'); x.onclick=clearAll; row.appendChild(x); }
+    if(state.q){ const x=el('button','btn','Clear search'); x.onclick=()=>{ $('#q').value=''; state.q=''; onQuery(); }; row.appendChild(x); }
+    b.appendChild(row);
+    g.appendChild(b);
+    return;
+  }
+  const end = state.page * PER_PAGE;
+  view.results.slice(0,end).forEach(it=>g.appendChild(card(it)));
+  if(view.results.length > end){
+    const more = el('div');
+    more.style.cssText = 'grid-column:1/-1;display:flex;justify-content:center;padding-top:24px';
+    const b = el('button','btn ghost',`Show more (${fmtN(view.results.length-end)})`);
+    b.onclick = ()=>{ state.page++; go(); };
+    more.appendChild(b);
+    g.appendChild(more);
+  }
+}
+
+function renderToolbar(view){
+  const n = view.results.length;
+  $('#resnum').innerHTML = `<b>${fmtN(n)}</b> ${n===1?'product':'products'}`;
+  $('#sort').value = state.sort;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Rendering — product page
+   ═══════════════════════════════════════════════════════════ */
+function specRow(table, label, node){
+  const tr = el('tr');
+  tr.appendChild(el('th',null,label));
+  const td = el('td');
+  if(typeof node === 'string') td.textContent = node; else td.appendChild(node);
+  tr.appendChild(td);
+  table.appendChild(tr);
+}
+function attrNode(a){
+  if(a.kind === 'list'){
+    const w = el('div','chipset');
+    a.values.forEach(o=>{
+      const c = el('span','vchip');
+      if(o.colour) c.appendChild(swatch(o.label,o.colour));
+      c.appendChild(el('span',null,o.label));
+      w.appendChild(c);
+    });
+    return w;
+  }
+  if(a.kind === 'table'){
+    const s = el('div','subscroll'), t = el('table','subtable');
+    if(a.table.head){
+      const tr = el('tr');
+      a.table.head.forEach(h=>tr.appendChild(el('th',null,prettify(h))));
+      t.appendChild(tr);
+    }
+    a.table.rows.forEach(r=>{
+      const tr = el('tr');
+      r.forEach(c=>tr.appendChild(el('td',null,c)));
+      t.appendChild(tr);
+    });
+    s.appendChild(t);
+    return s;
+  }
+  if(a.valueType === 'boolean') return el('span',null,a.value ? 'Yes' : 'No');
+  if(a.valueType === 'date')    return el('span',null,fmtDate(a.value));
+  const txt = a.valueType === 'number' ? fmtN(a.value) : String(a.value);
+  return el('span',null, a.unit ? `${txt} ${a.unit}` : txt);
+}
+
+function renderPDP(){
+  const host = $('#product');
+  host.textContent = '';
+  let rec = store.byId.get(state.route.id);
+
+  // A style URL is not a product — resolve it to one of its products so the
+  // page always describes something concrete, and canonicalise the address.
+  if(rec){
+    const kids = store.childrenOf.get(rec.objectID) || [];
+    if(kids.length){
+      rec = kids.find(k=>assetsOf(k).length) || kids[0];
+      state.route.id = rec.objectID;
+      writeHash(true);
+    }
+  }
+
+  if(!rec){
+    const b = el('div','blank');
+    b.style.padding = '110px 24px';
+    b.appendChild(el('h3',null,'We can’t find that product'));
+    b.appendChild(el('p',null,'It may have been renamed or removed from the catalogue.'));
+    const a = el('a','btn','Browse the catalogue'); a.href='#/';
+    b.appendChild(a);
+    host.appendChild(b);
+    return;
+  }
+
+  const item = store.items.find(i=>i.id === rec.objectID);
+  const parent = (rec.variantParent && store.byId.get(rec.variantParent.id)) || null;
+  const family = parent ? (store.childrenOf.get(parent.objectID) || []) : [];
+  const shown = rec;
+
+  const brand = (item && item.brand) || specValue(rec,'Brand') ||
+                (parent && specValue(parent,'Brand')) || null;
+  const title = (item && item.style) || modelName(parent || rec, brand);
+
+  // Only this product's own imagery — sibling colourways are reachable through
+  // the swatches, and showing them here misrepresents the frame on the page.
+  const own = assetsOf(rec);
+  const shots = own.length ? own : (parent ? assetsOf(parent) : []);
+
+  /* breadcrumbs */
+  const crumbs = el('nav','crumbs');
+  crumbs.setAttribute('aria-label','Breadcrumb');
+  const home = el('a',null,'Home'); home.href='#/';
+  home.onclick = e=>{ e.preventDefault(); state.route={name:'list',id:null}; go(); window.scrollTo(0,0); };
+  crumbs.appendChild(home);
+  visibleCrumbs(deepestPath(rec)).forEach(seg=>{
+    crumbs.insertAdjacentHTML('beforeend','<span class="sep">/</span>');
+    const a = el('a',null,seg.label); a.href='#/';
+    a.onclick = e=>{
+      e.preventDefault();
+      const node = Array.from(store.nodeByPath.values()).find(n=>n.path.split(' > ').pop() === seg.raw);
+      state.route={name:'list',id:null}; state.path = node?node.path:null; state.page=1;
+      go(); window.scrollTo(0,0);
+    };
+    crumbs.appendChild(a);
+  });
+  crumbs.insertAdjacentHTML('beforeend','<span class="sep">/</span>');
+  crumbs.appendChild(el('span','cur',title));
+  host.appendChild(crumbs);
+
+  const wrap = el('div','pdp');
+
+  /* shots */
+  const shotsCol = el('div','shots');
+  if(shots.length){
+    const lead = el('div','shot');
+    const img = el('img');
+    img.src = thumb(shots[0],1200) || ''; img.alt = `${brand?brand+' ':''}${title}`;
+    img.onerror = ()=>{ lead.innerHTML = noImg(); };
+    lead.appendChild(img);
+    shotsCol.appendChild(lead);
+    if(shots.length > 1){
+      const g = el('div','shotgrid');
+      shots.slice(1,5).forEach(a=>{
+        const s = el('div','shot');
+        const i = el('img');
+        i.src = thumb(a,700) || ''; i.alt = ''; i.loading='lazy';
+        s.appendChild(i);
+        g.appendChild(s);
+      });
+      shotsCol.appendChild(g);
+    }
+  } else {
+    const s = el('div','shot'); s.innerHTML = noImg(); shotsCol.appendChild(s);
+  }
+  wrap.appendChild(shotsCol);
+
+  /* detail column */
+  const d = el('div','detail');
+  if(brand) d.appendChild(el('div','dbrand',brand));
+  d.appendChild(el('h1',null,title));
+
+  const activeColour = (item && item.colour) || resolvedColour(shown);
+  if(activeColour){
+    const c = el('div','dcolour');
+    c.innerHTML = `Colour: <b>${esc(activeColour)}</b>`;
+    d.appendChild(c);
+  }
+
+  /* identifiers — the reference a colleague or channel would quote */
+  const refs = el('div','dref');
+  const refPill = (k,v)=>{
+    const p = el('div','refpill');
+    p.appendChild(el('span','k',k));
+    p.appendChild(el('span','v',v));
+    const c = el('button'); c.innerHTML = IC.copy; c.title = 'Copy';
+    c.setAttribute('aria-label',`Copy ${k}`);
+    c.onclick = async ()=>{
+      try{ await navigator.clipboard.writeText(v); c.innerHTML = IC.tick; setTimeout(()=>c.innerHTML = IC.copy,1200); }catch(_){}
+    };
+    p.appendChild(c);
+    return p;
+  };
+  const ref = String(shown.number || '');
+  if(ref && !/^[0-9a-f]{24}$/i.test(ref)) refs.appendChild(refPill('Reference',ref));
+  const sizeVal = specValue(shown,'Size');
+  if(sizeVal) refs.appendChild(refPill('Size',sizeVal));
+  if(refs.children.length) d.appendChild(refs);
+
+  /* the other products in this style — grouped by style, so it also covers
+     products the catalogue never linked as variants of one another */
+  const mates = (item ? store.items.filter(i=>i.style === item.style) : [])
+    .sort((a,b)=>String(a.colour||'').localeCompare(String(b.colour||'')));
+  if(mates.length > 1){
+    const head = el('div','pickhead');
+    head.appendChild(el('h2',null,'Colourways in this style'));
+    head.appendChild(el('span','val', plural(mates.length,'product')));
+    d.appendChild(head);
+    const row = el('div','swatches');
+    mates.forEach(m=>{
+      const on = m.id === rec.objectID;
+      const c = m.colour || m.rec.name;
+      const b = el('button','swbtn');
+      b.setAttribute('aria-pressed',String(on));
+      b.setAttribute('aria-label',c);
+      b.title = c;
+      b.appendChild(swatch(c));
+      b.onclick = ()=>{ location.hash = `#/p/${encodeURIComponent(m.id)}`; };
+      row.appendChild(b);
+    });
+    d.appendChild(row);
+  }
+
+  /* accordions */
+  const acc = el('div','acc');
+  const panel = (label, build, open)=>{
+    const det = el('details');
+    if(open) det.open = true;
+    det.innerHTML = `<summary>${esc(label)}<span class="pm"></span></summary>`;
+    const body = el('div','accbody');
+    build(body);
+    det.appendChild(body);
+    acc.appendChild(det);
+  };
+
+  // The product's own attributes win; the style fills in what it omits.
+  const merged = { attributes: Object.assign({}, (parent && parent.attributes)||{}, rec.attributes||{}) };
+  const read = readAttributes(merged);
+
+  // Show the readable colourway in the table too, not the internal code.
+  const ci = read.specs.findIndex(a=>a.label === 'Colour');
+  if(activeColour){
+    const entry = { label:'Colour', kind:'list', values:[{label:activeColour, colour:null}], unit:null };
+    if(ci > -1) read.specs[ci] = entry; else read.specs.unshift(entry);
+  } else if(ci > -1 && CODE_ONLY_RE.test(specText(read.specs[ci]))){
+    read.specs.splice(ci,1);
+  }
+
+  const desc = rec.description || (parent && parent.description);
+  if(desc && String(desc).trim()){
+    panel('Description', body=>{
+      const r = el('div','rich'); r.appendChild(renderRich(desc,null)); body.appendChild(r);
+    }, true);
+  }
+  read.story.forEach(a=>panel(a.label, body=>{
+    const r = el('div','rich'); r.appendChild(renderRich(a.value,a.contentType)); body.appendChild(r);
+  }));
+
+  panel('Specifications', body=>{
+    const t = el('table','specs');
+    read.specs.forEach(a=>specRow(t,a.label,attrNode(a)));
+    const cats = visibleCrumbs(deepestPath(rec)).map(c=>c.label).join(' · ');
+    if(cats) specRow(t,'Category',cats);
+    specRow(t,'Style',title);
+    body.appendChild(t);
+  }, !(desc && String(desc).trim()));
+
+  if(own.length){
+    panel(`Imagery (${own.length})`, body=>{
+      const list = el('div','assetlist');
+      own.forEach(a=>{
+        const r = el('div','assetrow');
+        const th = el('div','th');
+        const u = thumb(a,120);
+        if(u){ const i = el('img'); i.src=u; i.alt=''; i.loading='lazy'; th.appendChild(i); }
+        r.appendChild(th);
+        const t = el('div','txt');
+        t.appendChild(el('div','fn', a.fileName || a.name || 'image'));
+        t.appendChild(el('div','mt', fmtDate(a.updatedAt || a.createdAt)));
+        r.appendChild(t);
+        r.appendChild(el('span','kind', String(a.contentType||'').split('/')[1] || 'file'));
+        if(a.downloadUri){
+          const dl = el('a','dl');
+          dl.href = a.downloadUri; dl.target='_blank'; dl.rel='noopener';
+          dl.title = 'Open original'; dl.setAttribute('aria-label','Open original image in a new tab');
+          dl.innerHTML = IC.dl;
+          r.appendChild(dl);
+        }
+        list.appendChild(r);
+      });
+      body.appendChild(list);
+    });
+  }
+
+  d.appendChild(acc);
+  wrap.appendChild(d);
+  host.appendChild(wrap);
+
+  /* other products in the same category, outside this style */
+  const dp = deepestPath(rec);
+  const rel = store.items
+    .filter(it=>it.id !== rec.objectID && it.style !== title && (!dp || inPath(it,dp)))
+    .slice(0,4);
+  if(rel.length){
+    const s = el('div','more-sec');
+    s.appendChild(el('h2',null,'Elsewhere in the catalogue'));
+    const g = el('div','grid');
+    rel.forEach(it=>g.appendChild(card(it)));
+    s.appendChild(g);
+    host.appendChild(s);
+  }
+
+  document.title = `${brand?brand+' ':''}${title} — ${COLLECTION}`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Orchestration
+   ═══════════════════════════════════════════════════════════ */
+function renderFooter(){
+  const box = $('#fcats');
+  if(box && !box.children.length){
+    const seen = new Set();
+    const walk = nodes=>nodes.forEach(n=>{
+      if(n.count && !seen.has(n.label)){
+        seen.add(n.label);
+        const a = el('a',null,n.label);
+        a.href = '#/';
+        a.onclick = e=>{
+          e.preventDefault();
+          state.route={name:'list',id:null}; state.path=n.path; state.page=1;
+          go(); window.scrollTo(0,0);
+        };
+        box.appendChild(a);
+      }
+      walk(n.children);
+    });
+    walk(store.tree);
+  }
+  const c = $('#fcount');
+  if(c) c.textContent = `${plural(store.items.length,'product')} in the catalogue`;
+}
+
+function render(){
+  const pdp = state.route.name === 'pdp';
+  $('#listing').hidden = pdp;
+  $('#product').hidden = !pdp;
+  renderFooter();
+  if(pdp){ renderTop(null); renderPDP(); return; }
+  document.title = COLLECTION;
+  const view = computeView();
+  renderTop(view);
+  renderFilters(view);
+  renderToolbar(view);
+  renderChips();
+  renderGrid(view);
+}
+function go(){ writeHash(); render(); }
+
+/* ── boot ─────────────────────────────────────────────────── */
+function skeletons(){
+  const g = $('#grid');
+  g.textContent = '';
+  for(let i=0;i<8;i++){
+    const s = el('div','skel');
+    s.innerHTML = '<div class="sh shimmer"></div><div class="sl w shimmer"></div><div class="sl shimmer"></div>';
+    g.appendChild(s);
+  }
+}
+function showError(err){
+  $('#errslot').innerHTML =
+    `<div class="errbox"><h3>We couldn’t load the collection</h3><p>${esc(err.message||String(err))}</p></div>`;
+}
+async function loadCorpus(){
+  const res = await search({ query:'', hitsPerPage:MAX_CORPUS, attributesToHighlight:[] });
+  store.records = res.hits || [];
+  store.stats.nbHits = res.nbHits != null ? res.nbHits : store.records.length;
+  buildItems();
+}
+
+let qTimer = null;
+async function onQuery(){
+  state.page = 1;
+  if(state.route.name === 'pdp') state.route = {name:'list',id:null};
+  writeHash(true);
+  try{ await runQuery(); $('#errslot').textContent=''; }catch(e){ showError(e); }
+  render();
+}
+const drawer = on=>{
+  $('#filters').classList.toggle('open',on);
+  $('#scrim').classList.toggle('on',on);
+};
+const syncClear = ()=>{ $('#qclear').hidden = !$('#q').value; };
+
+function wire(){
+  const q = $('#q');
+  $('#qclear').onclick = ()=>{
+    q.value=''; syncClear();
+    if(state.q){ state.q=''; onQuery(); }
+    q.focus();
+  };
+  q.addEventListener('input',()=>{
+    state.q = q.value; syncClear();
+    clearTimeout(qTimer); qTimer = setTimeout(onQuery,130);
+  });
+  q.addEventListener('keydown',e=>{
+    if(e.key === 'Escape'){ q.value=''; state.q=''; syncClear(); clearTimeout(qTimer); onQuery(); }
+    if(e.key === 'Enter'){ clearTimeout(qTimer); onQuery(); }
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key === '/' && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)){
+      e.preventDefault(); q.focus(); q.select();
+    }
+  });
+
+  $('#sort').onchange = e=>{ state.sort = e.target.value; state.page=1; go(); };
+  $('#menubtn').onclick = ()=>drawer(!$('#filters').classList.contains('open'));
+  $('#scrim').onclick = ()=>drawer(false);
+  $('#filters').addEventListener('click',e=>{
+    if(e.target.closest('.fopt, .catlist a') && innerWidth <= 900) drawer(false);
+  });
+
+  window.addEventListener('hashchange', async ()=>{
+    if(quiet) return;
+    const prev = state.q;
+    readHash();
+    $('#q').value = state.q; syncClear();
+    if(state.q !== prev){ try{ await runQuery(); }catch(e){ showError(e); } }
+    render();
+    window.scrollTo(0,0);
+  });
+}
+
+(async function init(){
+  wire();
+  readHash();
+  $('#q').value = state.q; syncClear();
+  skeletons();
+  try{
+    await loadCorpus();
+    if(state.q) await runQuery();
+    render();
+  }catch(e){
+    showError(e);
+    $('#grid').textContent = '';
+    $('#resnum').textContent = '';
+  }
+})();
+
+})();
+</script>
+</body>
+</html>
